@@ -28,7 +28,6 @@ import CreateIcon from "@material-ui/icons/Create";
 import SearchIcon from "@material-ui/icons/Search";
 
 import {
-  deleteMovie,
   getMovieByNameDashBoard,
   getMoviePageDashBoard,
 } from "../../redux/actions/managementActions";
@@ -36,6 +35,7 @@ import Style from "./style";
 import Datepicker from "../Datepicker";
 import FormDialog from "../FormDialog";
 import {
+  deleteMovie,
   updateMovie,
   updateMovieNochangeImg,
 } from "../../redux/actions/movieActions";

@@ -95,3 +95,18 @@ export const updateMovieNochangeImg = (movieUpdate) => {
       });
   };
 };
+
+export const deleteMovie = (maPhim) => {
+  return (dispatch) => {
+    connector({
+      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/XoaPhim?MaPhim=${maPhim}`,
+      method: "DELETE",
+    })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err, "Phim đã xếp lịch chiếu không thể xóa");
+      });
+  };
+};

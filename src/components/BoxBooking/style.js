@@ -1,4 +1,3 @@
-import { Textfunc } from "../../helpers/mxins";
 import { makeStyles } from "@material-ui/core";
 
 const heightBooking = 80;
@@ -60,12 +59,8 @@ const Style = makeStyles((theme) => ({
   bookingButton: {
     padding: theme.spacing(0.6),
     "& button": {
-      ...Textfunc(
-        14,
-        "sfTextRegular",
-        400,
-        `${theme.palette.text.white}!important`
-      ),
+      ...theme.typography.subtitle2,
+      color: `${theme.palette.text.white}!important`,
       background: theme.palette.grey[800],
     },
   },
@@ -98,7 +93,8 @@ const Style = makeStyles((theme) => ({
         borderRadius: 200,
       },
       "& > li": {
-        ...Textfunc(14, "sfTextRegular", 400, theme.palette.text.dark),
+        ...theme.typography.subtitle2,
+        color: theme.palette.text.dark,
         padding: "3px 20px",
         cursor: "pointer",
         transition: "all 0.3s",

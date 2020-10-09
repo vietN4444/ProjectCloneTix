@@ -4,6 +4,7 @@ import movieReducer from "./redux/movieReducer";
 import statusReducer from "./redux/statusReducer";
 import dashboardReducer from "./redux/dashboardReducer";
 import profileReducer from "./redux/profileReducer";
+import authReducer from "./redux/authReducer";
 
 const rootReducer = combineReducers({
   //State
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   status: statusReducer,
   dashboard: dashboardReducer,
   profile: profileReducer,
+  auth: authReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

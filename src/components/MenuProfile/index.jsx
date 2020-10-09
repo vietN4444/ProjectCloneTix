@@ -9,7 +9,7 @@ import {
   ListItemText,
   Avatar,
 } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import ContactsIcon from "@material-ui/icons/Contacts";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
@@ -24,6 +24,8 @@ import { SET_TITLE_DASHBOARD } from "../../redux/actions/actionContants";
 export const MainMenuItemsProfile = (props) => {
   const dispatch = useDispatch();
   const classes = Style(props);
+  const nameUser = useSelector((state) => state.auth.userName);
+  const userAC = useSelector((state) => state.auth.UAC);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handldeChangeIndex = (event, index) => {
@@ -34,19 +36,20 @@ export const MainMenuItemsProfile = (props) => {
       payload: myValue,
     });
   };
+
   return (
     <MenuList className={classes.menuList}>
       <Box className={classes.boxAvatar}>
         <Avatar
           alt="Remy Sharp"
-          src="https://api.adorable.io/avatars/100/abc"
+          src={`"https://api.adorable.io/avatars/100/${userAC}"`}
           className={classes.avatarLarge}
         />
         <Typography component="p" variant="subtitle2">
-          NameUser
+          {nameUser}
         </Typography>
         <Typography component="span" variant="body2">
-          Admin
+          {userAC}
         </Typography>
       </Box>
       <Box className={classes.menuTitle}>

@@ -1,5 +1,4 @@
 import { makeStyles } from "@material-ui/core";
-import { Textfunc } from "../../helpers/mxins";
 
 const Style = makeStyles((theme) => ({
   footer: {
@@ -28,7 +27,9 @@ const Style = makeStyles((theme) => ({
       },
     },
     "&> a": {
-      ...Textfunc(12, "sfTextRegular", 700, theme.palette.text.grey),
+      ...theme.typography.body2,
+      fontWeight: theme.typography.fontWeightBold,
+      color: theme.palette.text.grey,
       whiteSpace: "nowrap",
       display: "block",
       transition: "all 0.2s",
@@ -41,7 +42,9 @@ const Style = makeStyles((theme) => ({
     },
   },
   footerTitle: {
-    ...Textfunc(11, "sfTextRegular", 400, theme.palette.text.white),
+    ...theme.typography.body2,
+    fontSize: 11,
+    color: theme.palette.text.white,
     marginBottom: theme.spacing(1),
   },
   footerTopContentLogo: {

@@ -1,15 +1,37 @@
 import { Box, Button, TextField, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import logoLogin from "../../assets/imgs/logoLogin.png";
+import { signIn } from "../../redux/actions/userActions";
 import Style from "./style";
 
 const SignIn = (props) => {
+  const dispatch = useDispatch();
+  const [user, setUser] = useState({
+    taiKhoan: "",
+    matKhau: "",
+  });
   const classes = Style(props);
 
-  const hanldeSubmit = () => {};
-  const handleChange = () => {};
+  const handleChange = useCallback(
+    (e) => {
+      const key = e.target.name;
+      const value = e.target.value;
+      setUser({ ...user, [key]: value });
+    },
+    [user]
+  );
+
+  const hanldeSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      const currentUser = user;
+      dispatch(signIn(currentUser, props.history));
+    },
+    [user, dispatch, props.history]
+  );
 
   return (
     <Box className={classes.login}>
@@ -61,14 +83,6 @@ const SignIn = (props) => {
               >
                 Sign In
               </Button>
-              {/* <Button
-                //   onClick={() => history.push("/signup")}
-                size="large"
-                variant="contained"
-                color="secondary"
-              >
-                Sign Up
-              </Button> */}
             </Box>
             <Box className={classes.txtSubtitle}>
               <Typography component="p">

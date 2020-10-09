@@ -7,6 +7,7 @@ import {
   Toolbar,
   Box,
   List,
+  Tooltip,
 } from "@material-ui/core";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -15,12 +16,22 @@ import HomeIcon from "../../assets/imgs/web-logo.png";
 
 import Style from "./style";
 import MenuListDashboard from "../../components/MenuDashboard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MovieManagement from "../../components/MovieManagement";
+import { REMOVE_TOKEN } from "../../redux/actions/actionContants";
 
 const Dashboard = (props) => {
+  const dispatch = useDispatch();
   const classes = Style(props);
   const titleDashboard = useSelector((state) => state.dashboard.title);
+
+  const logOut = () => {
+    dispatch({
+      type: REMOVE_TOKEN,
+    });
+    localStorage.removeItem("accessToken");
+    props.history.push("/signin");
+  };
 
   return (
     <div className={classes.root}>
@@ -42,9 +53,11 @@ const Dashboard = (props) => {
           >
             {titleDashboard}
           </Typography>
-          <IconButton color="inherit">
-            <ExitToAppIcon />
-          </IconButton>
+          <Tooltip title="Logout" placement="bottom">
+            <IconButton color="inherit" onClick={logOut}>
+              <ExitToAppIcon />
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
       <Box className={classes.drawerPaper}>

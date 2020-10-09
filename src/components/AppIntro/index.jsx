@@ -49,32 +49,32 @@ const AppIntro = (props) => {
                   </Typography>
                 </Grid>
                 <Grid item md={6} className={classes.appIntroMobileScreen}>
-                  <img src={Mobile} />
+                  <img src={Mobile} alt="mobile" />
                   <Box className={classes.appIntroSlider}>
                     <Slider {...settings}>
                       <div className={classes.appIntroSliderItem}>
-                        <img src="./imgs/slideApp1.jpg" />
+                        <img src="./imgs/slideApp1.jpg" alt="sliderApp" />
                       </div>
                       <div className={classes.appIntroSliderItem}>
-                        <img src="./imgs/slideApp2.jpg" />
+                        <img src="./imgs/slideApp2.jpg" alt="sliderApp" />
                       </div>
                       <div className={classes.appIntroSliderItem}>
-                        <img src="./imgs/slideApp3.jpg" />
+                        <img src="./imgs/slideApp3.jpg" alt="sliderApp" />
                       </div>
                       <div className={classes.appIntroSliderItem}>
-                        <img src="./imgs/slideApp4.jpg" />
+                        <img src="./imgs/slideApp4.jpg" alt="sliderApp" />
                       </div>
                       <div className={classes.appIntroSliderItem}>
-                        <img src="./imgs/slideApp5.jpg" />
+                        <img src="./imgs/slideApp5.jpg" alt="sliderApp" />
                       </div>
                       <div className={classes.appIntroSliderItem}>
-                        <img src="./imgs/slideApp6.jpg" />
+                        <img src="./imgs/slideApp6.jpg" alt="sliderApp" />
                       </div>
                       <div className={classes.appIntroSliderItem}>
-                        <img src="./imgs/slideApp7.jpg" />
+                        <img src="./imgs/slideApp7.jpg" alt="sliderApp" />
                       </div>
                       <div className={classes.appIntroSliderItem}>
-                        <img src="./imgs/slideApp8.jpg" />
+                        <img src="./imgs/slideApp8.jpg" alt="sliderApp" />
                       </div>
                     </Slider>
                   </Box>

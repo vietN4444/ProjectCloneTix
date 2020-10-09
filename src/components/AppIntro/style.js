@@ -1,5 +1,4 @@
 import BackgroundBackApp from "../../assets/imgs/backapp.jpg";
-import { Textfunc } from "../../helpers/mxins";
 const { makeStyles } = require("@material-ui/core");
 
 const Style = makeStyles((theme) => ({
@@ -22,12 +21,9 @@ const Style = makeStyles((theme) => ({
       wordSpacing: 1,
     },
     "& > a": {
-      ...Textfunc(
-        theme.typography.h6.fontSize,
-        "sfTextRegular",
-        400,
-        theme.palette.text.white
-      ),
+      ...theme.typography.h6,
+      fontFamily: "sfTextRegular",
+      color: theme.palette.text.white,
       textTransform: "inherit",
       padding: "7px 14px",
     },

@@ -1,4 +1,4 @@
-const { makeStyles, withStyles } = require("@material-ui/core");
+const { makeStyles } = require("@material-ui/core");
 
 const Style = makeStyles((theme) => ({
   listItem: {

@@ -63,13 +63,16 @@ const MovieList = (props) => {
     });
   }, [movieList, searchMovie, movieListSearched]);
 
-  const handleChange = useCallback((e) => {
-    const value = e.target.value.trim();
-    setSearchMovie(value);
-    setTimeout(() => {
-      dispatch(getMovieByName(value));
-    }, 100);
-  }, []);
+  const handleChange = useCallback(
+    (e) => {
+      const value = e.target.value.trim();
+      setSearchMovie(value);
+      setTimeout(() => {
+        dispatch(getMovieByName(value));
+      }, 100);
+    },
+    [dispatch]
+  );
 
   const classes = Style(props);
 

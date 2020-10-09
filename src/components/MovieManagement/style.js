@@ -13,14 +13,24 @@ const Style = makeStyles((theme, widthTable) => ({
       height: 9,
     },
     "&::-webkit-scrollbar-track": {
-      background: "#f2f2f2",
+      backgroundColor: "transparent",
+      transition: "all 0.5s",
     },
     "&::-webkit-scrollbar-thumb": {
-      background: theme.palette.grey[400],
+      backgroundColor: "transparent",
+      transition: "all 0.5s",
       borderRadius: 200,
     },
-    "&::-webkit-scrollbar-thumb:hover": {
-      background: theme.palette.grey[500],
+    "&:hover": {
+      "&::-webkit-scrollbar-track": {
+        backgroundColor: "#f2f2f2",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: theme.palette.grey[400],
+      },
+      "&::-webkit-scrollbar-thumb:hover": {
+        backgroundColor: theme.palette.grey[500],
+      },
     },
   },
   tableBody: {

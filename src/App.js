@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
+import { SET_TOKEN } from "./redux/actions/actionContants";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("accessToken"))) {
+      dispatch({
+        type: SET_TOKEN,
+        payload: JSON.parse(localStorage.getItem("accessToken")),
+      });
+    }
+  }, [dispatch]);
   return (
     <BrowserRouter>
       <Switch>

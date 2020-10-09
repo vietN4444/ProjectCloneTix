@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Style from "./style";
 import CloseIcon from "../../assets/imgs/close.png";
-import { Box, Button, Fade } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_MODAL_STATUS } from "../../redux/actions/actionContants";
 
@@ -24,6 +24,7 @@ const ModalVideoPopup = (props) => {
           <Box className={classes.modalVideoWrapper}>
             <Box className={classes.modalIframe}>
               <iframe
+                title="youtube"
                 width={560}
                 height={315}
                 src={trailer + "?autoplay=1"}
@@ -33,7 +34,7 @@ const ModalVideoPopup = (props) => {
               />
             </Box>
             <Button onClick={handleModal}>
-              <img src={CloseIcon} />
+              <img src={CloseIcon} alt="icon" />
             </Button>
           </Box>
         </Box>

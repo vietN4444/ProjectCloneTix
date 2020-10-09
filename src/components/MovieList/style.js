@@ -1,4 +1,3 @@
-import { Textfunc } from "../../helpers/mxins";
 import nextSession from "../../assets/imgs/next-session.png";
 import backSession from "../../assets/imgs/back-session.png";
 const { makeStyles } = require("@material-ui/core");
@@ -39,14 +38,16 @@ const Style = makeStyles((theme) => ({
   },
   input: {
     "& label": {
-      ...Textfunc(14, "sfTextRegular", 400, theme.palette.text.dark),
+      ...theme.typography.subtitle2,
+      color: theme.palette.text.dark,
     },
     "& span": {
       paddingLeft: 10,
       paddingRight: 10,
     },
     "& input": {
-      ...Textfunc(14, "sfTextRegular", 400, theme.palette.text.dark),
+      ...theme.typography.subtitle2,
+      color: theme.palette.text.dark,
     },
   },
   slider: {

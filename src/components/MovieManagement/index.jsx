@@ -13,7 +13,14 @@ import {
   TextField,
   Tooltip,
 } from "@material-ui/core";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -21,11 +28,17 @@ import CreateIcon from "@material-ui/icons/Create";
 import SearchIcon from "@material-ui/icons/Search";
 
 import {
+  deleteMovie,
   getMovieByNameDashBoard,
   getMoviePageDashBoard,
 } from "../../redux/actions/managementActions";
 import Style from "./style";
 import Datepicker from "../Datepicker";
+import FormDialog from "../FormDialog";
+import {
+  updateMovie,
+  updateMovieNochangeImg,
+} from "../../redux/actions/movieActions";
 
 const columns = [
   { label: "Tác vụ", minWidth: 88, align: "center" },
@@ -58,7 +71,10 @@ const columns = [
 
 const MovieManagement = (props) => {
   const dispatch = useDispatch();
+  const classes = Style(props);
+
   const ref = useRef(null);
+
   const movieList = useSelector((state) => state.dashboard.movieList);
   const movieListSearched = useSelector(
     (state) => state.dashboard.movieSearchList
@@ -69,21 +85,85 @@ const MovieManagement = (props) => {
   const [widthTable, setWidthTable] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [movieSearched, setMovieSearch] = useState("");
+  const [open, setOpen] = useState(false);
+  const [movieSelected, setMovieSelected] = useState({
+    maPhim: 0,
+    tenPhim: "",
+    biDanh: "",
+    trailer: "",
+    hinhAnh: "",
+    moTa: "",
+    maNhom: "03",
+    ngayKhoiChieu: "",
+    danhGia: 0,
+  });
 
   useEffect(() => {
     dispatch(getMoviePageDashBoard(1, 5));
     setWidthTable(ref.current.offsetWidth - 20);
   }, [dispatch]);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-    dispatch(getMoviePageDashBoard(newPage + 1, rowsPerPage));
-  };
+  const handleChangePage = useCallback(
+    (event, newPage) => {
+      setPage(newPage);
+      dispatch(getMoviePageDashBoard(newPage + 1, rowsPerPage));
+    },
+    [rowsPerPage, dispatch]
+  );
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-    dispatch(getMoviePageDashBoard(page + 1, +event.target.value));
+  const handleChangeRowsPerPage = useCallback(
+    (event) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+      dispatch(getMoviePageDashBoard(page + 1, +event.target.value));
+    },
+    [page, dispatch]
+  );
+
+  const handleInput = useCallback(
+    (event, id, num) => {
+      let nameMovie = event.target.value.trim();
+      setMovieSearch(nameMovie);
+      dispatch(getMovieByNameDashBoard(id, num, movieSearched));
+    },
+    [movieSearched, dispatch]
+  );
+
+  const handleDelete = useCallback(
+    (maPhim) => {
+      dispatch(deleteMovie(maPhim));
+    },
+    [dispatch]
+  );
+
+  const handleFormDialog = useCallback(
+    (movie) => {
+      setOpen(!open);
+      setMovieSelected(movie);
+    },
+    [open, setMovieSelected]
+  );
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setOpen(!open);
+    let form_data = new FormData();
+    if (typeof movieSelected.hinhAnh === "string") {
+      for (let key in movieSelected) {
+        if (key === "hinhAnh") {
+          continue;
+        }
+        form_data.append(key, movieSelected[key]);
+        console.log(key, form_data.get(key));
+      }
+      dispatch(updateMovieNochangeImg(form_data, page + 1, 5));
+      return;
+    }
+    for (let key in movieSelected) {
+      form_data.append(key, movieSelected[key]);
+      console.log(key, form_data.get(key));
+    }
+    dispatch(updateMovie(form_data, page + 1, 5));
   };
 
   const renderMovieList = useCallback(() => {
@@ -94,12 +174,12 @@ const MovieManagement = (props) => {
           <TableRow key={index}>
             <TableCell>
               <Tooltip title="Delete" placement="top">
-                <IconButton>
+                <IconButton onClick={() => handleDelete(movie.maPhim)}>
                   <DeleteIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Edit" placement="top">
-                <IconButton>
+                <IconButton onClick={() => handleFormDialog(movie)}>
                   <CreateIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
@@ -115,12 +195,12 @@ const MovieManagement = (props) => {
         <TableRow key={index}>
           <TableCell>
             <Tooltip title="Delete" placement="top">
-              <IconButton>
+              <IconButton onClick={() => handleDelete(movie.maPhim)}>
                 <DeleteIcon fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Edit" placement="top">
-              <IconButton>
+              <IconButton onClick={() => handleFormDialog(movie)}>
                 <CreateIcon fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -129,7 +209,13 @@ const MovieManagement = (props) => {
         </TableRow>
       );
     });
-  }, [movieList, movieListSearched]);
+  }, [
+    movieList,
+    movieListSearched,
+    handleDelete,
+    handleFormDialog,
+    movieSearched,
+  ]);
 
   const renderMovieItem = (currentMovie) => {
     return Object.keys(currentMovie).map((data, index) => {
@@ -137,14 +223,14 @@ const MovieManagement = (props) => {
         case "hinhAnh": {
           return (
             <TableCell key={index} className={classes.tableImg}>
-              <img src={currentMovie[data]} />
+              <img src={currentMovie[data]} alt="movie" />
             </TableCell>
           );
         }
         case "ngayKhoiChieu": {
           return (
             <TableCell key={index}>
-              <Datepicker data={currentMovie[data]} />
+              <Datepicker data={currentMovie[data]} type={false} />
             </TableCell>
           );
         }
@@ -154,18 +240,6 @@ const MovieManagement = (props) => {
       }
     });
   };
-
-  const handleInput = useCallback(
-    (event, id, num) => {
-      let nameMovie = event.target.value.trim();
-      setMovieSearch(nameMovie);
-      dispatch(getMovieByNameDashBoard(id, num, movieSearched));
-    },
-    [movieSearched]
-  );
-
-  const classes = Style(props);
-
   return (
     <>
       <Grid container spacing={2}>
@@ -224,8 +298,15 @@ const MovieManagement = (props) => {
           />
         </Paper>
       </Grid>
+      <FormDialog
+        func={handleFormDialog}
+        submit={handleSubmit}
+        setMovie={setMovieSelected}
+        data={open}
+        movieData={movieSelected}
+      />
     </>
   );
 };
 
-export default MovieManagement;
+export default memo(MovieManagement);

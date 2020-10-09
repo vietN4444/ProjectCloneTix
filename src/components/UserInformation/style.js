@@ -1,5 +1,3 @@
-import { Textfunc } from "../../helpers/mxins";
-
 const { makeStyles } = require("@material-ui/core");
 
 const Style = makeStyles((theme) => ({

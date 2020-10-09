@@ -11,7 +11,6 @@ export const getMoviePageDashBoard = (id, num) => {
       method: "GET",
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_MOVIE_DASHBOARD,
           payload: res.data,
@@ -37,6 +36,21 @@ export const getMovieByNameDashBoard = (id, num, name) => {
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+};
+
+export const deleteMovie = (maPhim) => {
+  return (dispatch) => {
+    connector({
+      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/XoaPhim?MaPhim=${maPhim}`,
+      method: "DELETE",
+    })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err, "Phim đã xếp lịch chiếu không thể xóa");
       });
   };
 };

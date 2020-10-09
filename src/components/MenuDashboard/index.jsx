@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import {
   Box,
   Divider,
@@ -9,7 +9,7 @@ import {
   ListItemText,
   Avatar,
 } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 import MovieIcon from "@material-ui/icons/Movie";
@@ -21,6 +21,8 @@ import { SET_TITLE_DASHBOARD } from "../../redux/actions/actionContants";
 const MenuListDashboard = (props) => {
   const dispatch = useDispatch();
   const classes = Style(props);
+  const nameUser = useSelector((state) => state.auth.userName);
+  const userAC = useSelector((state) => state.auth.UAC);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handldeChangeIndex = (event, index) => {
@@ -36,14 +38,14 @@ const MenuListDashboard = (props) => {
       <Box className={classes.boxAvatar}>
         <Avatar
           alt="Remy Sharp"
-          src="https://api.adorable.io/avatars/100/abc"
+          src={"https://api.adorable.io/avatars/100/" + nameUser}
           className={classes.avatarLarge}
         />
         <Typography component="p" variant="subtitle2">
-          NameUser
+          {nameUser}
         </Typography>
         <Typography component="span" variant="body2">
-          Admin
+          {userAC}
         </Typography>
       </Box>
 
@@ -86,4 +88,4 @@ const MenuListDashboard = (props) => {
   );
 };
 
-export default MenuListDashboard;
+export default memo(MenuListDashboard);

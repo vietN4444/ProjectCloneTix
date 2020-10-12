@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import {
   AppBar,
   Divider,
@@ -15,15 +15,18 @@ import IconButton from "@material-ui/core/IconButton";
 import HomeIcon from "../../assets/imgs/web-logo.png";
 
 import Style from "./style";
-import MenuListDashboard from "../../components/MenuDashboard";
-import { useDispatch, useSelector } from "react-redux";
+import MenuDashboard from "../../components/MenuDashboard";
+import { useDispatch } from "react-redux";
 import MovieManagement from "../../components/MovieManagement";
 import { REMOVE_TOKEN } from "../../redux/actions/actionContants";
+import UserManagement from "../../components/UserManagement";
 
 const Dashboard = (props) => {
   const dispatch = useDispatch();
   const classes = Style(props);
-  const titleDashboard = useSelector((state) => state.dashboard.title);
+  const [title, setTitle] = useState("Quản lý Movie");
+
+  const [menuSelected, setMenuSelected] = useState(0);
 
   const logOut = () => {
     dispatch({
@@ -51,7 +54,7 @@ const Dashboard = (props) => {
             variant="h4"
             className={classes.title}
           >
-            {titleDashboard}
+            {title}
           </Typography>
           <Tooltip title="Logout" placement="bottom">
             <IconButton color="inherit" onClick={logOut}>
@@ -64,13 +67,13 @@ const Dashboard = (props) => {
         <div className={classes.appBarSpacer}></div>
         <Divider />
         <List>
-          <MenuListDashboard />
+          <MenuDashboard changeMenu={setMenuSelected} setTitle={setTitle} />
         </List>
       </Box>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <MovieManagement />
+          {!menuSelected ? <MovieManagement /> : <UserManagement />}
         </Container>
       </main>
     </div>

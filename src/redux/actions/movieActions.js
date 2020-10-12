@@ -43,13 +43,13 @@ export const getMovieListByPage = (id) => {
 export const getMovieByName = (name) => {
   return (dispatch) => {
     connector({
-      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayDanhSachPhimPhanTrang?maNhom=GP03&tenPhim=${name}&soTrang=1&soPhanTuTrenTrang=8`,
+      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayDanhSachPhim?maNhom=GP03&tenPhim=${name}`,
       method: "GET",
     })
       .then((res) => {
         dispatch({
           type: SET_MOVIE_SEARCH,
-          payload: res.data.items,
+          payload: res.data,
         });
       })
       .catch((err) => {

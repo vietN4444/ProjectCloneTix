@@ -47,15 +47,6 @@ const MovieItem = ({ data, ...props }) => {
             title="Contemplative Reptile"
           />
           <Box className={`${classes.movieItemBgLinear} bgLinear`}></Box>
-          <Box className={classes.movieItemPoints}>
-            <Box className={classes.movieItemStars}>
-              <img src={Star} alt="star" />
-              <img src={Star} alt="star" />
-              <img src={Star} alt="star" />
-              <img src={Star} alt="star" />
-              <img src={Star} alt="star" />
-            </Box>
-          </Box>
           <Box
             className={`${classes.movieItemBtnVideo} btnVideo`}
             onClick={setTrailer}

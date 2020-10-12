@@ -38,7 +38,9 @@ const SignIn = (props) => {
       <Box className={classes.loginWrapper}>
         <Box className={classes.loginContainer}>
           <Box className={classes.loginLogo}>
-            <img src={logoLogin} alt="logo" />
+            <Link to="/">
+              <img src={logoLogin} alt="logo" />
+            </Link>
           </Box>
           <form onSubmit={hanldeSubmit}>
             <Box py={1}>
@@ -86,8 +88,8 @@ const SignIn = (props) => {
             </Box>
             <Box className={classes.txtSubtitle}>
               <Typography component="p">
-                Nếu bạn chưa có tài khoản hãy, đăng kí tài khoản tại
-                <Link to="/dashboard"> đây</Link>
+                Nếu bạn chưa có tài khoản, hãy
+                <Link to="/signup"> đăng kí tài khoản tại đây</Link>
               </Typography>
             </Box>
           </form>

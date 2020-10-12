@@ -13,14 +13,7 @@ import {
   TextField,
   Tooltip,
 } from "@material-ui/core";
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -124,6 +117,7 @@ const MovieManagement = (props) => {
     (event, id, num) => {
       let nameMovie = event.target.value.trim();
       setMovieSearch(nameMovie);
+      console.log(movieSearched);
       dispatch(getMovieByNameDashBoard(id, num, movieSearched));
     },
     [movieSearched, dispatch]

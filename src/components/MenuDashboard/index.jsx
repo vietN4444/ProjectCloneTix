@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import {
   Box,
   Divider,
@@ -16,23 +16,24 @@ import MovieIcon from "@material-ui/icons/Movie";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 
 import Style from "./style";
-import { SET_TITLE_DASHBOARD } from "../../redux/actions/actionContants";
 
-const MenuListDashboard = (props) => {
+const MenuDashboard = ({ setTitle, changeMenu, ...props }) => {
   const dispatch = useDispatch();
   const classes = Style(props);
   const nameUser = useSelector((state) => state.auth.userName);
   const userAC = useSelector((state) => state.auth.UAC);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const handldeChangeIndex = (event, index) => {
-    const { myValue } = event.currentTarget.dataset;
-    setSelectedIndex(index);
-    dispatch({
-      type: SET_TITLE_DASHBOARD,
-      payload: myValue,
-    });
-  };
+  const handldeChangeIndex = useCallback(
+    (event, index) => {
+      const { myValue } = event.currentTarget.dataset;
+      setSelectedIndex(index);
+      setTitle(myValue);
+      changeMenu(index);
+    },
+    [setSelectedIndex, dispatch, changeMenu]
+  );
+
   return (
     <MenuList className={classes.menuList}>
       <Box className={classes.boxAvatar}>
@@ -88,4 +89,4 @@ const MenuListDashboard = (props) => {
   );
 };
 
-export default memo(MenuListDashboard);
+export default memo(MenuDashboard);

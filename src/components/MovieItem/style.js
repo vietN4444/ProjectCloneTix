@@ -2,30 +2,6 @@ const HeightMovie = 350;
 const { makeStyles } = require("@material-ui/core");
 
 const Style = makeStyles((theme) => ({
-  movieItemPoints: {
-    position: "absolute",
-    top: 12,
-    right: 12,
-    width: 54,
-    backgroundColor: "rgba(12, 27, 54, 0.8)",
-    border: "1px solid #1f2e46",
-    borderRadius: 4,
-    padding: "2px 0",
-    textAlign: "center",
-    pointerEvents: "none",
-    "& > p": {
-      color: theme.palette.text.white,
-      margin: 0,
-    },
-  },
-  movieItemStars: {
-    display: "flex",
-    justifyContent: "center",
-    padding: `${theme.spacing(0.2)}px 0`,
-    "& > img": {
-      maxWidth: 8,
-    },
-  },
   movieItemBtnVideo: {
     position: "absolute",
     top: "50%",

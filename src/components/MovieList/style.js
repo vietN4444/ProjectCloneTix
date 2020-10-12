@@ -15,39 +15,9 @@ const Style = makeStyles((theme) => ({
       margin: "0 auto",
       padding: "0 10px",
       color: theme.palette.text.secondary,
-      fontSize: 26,
+      fontSize: 22,
       letterSpacing: 2,
       position: "relative",
-      textShadow: `
-     /* This set has more blur distance to create glowing effect */
-     1px -1px 10px rgba(255, 255, 255, 0.7), 
-     0px -1px 10px rgba(255, 255, 255, 0.7),  
-    -1px -1px 10px rgba(255, 255, 255, 0.7), 
-     0px -2px 3px #fff, 
-    -1px -2px 3px #fff, 
-    -2px -2px 3px #fff,
-     
-     /* This set has darken color to create depth */
-    -2px -2px 2px ${theme.palette.text.grey}, 
-    -3px -2px 2px ${theme.palette.text.grey}, 
-    -4px -2px 2px ${theme.palette.text.grey},
-    -3px -5px 1px ${theme.palette.text.white}, 
-    -4px -5px 1px ${theme.palette.text.white}, 
-    -5px -5px 1px ${theme.palette.text.white};`,
-    },
-  },
-  input: {
-    "& label": {
-      ...theme.typography.subtitle2,
-      color: theme.palette.text.dark,
-    },
-    "& span": {
-      paddingLeft: 10,
-      paddingRight: 10,
-    },
-    "& input": {
-      ...theme.typography.subtitle2,
-      color: theme.palette.text.dark,
     },
   },
   slider: {
@@ -85,6 +55,28 @@ const Style = makeStyles((theme) => ({
         background: `url(${backSession}) no-repeat`,
         display: "block",
         backgroundSize: "cover",
+      },
+    },
+  },
+  boxTitle: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 40,
+    "& > div": {
+      cursor: "pointer",
+      margin: "0 10px",
+    },
+  },
+  subTitle: {
+    color: theme.palette.text.grey,
+    "& h4": {
+      fontSize: 18,
+      transition: "all 0.2s",
+    },
+    "&:hover": {
+      "& h4": {
+        fontSize: 22,
       },
     },
   },

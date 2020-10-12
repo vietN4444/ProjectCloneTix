@@ -1,7 +1,9 @@
 import {
   GET_MOVIE_DASHBOARD,
   GET_MOVIE_SEARCH_DASHBOARD,
+  GET_USER_LIST_DASHBOARD,
   SET_TITLE_DASHBOARD,
+  GET_USER_SEARCH_DASHBOARD,
 } from "../actions/actionContants";
 
 let initialState = {
@@ -9,6 +11,8 @@ let initialState = {
   totalCount: 0,
   movieList: [],
   movieSearchList: [],
+  userList: [],
+  userSearchList: [],
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -28,6 +32,20 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         totalCount: payload.totalCount,
         movieSearchList: payload.items,
+      };
+    }
+    case GET_USER_LIST_DASHBOARD: {
+      return {
+        ...state,
+        totalCount: payload.totalCount,
+        userList: payload.items,
+      };
+    }
+    case GET_USER_SEARCH_DASHBOARD: {
+      return {
+        ...state,
+        totalCount: payload.totalCount,
+        userSearchList: payload.items,
       };
     }
     default:

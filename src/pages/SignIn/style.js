@@ -31,7 +31,7 @@ const Style = makeStyles((theme) => ({
     borderRadius: "6px",
   },
   loginLogo: {
-    "& > img": {
+    "& img": {
       width: 209,
       marginBottom: 20,
     },
@@ -44,8 +44,11 @@ const Style = makeStyles((theme) => ({
   },
   input: {
     background: "#fff",
+    "& input": {
+      color: theme.palette.text.dark,
+    },
     "& label": {
-      color: "#333!important",
+      color: `${theme.palette.text.grey}!important`,
     },
     "& >div": {
       background: "#fff",

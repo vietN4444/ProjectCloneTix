@@ -16,8 +16,8 @@ const MovieList = (props) => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.movie.pages);
   const movieList = useSelector((state) => state.movie.movieList);
-  const movieListSearched = useSelector((state) => state.movie.movieSearch);
-  const [searchMovie, setSearchMovie] = useState("");
+
+  const [tab, setTab] = useState(0);
 
   useEffect(() => {
     if (!page) {
@@ -31,21 +31,6 @@ const MovieList = (props) => {
   }, [dispatch, page]);
 
   const renderMovieList = useCallback(() => {
-    if (!!searchMovie) {
-      return (
-        <div>
-          <Grid container spacing={2}>
-            {movieListSearched.map((movie, index) => {
-              return (
-                <Grid key={index} item md={3}>
-                  <MovieItem data={movie} />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </div>
-      );
-    }
     return movieList.map((ele, index) => {
       return (
         <div key={index}>
@@ -61,17 +46,13 @@ const MovieList = (props) => {
         </div>
       );
     });
-  }, [movieList, searchMovie, movieListSearched]);
+  }, [movieList]);
 
-  const handleChange = useCallback(
-    (e) => {
-      const value = e.target.value.trim();
-      setSearchMovie(value);
-      setTimeout(() => {
-        dispatch(getMovieByName(value));
-      }, 100);
+  const handleSetTab = useCallback(
+    (num) => {
+      setTab(num);
     },
-    [dispatch]
+    [setTab]
   );
 
   const classes = Style(props);
@@ -90,23 +71,25 @@ const MovieList = (props) => {
         maxWidth="md"
         className={classes.movieListContainer}
       >
-        <Box className={classes.title} mb={2}>
-          <Typography variant="h4" component="h4">
-            Đang Công Chiếu
-          </Typography>
+        <Box className={classes.boxTitle} mb={2}>
+          <Box
+            className={!tab ? classes.title : classes.subTitle}
+            onClick={() => handleSetTab(0)}
+          >
+            <Typography variant="h4" component="h4">
+              Đang công chiếu
+            </Typography>
+          </Box>
+          <Box
+            className={tab ? classes.title : classes.subTitle}
+            onClick={() => handleSetTab(1)}
+          >
+            <Typography variant="h4" component="h4">
+              Sắp chiếu
+            </Typography>
+          </Box>
         </Box>
-        <Box mb={2}>
-          <form>
-            <TextField
-              onChange={handleChange}
-              label="Tìm kiếm phim"
-              variant="outlined"
-              color="secondary"
-              fullWidth={true}
-              className={classes.input}
-            />
-          </form>
-        </Box>
+
         <Box className={classes.slider}>
           <Slider {...settingsTwo}>{renderMovieList()}</Slider>
         </Box>

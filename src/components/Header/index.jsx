@@ -1,9 +1,10 @@
-import { Box, Container, Link, Typography } from "@material-ui/core";
+import { Box, Container, Typography, Link } from "@material-ui/core";
 import WebLogo from "../../assets/imgs/web-logo.png";
 import Avatar from "../../assets/imgs/avatar.png";
 import Location from "../../assets/imgs/location.png";
 import React from "react";
 import Style from "./style";
+import { NavLink } from "react-router-dom";
 
 const navBar = ["Lịch Chiếu", "Cụm Rạp", "Tin Tức", "Ứng dụng"];
 
@@ -38,8 +39,8 @@ function HeaderComponent(props) {
             </Box>
             <Box display="flex" ml="auto">
               <Box className={classes.headerUserLogin}>
-                <Link
-                  href="#"
+                <NavLink
+                  to="/signin"
                   variant="subtitle1"
                   underline="none"
                   className={classes.headerTxt}
@@ -48,7 +49,7 @@ function HeaderComponent(props) {
                   <Typography variant="body1" component="span">
                     Đăng Nhập
                   </Typography>
-                </Link>
+                </NavLink>
               </Box>
               <Box
                 className={classes.headerUserLocation}

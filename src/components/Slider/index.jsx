@@ -17,6 +17,7 @@ const SliderComponent = (props) => {
     slidesToScroll: 1,
     arrows: true,
     infinite: true,
+    autoplay: true,
   };
 
   const classes = Style(props);

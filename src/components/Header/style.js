@@ -61,6 +61,7 @@ const Style = makeStyles((theme) => ({
       display: "flex",
       alignItems: "center",
       position: "relative",
+      textDecoration: "none",
       "&::after": {
         content: '""',
         width: 1,

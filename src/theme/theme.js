@@ -26,11 +26,19 @@ const theme = createMuiTheme({
       dark: "#333",
       darkLight: "#4a4a4a",
       whiteGrey: "#ececec",
+      green: "#108f3e",
+      bhdColor: "#8bc541",
+      cnsColor: "#df0d7a",
+      lotteColor: "#ca4137",
+      megaColor: "#e5a813",
+      cgvColor: "#e71a0f",
     },
     background: {
       dark: "#222",
       blue: "#60c5ef",
       blackBlur: "rgba(0, 0, 0, 0.7)",
+      whiteRgba: "rgba(238, 238, 238, 0.88)",
+      greyRgba: "rgba(246, 246, 246, 0.5)",
     },
   },
   typography: {
@@ -60,6 +68,10 @@ const theme = createMuiTheme({
     },
     h5: {
       fontSize: 18,
+      fontWeight: 400,
+      lineHeight: 1.42857143,
+      letterSpacing: "normal",
+      fontFamily: `"sfMedium"`,
     },
     h6: {
       fontSize: 16,

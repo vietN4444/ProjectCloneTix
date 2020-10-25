@@ -80,6 +80,25 @@ const Style = makeStyles((theme) => ({
       color: theme.palette.text.grey,
     },
   },
+  imgErrors: {
+    position: "relative",
+    padding: 0,
+    "& >img": {
+      width: "100%",
+      objectFit: "cover",
+      objectPosition: "0 -80px",
+    },
+    "& >h4": {
+      position: "absolute",
+      top: 16,
+      right: 68,
+    },
+  },
+  ulErrorList: {
+    overflow: "hidden",
+    maxHeight: 400,
+    padding: 0,
+  },
 }));
 
 export default Style;

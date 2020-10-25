@@ -22,7 +22,7 @@ export const signIn = (user, history) => {
             maLoaiNguoiDung: res.data.maLoaiNguoiDung,
           })
         );
-        history.replace("/dashboard");
+        history.replace("/");
       })
       .catch((err) => {
         console.log(err);

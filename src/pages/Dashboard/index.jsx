@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Divider,
@@ -33,7 +33,7 @@ const Dashboard = (props) => {
       type: REMOVE_TOKEN,
     });
     localStorage.removeItem("accessToken");
-    props.history.push("/signin");
+    props.history.push("/");
   };
 
   return (
@@ -45,6 +45,7 @@ const Dashboard = (props) => {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
+            onClick={() => props.history.push("/")}
           >
             <img src={HomeIcon} alt="icon" />
           </IconButton>

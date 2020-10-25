@@ -1,4 +1,7 @@
 import {
+  CLEAR_MOVIE_LIST,
+  GET_MOVIE_BOXBOOKING,
+  GET_MOVIE_INCOMING,
   GET_MOVIE_LIST,
   GET_PAGES,
   SET_MOVIE_SEARCH,
@@ -6,10 +9,12 @@ import {
 } from "../actions/actionContants";
 
 let initialState = {
-  pages: "",
+  pages: 0,
   movieList: [],
   movieSearch: [],
   trailer: "",
+  movieListIncoming: [],
+  movieBoxBooking: [],
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -26,6 +31,16 @@ const reducer = (state = initialState, { type, payload }) => {
     }
     case SET_MOVIE_SEARCH: {
       return { ...state, movieSearch: payload };
+    }
+    case GET_MOVIE_INCOMING: {
+      const newMovieList = [...state.movieListIncoming, payload];
+      return { ...state, movieListIncoming: newMovieList };
+    }
+    case CLEAR_MOVIE_LIST: {
+      return { ...state, movieList: [] };
+    }
+    case GET_MOVIE_BOXBOOKING: {
+      return { ...state, movieBoxBooking: payload };
     }
     default:
       return state;

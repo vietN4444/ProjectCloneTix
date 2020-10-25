@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import {
   Box,
   Divider,
@@ -9,7 +9,7 @@ import {
   ListItemText,
   Avatar,
 } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 import MovieIcon from "@material-ui/icons/Movie";
@@ -18,7 +18,6 @@ import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import Style from "./style";
 
 const MenuDashboard = ({ setTitle, changeMenu, ...props }) => {
-  const dispatch = useDispatch();
   const classes = Style(props);
   const nameUser = useSelector((state) => state.auth.userName);
   const userAC = useSelector((state) => state.auth.UAC);
@@ -31,7 +30,7 @@ const MenuDashboard = ({ setTitle, changeMenu, ...props }) => {
       setTitle(myValue);
       changeMenu(index);
     },
-    [setSelectedIndex, dispatch, changeMenu]
+    [setSelectedIndex, changeMenu, setTitle]
   );
 
   return (

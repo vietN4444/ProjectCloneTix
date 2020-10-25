@@ -33,6 +33,7 @@ const Style = makeStyles((theme) => ({
   },
   movieItemDetail: {
     padding: "8px 0",
+    overflow: "hidden",
   },
   movieItemDetailContainer: {
     padding: "0 8px",
@@ -82,6 +83,7 @@ const Style = makeStyles((theme) => ({
     },
   },
   movieItem: {
+    overflow: "unset",
     "&:hover .btnVideo": {
       opacity: 1,
     },
@@ -92,6 +94,10 @@ const Style = makeStyles((theme) => ({
     "&:hover .itemButton": {
       opacity: 1,
       right: 0,
+    },
+    "&:hover > button": {
+      boxShadow:
+        "0 4px 10px 2px rgba(66,66,66,0.8), 0 5px 8px 0px rgba(0,0,0,0.14), 0 5px 10px 0px rgba(0,0,0,0.12)",
     },
   },
 }));

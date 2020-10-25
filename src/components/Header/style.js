@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 
 const heightHeader = 60;
+const widthAvatar = 34;
 const widthLogoHeader = 50;
 
 const Style = makeStyles((theme) => ({
@@ -88,6 +89,52 @@ const Style = makeStyles((theme) => ({
         opacity: 0.5,
         marginRight: 4,
       },
+    },
+  },
+  btnUserMenu: {
+    display: "flex",
+    alignItems: "center",
+    padding: ` 5px ${theme.spacing(1)}px`,
+    borderRadius: 200,
+    "& img": {
+      width: widthAvatar,
+      borderRadius: "100%",
+      marginRight: 6,
+    },
+    "& p": {
+      color: theme.palette.grey[500],
+      textTransform: "none",
+    },
+  },
+  userMenu: {
+    position: "relative",
+  },
+  menuContent: {
+    position: "absolute",
+    background: theme.palette.primary.main,
+    boxShadow: "0px 7px 20px 3px rgba(0,0,0,0.75);",
+    outline: "none",
+    borderRadius: 6,
+    left: "50%",
+    transform: "translateX(-50%)",
+  },
+  menuItem: {
+    justifyContent: "center",
+    minHeight: 36,
+    "&:hover": {
+      background: theme.palette.secondary.main,
+      color: theme.palette.text.white,
+    },
+    "& > svg": {
+      marginLeft: 4,
+    },
+  },
+  txtMenuItem: {
+    ...theme.typography.body1,
+    color: theme.palette.text.primary,
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "none",
     },
   },
 }));

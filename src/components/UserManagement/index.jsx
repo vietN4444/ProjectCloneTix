@@ -95,8 +95,8 @@ const UserManagement = (props) => {
   );
 
   const handleFormDialog = useCallback((movie) => {
-    //   setOpen(!open);
-    //   setMovieSelected(movie);
+    // setOpen(!open);
+    // setMovieSelected(movie);
   }, []);
 
   const handleInput = useCallback(
@@ -105,7 +105,7 @@ const UserManagement = (props) => {
       setUserSearch(userName);
       dispatch(getUserListByName(id, num, userName));
     },
-    [userSearched, dispatch]
+    [dispatch]
   );
 
   const classes = Style(props, widthTable);

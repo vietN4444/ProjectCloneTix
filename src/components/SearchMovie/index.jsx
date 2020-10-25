@@ -8,12 +8,15 @@ import {
   ListItemAvatar,
   ListItemText,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Style from "./style";
-import ImageIcon from "@material-ui/icons/Image";
 import { useDispatch, useSelector } from "react-redux";
 import { getMovieByName } from "../../redux/actions/movieActions";
+
+import ImageErrors from "../../assets/imgs/errors.jpg";
+
+import Style from "./style";
 
 const SearchMovie = (props) => {
   const dispatch = useDispatch();
@@ -28,7 +31,7 @@ const SearchMovie = (props) => {
   useEffect(() => {
     const heightInput = ref.current.offsetHeight;
     setHeightInput(heightInput);
-  }, [setHeightInput]);
+  }, [setHeightInput, heightInput]);
 
   const handleChange = useCallback(
     (e) => {
@@ -37,7 +40,7 @@ const SearchMovie = (props) => {
       if (currentNameMovie === "") return;
       dispatch(getMovieByName(currentNameMovie));
     },
-    [dispatch, movieSearch]
+    [dispatch]
   );
 
   const classes = Style(props);
@@ -45,6 +48,20 @@ const SearchMovie = (props) => {
   const renderMovieItem = useCallback(() => {
     if (!toogleListItem) return null;
     if (!movieSearch) return null;
+    if (movieListSearch.length === 0) {
+      return (
+        <Box boxShadow={1} className={classes.boxSearchMovieItem}>
+          <List className={classes.ulErrorList}>
+            <ListItem className={classes.imgErrors}>
+              <img src={ImageErrors} alt="errors" />
+              <Typography component="h4" variant="h3">
+                Không tìm thấy phim
+              </Typography>
+            </ListItem>
+          </List>
+        </Box>
+      );
+    }
     return (
       <Box boxShadow={1} className={classes.boxSearchMovieItem}>
         <List className={classes.ulList}>
@@ -56,7 +73,7 @@ const SearchMovie = (props) => {
                   <ListItem button className={classes.listItem}>
                     <ListItemAvatar>
                       <Avatar variant="rounded" className={classes.avatar}>
-                        <img src={movie.hinhAnh} />
+                        <img src={movie.hinhAnh} alt="moviePic" />
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
@@ -74,7 +91,7 @@ const SearchMovie = (props) => {
                 <ListItem button className={classes.listItem}>
                   <ListItemAvatar>
                     <Avatar variant="rounded" className={classes.avatar}>
-                      <img src={movie.hinhAnh} />
+                      <img src={movie.hinhAnh} alt="moviePic" />
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText

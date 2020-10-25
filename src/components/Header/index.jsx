@@ -1,14 +1,63 @@
-import { Box, Container, Typography, Link } from "@material-ui/core";
-import WebLogo from "../../assets/imgs/web-logo.png";
+import {
+  Box,
+  Container,
+  Typography,
+  MenuItem,
+  Link,
+  Button,
+  MenuList,
+} from "@material-ui/core";
+import React, { useEffect, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+
 import Avatar from "../../assets/imgs/avatar.png";
 import Location from "../../assets/imgs/location.png";
-import React from "react";
+import WebLogo from "../../assets/imgs/web-logo.png";
 import Style from "./style";
-import { NavLink } from "react-router-dom";
+import { REMOVE_TOKEN } from "../../redux/actions/actionContants";
 
 const navBar = ["Lịch Chiếu", "Cụm Rạp", "Tin Tức", "Ứng dụng"];
+const domainImg = "https://ui-avatars.com/api/?name=";
 
 function HeaderComponent(props) {
+  const dispatch = useDispatch();
+  const ref = useRef(0);
+  const menuRef = useRef();
+  const signInRef = useRef();
+
+  const user = useSelector((state) => state.auth);
+
+  const [openMenu, setOpenMenu] = useState(false);
+  const [imgAvatar, setImgAvatar] = useState(
+    "https://api.adorable.io/avatars/100/"
+  );
+
+  useEffect(() => {
+    if (!menuRef.current) return;
+    let handler = (event) => {
+      if (!menuRef.current.contains(event.target)) {
+        setOpenMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
+
+  const signOut = () => {
+    setOpenMenu(false);
+    dispatch({
+      type: REMOVE_TOKEN,
+    });
+    localStorage.removeItem("accessToken");
+  };
+
   const classes = Style(props);
   return (
     <>
@@ -39,17 +88,73 @@ function HeaderComponent(props) {
             </Box>
             <Box display="flex" ml="auto">
               <Box className={classes.headerUserLogin}>
-                <NavLink
-                  to="/signin"
-                  variant="subtitle1"
-                  underline="none"
-                  className={classes.headerTxt}
-                >
-                  <img src={Avatar} alt="avatar" />
-                  <Typography variant="body1" component="span">
-                    Đăng Nhập
-                  </Typography>
-                </NavLink>
+                {!!user.token ? (
+                  <Box className={classes.userMenu} ref={menuRef}>
+                    <Button
+                      className={classes.btnUserMenu}
+                      onClick={() => setOpenMenu(!openMenu)}
+                    >
+                      <img
+                        src={`${imgAvatar}${user.userName}`}
+                        alt="avatar"
+                        onError={() => setImgAvatar(domainImg)}
+                      />
+                      <Typography variant="body1" component="p">
+                        {user.userName}
+                      </Typography>
+                    </Button>
+                    {openMenu ? (
+                      <MenuList className={classes.menuContent} ref={ref}>
+                        <NavLink
+                          className={classes.txtMenuItem}
+                          to="/profile"
+                          underline="none"
+                        >
+                          <MenuItem
+                            onClick={() => setOpenMenu(false)}
+                            className={classes.menuItem}
+                          >
+                            Thông tin tài khoản
+                          </MenuItem>
+                        </NavLink>
+                        {user.UAC === "QuanTri" ? (
+                          <NavLink
+                            className={classes.txtMenuItem}
+                            to="/dashboard"
+                            underline="none"
+                          >
+                            <MenuItem
+                              onClick={() => setOpenMenu(false)}
+                              className={classes.menuItem}
+                            >
+                              Quản lý / Admin
+                            </MenuItem>
+                          </NavLink>
+                        ) : null}
+                        <MenuItem
+                          onClick={signOut}
+                          className={classes.menuItem}
+                        >
+                          Đăng xuất
+                          <ExitToAppIcon />
+                        </MenuItem>
+                      </MenuList>
+                    ) : null}
+                  </Box>
+                ) : (
+                  <NavLink
+                    ref={signInRef}
+                    to="/signin"
+                    variant="subtitle1"
+                    underline="none"
+                    className={classes.headerTxt}
+                  >
+                    <img src={Avatar} alt="avatar" />
+                    <Typography variant="body1" component="span">
+                      Đăng Nhập
+                    </Typography>
+                  </NavLink>
+                )}
               </Box>
               <Box
                 className={classes.headerUserLocation}

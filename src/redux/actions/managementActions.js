@@ -1,4 +1,3 @@
-import { number } from "prop-types";
 import connector from "../../config/restConnector";
 import {
   GET_MOVIE_DASHBOARD,

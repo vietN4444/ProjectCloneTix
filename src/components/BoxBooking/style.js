@@ -44,7 +44,7 @@ const Style = makeStyles((theme) => ({
     paddingRight: "4%",
     cursor: "pointer",
     userSelect: "none",
-    "&> p": {
+    "& > p": {
       //   @include Text(SF_Text_Regular, $textPrimary, $subtitle, $fwRegular);
       color: theme.palette.text.primary,
       margin: 0,
@@ -52,8 +52,8 @@ const Style = makeStyles((theme) => ({
       whiteSpace: "nowrap",
       textOverflow: "ellipsis",
     },
-    "&> img": {
-      width: 10,
+    "& > svg": {
+      opacity: 0.5,
     },
   },
   bookingButton: {
@@ -62,10 +62,10 @@ const Style = makeStyles((theme) => ({
       ...theme.typography.subtitle2,
       color: `${theme.palette.text.white}!important`,
       background: theme.palette.grey[800],
+      padding: "10px 11px",
     },
   },
   bookingDropdownList: {
-    display: "none",
     position: "absolute",
     left: 0,
     top: "80%",
@@ -109,6 +109,12 @@ const Style = makeStyles((theme) => ({
   selecteMovie: {
     "& #selecteMovie": {
       minWidth: 400,
+    },
+  },
+  btnSubmit: {
+    background: `${theme.palette.secondary.main}!important`,
+    "&:hover": {
+      opacity: 0.7,
     },
   },
 }));

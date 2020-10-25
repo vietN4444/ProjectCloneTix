@@ -165,8 +165,15 @@ function FooterComponent(props) {
                   >
                     <img src="./imgs/123go.png" alt="logo" />
                   </Link>
-                  <Link href="https://laban.vn/" target="_blank" title="Laban">
-                    <img src="./imgs/laban.png" alt="logo" />
+                  <Link
+                    href="https://zingnews.vn/"
+                    target="_blank"
+                    title="Zingnews"
+                  >
+                    <img
+                      src="https://static-znews.zadn.vn/images/logo-zing-home.svg"
+                      alt="logo"
+                    />
                   </Link>
                 </Box>
               </Grid>

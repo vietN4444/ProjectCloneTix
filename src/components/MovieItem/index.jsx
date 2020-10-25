@@ -8,9 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import PlayVideo from "../../assets/imgs/play-video.png";
-import Star from "../../assets/imgs/star.png";
 import BackgroundDefaultMovie from "../../assets/imgs/defaultFilms.png";
-// import HalfStar from "../../assets/imgs/halfstar.png";
 import {
   SET_MODAL_STATUS,
   SET_TRAILER,

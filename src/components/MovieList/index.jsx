@@ -1,4 +1,4 @@
-import { Box, Container, Grid, TextField, Typography } from "@material-ui/core";
+import { Box, Container, Fade, Grid, Typography } from "@material-ui/core";
 import React, { useCallback, useEffect, useState } from "react";
 import MovieItem from "../MovieItem";
 import "slick-carousel/slick/slick.css";
@@ -6,53 +6,101 @@ import "slick-carousel/slick/slick-theme.css";
 import Style from "./style";
 import Slider from "react-slick";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getMovieByName,
-  getMovieListByPage,
-  getPages,
-} from "../../redux/actions/movieActions";
+import { getMovieListByPage, getPages } from "../../redux/actions/movieActions";
+import { CLEAR_MOVIE_LIST } from "../../redux/actions/actionContants";
 
 const MovieList = (props) => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.movie.pages);
   const movieList = useSelector((state) => state.movie.movieList);
+  const movieIncoming = useSelector((state) => state.movie.movieListIncoming);
 
   const [tab, setTab] = useState(0);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     if (!page) {
       dispatch(getPages(1));
+      dispatch(getMovieListByPage(3, 1));
+      dispatch(getMovieListByPage(4, 1));
     }
     for (let i = 1; i <= page; i++) {
-      setTimeout(() => {
-        dispatch(getMovieListByPage(i));
-      }, i * 100);
+      dispatch(getMovieListByPage(i));
     }
-  }, [dispatch, page]);
+    setChecked(true);
+  }, [page, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      dispatch({
+        type: CLEAR_MOVIE_LIST,
+      });
+    };
+  }, [dispatch]);
 
   const renderMovieList = useCallback(() => {
-    return movieList.map((ele, index) => {
-      return (
-        <div key={index}>
-          <Grid container spacing={2}>
-            {movieList[index].items.map((movie, index2) => {
-              return (
-                <Grid key={index2} item md={3}>
-                  <MovieItem data={movie} />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </div>
-      );
-    });
-  }, [movieList]);
+    if (!tab) {
+      return movieList.map((ele, index) => {
+        return (
+          <Fade
+            key={index}
+            in={checked}
+            timeout={{
+              enter: 0.4,
+              exit: 0.4,
+            }}
+          >
+            <Box>
+              <Grid container spacing={2}>
+                {movieList[index].items.map((movie, index2) => {
+                  return (
+                    <Grid key={index2} item md={3}>
+                      <MovieItem data={movie} />
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            </Box>
+          </Fade>
+        );
+      });
+    } else {
+      return movieIncoming.map((ele, index) => {
+        return (
+          <Fade
+            key={index}
+            in={checked}
+            timeout={{
+              enter: 0.2,
+              exit: 0.2,
+            }}
+          >
+            <Box>
+              <Grid container spacing={2}>
+                {movieIncoming[index].items.map((movie, index2) => {
+                  return (
+                    <Grid key={index2} item md={3}>
+                      <MovieItem data={movie} />
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            </Box>
+          </Fade>
+        );
+      });
+    }
+  }, [movieList, tab, movieIncoming, checked]);
 
   const handleSetTab = useCallback(
     (num) => {
       setTab(num);
+      setChecked(false);
+      setTimeout(() => {
+        setChecked(true);
+      }, 300);
     },
-    [setTab]
+    [setTab, setChecked]
   );
 
   const classes = Style(props);

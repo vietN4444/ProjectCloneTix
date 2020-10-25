@@ -8,6 +8,9 @@ import ModalVideoPopup from "../../components/TrailerPopup";
 import { useSelector } from "react-redux";
 import AppIntro from "../../components/AppIntro";
 import SearchMovie from "../../components/SearchMovie";
+import Break from "../../components/Break";
+import SchedulesCinemas from "../../components/SchedulesCinemas";
+import News from "../../components/News";
 
 const Home = (props) => {
   const status = useSelector((state) => state.status.modal);
@@ -19,8 +22,12 @@ const Home = (props) => {
         <BoxBooking />
         <SearchMovie />
         <MovieList />
-        {status ? <ModalVideoPopup /> : <></>}
+        <Break />
+        <SchedulesCinemas />
+        <Break />
+        <News />
         <AppIntro />
+        {status ? <ModalVideoPopup /> : <></>}
       </Box>
     </Box>
   );

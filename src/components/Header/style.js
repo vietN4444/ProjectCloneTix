@@ -137,6 +137,77 @@ const Style = makeStyles((theme) => ({
       textDecoration: "none",
     },
   },
+  btnMenu: {
+    marginLeft: "auto",
+    "& >button": {
+      minWidth: "inherit",
+      padding: 8,
+      "& svg": {
+        width: 30,
+        height: 30,
+      },
+    },
+  },
+  drawerContainer: {
+    width: "70%",
+    "@media (max-width: 380px)": {
+      width: "100%",
+    },
+  },
+  mobileMenuHeader: {
+    display: "flex",
+    alignItems: "center",
+    padding: "0 16px",
+    marginBottom: 10,
+    "& >button": {
+      marginLeft: "auto",
+      minWidth: "inherit",
+      padding: 8,
+    },
+  },
+  nameUser: {
+    width: "fit-content",
+    display: "flex",
+    alignItems: "center",
+    "& img": {
+      width: 50,
+      height: 50,
+      marginRight: 8,
+      borderRadius: "50%",
+    },
+  },
+  navItem: {
+    padding: "12px 20px",
+  },
+  txtNavItem: {
+    "& > span": {
+      ...theme.typography.subtitle1,
+      fontSize: 18,
+    },
+  },
+  userCollapseInfo: {
+    padding: "0 20px",
+    borderBottom: `1px solid ${theme.palette.grey[300]}`,
+    "& a": {
+      textDecoration: "none",
+    },
+  },
+  collapseTxt: {
+    "& > span": {
+      ...theme.typography.subtitle1,
+      color: theme.palette.text.dark,
+    },
+  },
+
+  "@media (max-width: 900px)": {
+    headerNav: {
+      margin: "0 auto",
+      position: "initial",
+      top: "initial",
+      left: "initial",
+      transform: "translate(0, 0)",
+    },
+  },
 }));
 
 export default Style;

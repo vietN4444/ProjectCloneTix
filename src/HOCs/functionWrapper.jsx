@@ -8,7 +8,7 @@ const Wrapper = (Component) => {
       <>
         <HeaderComponent />
         <Component {...props} />
-        <FooterComponent />
+        {/* <FooterComponent /> */}
       </>
     );
   };

@@ -19,14 +19,14 @@ const Home = (props) => {
     <Box>
       <Box style={{ marginTop: 60, minHeight: 1200 }}>
         <SliderComponent />
-        <BoxBooking />
+        {/* <BoxBooking />
         <SearchMovie />
         <MovieList />
         <Break />
         <SchedulesCinemas />
         <Break />
         <News />
-        <AppIntro />
+        <AppIntro /> */}
         {status ? <ModalVideoPopup /> : <></>}
       </Box>
     </Box>

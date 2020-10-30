@@ -100,6 +100,26 @@ const Style = makeStyles((theme) => ({
         "0 4px 10px 2px rgba(66,66,66,0.8), 0 5px 8px 0px rgba(0,0,0,0.14), 0 5px 10px 0px rgba(0,0,0,0.12)",
     },
   },
+
+  "@media (max-width: 736px)": {
+    movieItemContent: {
+      "& >img": {
+        objectFit: "fill",
+      },
+    },
+    movieItemBtnVideo: {
+      display: "none",
+    },
+  },
+  "@media (max-width: 400px)": {
+    movieItemContent: {
+      height: 200,
+      maxHeight: 200,
+      "& >img": {
+        objectFit: "fill",
+      },
+    },
+  },
 }));
 
 export default Style;

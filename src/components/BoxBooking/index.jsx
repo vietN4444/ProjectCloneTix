@@ -181,6 +181,7 @@ const BoxBooking = (props) => {
             <Grid
               item
               md={4}
+              sm={4}
               className={`${classes.bookingItem} ${classes.selecteMovie}`}
             >
               <Box className={classes.bookingLabel} onClick={() => dropDown(0)}>
@@ -195,7 +196,7 @@ const BoxBooking = (props) => {
                 </Box>
               ) : null}
             </Grid>
-            <Grid item md={3} className={classes.bookingItem}>
+            <Grid item md={3} sm={3} className={classes.bookingItem}>
               <Box className={classes.bookingLabel} onClick={() => dropDown(1)}>
                 <Typography component="p" variant="subtitle2">
                   {label.cinema}
@@ -219,7 +220,7 @@ const BoxBooking = (props) => {
                 </Box>
               ) : null}
             </Grid>
-            <Grid item md={3} className={classes.bookingItem}>
+            <Grid item md={3} sm={3} className={classes.bookingItem}>
               <Box className={classes.bookingLabel} onClick={() => dropDown(2)}>
                 <Typography component="p" variant="subtitle2">
                   {label.schedules}
@@ -243,6 +244,7 @@ const BoxBooking = (props) => {
             <Grid
               item
               md={2}
+              sm={2}
               className={`${classes.bookingItem} ${classes.bookingButton}`}
             >
               <Button

@@ -1,4 +1,11 @@
-import { Box, Container, Fade, Grid, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Container,
+  Fade,
+  Grid,
+  Typography,
+} from "@material-ui/core";
 import React, { useCallback, useEffect, useState } from "react";
 import MovieItem from "../MovieItem";
 import "slick-carousel/slick/slick.css";
@@ -6,10 +13,15 @@ import "slick-carousel/slick/slick-theme.css";
 import Style from "./style";
 import Slider from "react-slick";
 import { useDispatch, useSelector } from "react-redux";
-import { getMovieListByPage, getPages } from "../../redux/actions/movieActions";
+import {
+  getMovieListByPage,
+  getMovieListCount,
+  getPages,
+} from "../../redux/actions/movieActions";
 import { CLEAR_MOVIE_LIST } from "../../redux/actions/actionContants";
 
-const MovieList = (props) => {
+const MovieList = ({ res, ...props }) => {
+  const classes = Style(props);
   const dispatch = useDispatch();
   const page = useSelector((state) => state.movie.pages);
   const movieList = useSelector((state) => state.movie.movieList);
@@ -17,80 +29,212 @@ const MovieList = (props) => {
 
   const [tab, setTab] = useState(0);
   const [checked, setChecked] = useState(false);
+  const [countPageMobileMovieList, setCountMPML] = useState(1);
+  const [countPageMobileMovieListIncoming, setCountMPMLI] = useState(5);
+  const [toggleBtnViewMore, setToggleBtnViewMore] = useState(true);
+  const [toggleBtnViewMoreTwo, setToggleBtnViewMoreTwo] = useState(true);
+  const [mobileMovieList, setMobileMovieList] = useState([]);
+  const [mobileMovieIncoming, setMobileMovieIncoming] = useState([]);
+  const [mobilePage, setMobilePage] = useState(1);
 
   useEffect(() => {
+    if (res === "mobile") {
+      dispatch(getMovieListCount(6, countPageMobileMovieList)).then((res) => {
+        setMobileMovieList(res.items);
+        setMobilePage(res.totalPages);
+      });
+      dispatch(getMovieListCount(6, countPageMobileMovieListIncoming)).then(
+        (res) => {
+          setMobileMovieIncoming(res.items);
+        }
+      );
+    }
     if (!page) {
       dispatch(getPages(1));
       dispatch(getMovieListByPage(3, 1));
       dispatch(getMovieListByPage(4, 1));
     }
     for (let i = 1; i <= page; i++) {
-      dispatch(getMovieListByPage(i));
+      setTimeout(dispatch(getMovieListByPage(i)), i * 300);
     }
     setChecked(true);
-  }, [page, dispatch]);
+  }, [page, dispatch, res]);
 
+  //CLear tránh call lại api khi chuyển trang
   useEffect(() => {
     return () => {
       dispatch({
         type: CLEAR_MOVIE_LIST,
       });
+      setMobileMovieList([]);
+      setMobileMovieIncoming([]);
+      setMobilePage(1);
     };
-  }, [dispatch]);
+  }, []);
+
+  const handleViewMore = useCallback(() => {
+    if (!tab) {
+      if (countPageMobileMovieList >= mobilePage - 1)
+        return setToggleBtnViewMore(false);
+      let count = countPageMobileMovieList + 1;
+      setCountMPML(count);
+      dispatch(getMovieListCount(6, count)).then((res) => {
+        const newArr = mobileMovieList.concat(res.items);
+        setMobileMovieList(newArr);
+      });
+    } else {
+      if (countPageMobileMovieListIncoming <= 1)
+        return setToggleBtnViewMoreTwo(false);
+      let count = countPageMobileMovieListIncoming - 1;
+      setCountMPMLI(count);
+      dispatch(getMovieListCount(6, count)).then((res) => {
+        const newArr = mobileMovieIncoming.concat(res.items);
+        setMobileMovieIncoming(newArr);
+      });
+    }
+  }, [
+    dispatch,
+    tab,
+    countPageMobileMovieList,
+    countPageMobileMovieListIncoming,
+    mobilePage,
+  ]);
 
   const renderMovieList = useCallback(() => {
     if (!tab) {
       return movieList.map((ele, index) => {
         return (
-          <Fade
-            key={index}
-            in={checked}
-            timeout={{
-              enter: 0.4,
-              exit: 0.4,
-            }}
-          >
-            <Box>
-              <Grid container spacing={2}>
-                {movieList[index].items.map((movie, index2) => {
-                  return (
-                    <Grid key={index2} item md={3}>
+          <Box key={index}>
+            <Grid container spacing={2}>
+              {movieList[index].items.map((movie, index2) => {
+                return (
+                  <Grid
+                    key={index2}
+                    item
+                    md={3}
+                    sm={3}
+                    className={classes.gridItem}
+                  >
+                    <Fade
+                      key={index}
+                      in={checked}
+                      timeout={{
+                        enter: 0.4,
+                        exit: 0.4,
+                      }}
+                    >
                       <MovieItem data={movie} />
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </Box>
-          </Fade>
+                    </Fade>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
         );
       });
     } else {
       return movieIncoming.map((ele, index) => {
         return (
-          <Fade
-            key={index}
-            in={checked}
-            timeout={{
-              enter: 0.2,
-              exit: 0.2,
-            }}
-          >
-            <Box>
-              <Grid container spacing={2}>
-                {movieIncoming[index].items.map((movie, index2) => {
-                  return (
-                    <Grid key={index2} item md={3}>
+          <Box key={index}>
+            <Grid container spacing={2}>
+              {movieIncoming[index].items.map((movie, index2) => {
+                return (
+                  <Grid
+                    key={index2}
+                    item
+                    md={3}
+                    sm={3}
+                    className={classes.gridItem}
+                  >
+                    <Fade
+                      key={index}
+                      in={checked}
+                      timeout={{
+                        enter: 0.2,
+                        exit: 0.2,
+                      }}
+                    >
                       <MovieItem data={movie} />
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </Box>
-          </Fade>
+                    </Fade>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
         );
       });
     }
   }, [movieList, tab, movieIncoming, checked]);
+
+  const renderMovieListMobile = useCallback(() => {
+    if (!tab) {
+      return (
+        <Box className={classes.mobileMovieList}>
+          <Grid container spacing={2}>
+            {mobileMovieList?.map((movie, index) => {
+              return (
+                <Grid
+                  key={index}
+                  item
+                  md={6}
+                  sm={6}
+                  className={classes.gridItem}
+                >
+                  <MovieItem data={movie} />
+                </Grid>
+              );
+            })}
+          </Grid>
+          {toggleBtnViewMore ? (
+            <Button
+              className={classes.btnViewMore}
+              color="secondary"
+              variant="outlined"
+              onClick={handleViewMore}
+            >
+              Xem thêm
+            </Button>
+          ) : null}
+        </Box>
+      );
+    } else {
+      return (
+        <Box className={classes.mobileMovieList}>
+          <Grid container spacing={2}>
+            {mobileMovieIncoming?.map((movie, index) => {
+              return (
+                <Grid
+                  key={index}
+                  item
+                  md={6}
+                  sm={6}
+                  className={classes.gridItem}
+                >
+                  <MovieItem data={movie} />
+                </Grid>
+              );
+            })}
+          </Grid>
+          {toggleBtnViewMoreTwo ? (
+            <Button
+              className={classes.btnViewMore}
+              color="secondary"
+              variant="outlined"
+              onClick={handleViewMore}
+            >
+              Xem thêm
+            </Button>
+          ) : null}
+        </Box>
+      );
+    }
+  }, [
+    mobileMovieIncoming,
+    tab,
+    mobileMovieList,
+    toggleBtnViewMore,
+    toggleBtnViewMoreTwo,
+  ]);
 
   const handleSetTab = useCallback(
     (num) => {
@@ -102,8 +246,6 @@ const MovieList = (props) => {
     },
     [setTab, setChecked]
   );
-
-  const classes = Style(props);
 
   const settingsTwo = {
     slidesToShow: 1,
@@ -138,9 +280,13 @@ const MovieList = (props) => {
           </Box>
         </Box>
 
-        <Box className={classes.slider}>
-          <Slider {...settingsTwo}>{renderMovieList()}</Slider>
-        </Box>
+        {res === "pc" ? (
+          <Box className={classes.slider}>
+            <Slider {...settingsTwo}>{renderMovieList()}</Slider>
+          </Box>
+        ) : (
+          <Box>{renderMovieListMobile()}</Box>
+        )}
       </Container>
     </>
   );

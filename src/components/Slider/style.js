@@ -78,6 +78,23 @@ const Style = makeStyles((theme) => ({
       },
     },
   },
+
+  "@media (max-width: 1200px)": {
+    sliderContentItem: {
+      "& >img": {
+        width: "100%",
+        maxHeight: 450,
+      },
+    },
+  },
+  "@media (max-width: 900px)": {
+    sliderContentItem: {
+      "& >img": {
+        width: "100%",
+        maxHeight: 370,
+      },
+    },
+  },
 }));
 
 export default Style;

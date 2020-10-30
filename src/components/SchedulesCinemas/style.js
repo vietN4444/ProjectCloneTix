@@ -228,6 +228,18 @@ const Style = makeStyles((theme) => ({
       borderRadius: 200,
     },
   },
+
+  "@media (max-width: 960px)": {
+    schedulesContainer: {
+      maxWidth: 768,
+      padding: "0 10px",
+    },
+    txtTabsItemBtn: {
+      "& > span": {
+        ...theme.typography.h6,
+      },
+    },
+  },
 }));
 
 export default Style;

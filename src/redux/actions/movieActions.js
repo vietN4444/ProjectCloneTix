@@ -28,6 +28,21 @@ export const getMovieList = () => {
   };
 };
 
+export const getMovieListCount = (num, page, dispatchType = 0) => {
+  return (dispatch) => {
+    return connector({
+      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayDanhSachPhimPhanTrang?maNhom=GP03&soTrang=${page}&soPhanTuTrenTrang=${num}`,
+      method: "GET",
+    })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 export const getPages = (id) => {
   return (dispatch) => {
     connector({
@@ -49,37 +64,28 @@ export const getPages = (id) => {
 
 export const getMovieListByPage = (id, dispatchType = 0) => {
   return (dispatch) => {
-    async function fetchData() {
-      try {
-        await connector({
-          url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayDanhSachPhimPhanTrang?maNhom=GP03&soTrang=${id}&soPhanTuTrenTrang=8`,
-          method: "GET",
-        })
-          .then((res) => {
-            if (dispatchType === 0) {
-              dispatch({
-                type: GET_MOVIE_LIST,
-                payload: res.data,
-              });
-            }
-            if (dispatchType !== 0) {
-              // console.log(res.data);
-              dispatch({
-                type: GET_MOVIE_INCOMING,
-                payload: res.data,
-              });
-            }
-
-            // console.log(res.data);
-          })
-          .catch((err) => {
-            console.log(err);
+    connector({
+      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayDanhSachPhimPhanTrang?maNhom=GP03&soTrang=${id}&soPhanTuTrenTrang=8`,
+      method: "GET",
+    })
+      .then((res) => {
+        if (dispatchType === 0) {
+          dispatch({
+            type: GET_MOVIE_LIST,
+            payload: res.data,
           });
-      } catch (err) {
+        }
+        if (dispatchType !== 0) {
+          // console.log(res.data);
+          dispatch({
+            type: GET_MOVIE_INCOMING,
+            payload: res.data,
+          });
+        }
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    }
-    fetchData();
+      });
   };
 };
 

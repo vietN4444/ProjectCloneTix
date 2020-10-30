@@ -253,21 +253,27 @@ const News = (props) => {
     return arr?.slice(0, 5).map((e, i) => {
       if (i === 0 || i === 1) {
         return (
-          <Grid item md={6} key={i}>
+          <Grid item md={6} sm={6} key={i}>
             <NewItem data={e} />
           </Grid>
         );
       }
       if (i === 2 || i === 3) {
         return (
-          <Grid item md={4} key={i}>
+          <Grid item md={4} sm={4} key={i}>
             <NewItem data={e} />
           </Grid>
         );
       }
       if (i === 4) {
         return (
-          <Grid key={i} item md={4} className={classes.newsItemListContainer}>
+          <Grid
+            key={i}
+            item
+            md={4}
+            sm={4}
+            className={classes.newsItemListContainer}
+          >
             {arr?.slice(4, 8).map((e2, i2) => {
               return (
                 <Box key={i2} className={classes.newsItemList}>

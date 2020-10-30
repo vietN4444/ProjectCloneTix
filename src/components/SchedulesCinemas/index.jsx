@@ -283,6 +283,7 @@ const TabsSchdulesItem = ({ dataMovie, ...props }) => {
 
 const SchedulesCinemas = (props) => {
   const dispatch = useDispatch();
+  const classes = Style(props);
   const cinemaList = useSelector((state) => state.cinema.cinemaList);
 
   useEffect(() => {
@@ -291,7 +292,11 @@ const SchedulesCinemas = (props) => {
 
   return (
     <Box>
-      <Container maxWidth="md" disableGutters>
+      <Container
+        maxWidth="md"
+        disableGutters
+        className={classes.schedulesContainer}
+      >
         <TabsCinema dataCinemaList={cinemaList} />
       </Container>
     </Box>

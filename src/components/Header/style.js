@@ -5,6 +5,9 @@ const widthAvatar = 34;
 const widthLogoHeader = 50;
 
 const Style = makeStyles((theme) => ({
+  topHeader: {
+    height: 60,
+  },
   header: {
     position: "fixed",
     top: 0,

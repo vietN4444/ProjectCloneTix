@@ -92,12 +92,68 @@ const Style = makeStyles((theme) => ({
       position: "absolute",
       top: 16,
       right: 68,
+      "@media (max-width: 720px)": {
+        fontSize: 24,
+        right: 40,
+      },
+      "@media (max-width: 600px)": {
+        fontSize: 20,
+        right: 20,
+      },
+      "@media (max-width: 450px)": {
+        fontSize: 16,
+        top: "20px !important",
+      },
+      "@media (max-width: 375px)": {
+        fontSize: 12,
+        right: 5,
+      },
     },
   },
   ulErrorList: {
     overflow: "hidden",
     maxHeight: 400,
     padding: 0,
+  },
+  txtTitleSearch: {
+    display: "none",
+    color: theme.palette.text.secondary,
+    fontSize: 22,
+    letterSpacing: 2,
+    textAlign: "center",
+    marginTop: 5,
+    marginBottom: 10,
+  },
+
+  "@media (max-width: 960px)": {
+    searchContainer: {
+      maxWidth: 768,
+    },
+    txtTitleSearch: {
+      display: "block",
+    },
+    input: {
+      padding: "0 10px",
+      "& label": {
+        transform: "translate(20px, 20px) scale(1)",
+      },
+      "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
+        transform: "translate(24px, -6px) scale(0.75)",
+      },
+    },
+    boxSearchMovieItem: {
+      width: "calc(100% - 20px)",
+      left: "50%",
+      transform: "translateX(-50%)",
+    },
+    imgErrors: {
+      "& > img": {
+        objectPosition: "inherit",
+      },
+      "& > h4": {
+        top: 40,
+      },
+    },
   },
 }));
 

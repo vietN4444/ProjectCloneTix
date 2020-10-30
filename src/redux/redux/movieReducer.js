@@ -22,6 +22,7 @@ const reducer = (state = initialState, { type, payload }) => {
     case GET_PAGES: {
       return { ...state, pages: payload };
     }
+
     case GET_MOVIE_LIST: {
       const newMovieList = [...state.movieList, payload];
       return { ...state, movieList: newMovieList };

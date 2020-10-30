@@ -9,6 +9,7 @@ const Style = makeStyles((theme) => ({
   },
   appIntroDetail: {
     paddingTop: 60,
+    paddingLeft: 20,
     "& > h1": {
       lineHeight: "56px",
       marginBottom: 26,
@@ -25,7 +26,10 @@ const Style = makeStyles((theme) => ({
       fontFamily: "sfTextRegular",
       color: theme.palette.text.white,
       textTransform: "inherit",
-      padding: "7px 14px",
+      padding: "10px 20px",
+      "& span": {
+        fontWeight: 700,
+      },
     },
     "& .txtBottom": {
       marginTop: theme.spacing(1),
@@ -61,6 +65,50 @@ const Style = makeStyles((theme) => ({
     width: "100%",
     "& > img": {
       width: "100%",
+    },
+  },
+
+  "@media (max-width: 960px)": {
+    container: {
+      maxWidth: "100%",
+      width: "100%",
+      "& >div": {
+        justifyContent: "center",
+      },
+    },
+    appIntroContainer: {
+      padding: 0,
+      paddingBottom: 80,
+    },
+    appIntroDetail: {
+      paddingLeft: 0,
+      textAlign: "center",
+      marginBottom: 20,
+      "& > h1": {
+        fontSize: 26,
+        lineHeight: "46px",
+      },
+      "& .txtMiddle": {
+        fontSize: 14,
+        marginBottom: 22,
+      },
+    },
+  },
+  "@media (max-width: 600px)": {
+    appIntroContainer: {
+      paddingBottom: 40,
+    },
+    appIntroDetail: {
+      padding: "0 10px",
+      paddingTop: 40,
+    },
+  },
+  "@media (max-width: 425px)": {
+    appIntroDetail: {
+      "& > h1": {
+        fontSize: 22,
+        lineHeight: "30px",
+      },
     },
   },
 }));

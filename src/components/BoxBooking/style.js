@@ -117,6 +117,17 @@ const Style = makeStyles((theme) => ({
       opacity: 0.7,
     },
   },
+
+  "@media (max-width: 960px)": {
+    bookingWrapper: {
+      maxWidth: 768,
+    },
+    bookingButton: {
+      "& > button": {
+        fontSize: 12,
+      },
+    },
+  },
 }));
 
 export default Style;

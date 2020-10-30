@@ -97,8 +97,8 @@ const Style = makeStyles((theme) => ({
     },
   },
   footerBottomContentTxt: {
-    "h6.footer__title": {
-      fontSize: theme.typography.subtitle2,
+    "& > h6": {
+      fontSize: theme.typography.subtitle2.fontSize,
       margin: 0,
       lineHeight: 1.8,
     },
@@ -122,6 +122,61 @@ const Style = makeStyles((theme) => ({
       "& > img": {
         width: 130,
         display: "block",
+      },
+    },
+  },
+
+  "@media (max-width: 968px)": {
+    footerTopContent: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      "& > p": {
+        width: "inherit",
+      },
+    },
+    footerTopContentTxt: {
+      width: "100%",
+      textAlign: "center",
+      float: "none",
+    },
+    footerTopContentSocial: {
+      marginBottom: 10,
+    },
+  },
+  "@media (max-width: 600px)": {
+    footerContainerTop: {
+      justifyContent: "center",
+    },
+  },
+  "@media (max-width: 599px)": {
+    footerBottomContent: {
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    footerBottomLogo: {
+      display: "flex",
+      justifyContent: "center",
+      width: "100%",
+      marginTop: 10,
+      "& >a": {
+        float: "none",
+        marginLeft: "inherit",
+      },
+    },
+    footerBottomContentLogo: {
+      marginBottom: 10,
+      "& >img": {
+        marginRight: "inherit",
+      },
+    },
+    footerBottomContentTxt: {
+      "& > h6": {
+        textAlign: "center",
+      },
+      "& > p": {
+        textAlign: "center",
+        fontSize: 11,
       },
     },
   },

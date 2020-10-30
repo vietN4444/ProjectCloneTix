@@ -96,6 +96,36 @@ const Style = makeStyles((theme) => ({
       },
     },
   },
+  "@media (max-width: 960px)": {
+    newsContainer: {
+      maxWidth: "100%",
+      width: "100%",
+      padding: "0 10px",
+    },
+  },
+  "@media (max-width: 375px)": {
+    boxTitle: {
+      "& div": {
+        margin: "0 5px",
+      },
+    },
+    title: {
+      "& h4": {
+        fontSize: 18,
+        padding: 0,
+      },
+    },
+    subTitle: {
+      "& h4": {
+        fontSize: 16,
+      },
+      "&:hover": {
+        "& h4": {
+          fontSize: 16,
+        },
+      },
+    },
+  },
 }));
 
 export default Style;

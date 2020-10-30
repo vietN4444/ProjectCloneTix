@@ -97,7 +97,7 @@ function HeaderComponent(props) {
 
   const classes = Style(props);
   return (
-    <>
+    <Box className={classes.topHeader}>
       <Box className={classes.header}>
         <Container disableGutters={gutterContainer} bgcolor="primary.light">
           <Box
@@ -303,7 +303,7 @@ function HeaderComponent(props) {
           </Box>
         </Container>
       </Box>
-    </>
+    </Box>
   );
 }
 

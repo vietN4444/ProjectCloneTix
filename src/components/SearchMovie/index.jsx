@@ -109,8 +109,11 @@ const SearchMovie = (props) => {
   }, [movieListSearch, movieSearch, toogleListItem]);
 
   return (
-    <Container disableGutters maxWidth="md">
+    <Container disableGutters maxWidth="md" className={classes.searchContainer}>
       <Box my={1} mb={4} className={classes.boxSearchMovie}>
+        <Typography className={classes.txtTitleSearch}>
+          Tìm kiếm phim
+        </Typography>
         <form>
           <TextField
             onChange={handleChange}

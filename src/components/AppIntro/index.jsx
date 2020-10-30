@@ -26,7 +26,11 @@ const AppIntro = (props) => {
       <Box id="appintro">
         <Box>
           <Box className={classes.appIntroContainer}>
-            <Container maxWidth="md" disableGutters>
+            <Container
+              maxWidth="md"
+              disableGutters
+              className={classes.container}
+            >
               <Grid container>
                 <Grid item md={6} className={classes.appIntroDetail}>
                   <Typography component="h1" variant="h3">

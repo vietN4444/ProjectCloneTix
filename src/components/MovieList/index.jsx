@@ -6,18 +6,16 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
-import React, { useCallback, useEffect, useState } from "react";
-import MovieItem from "../MovieItem";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Style from "./style";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import Slider from "react-slick";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getMovieListByPage,
-  getMovieListCount,
-  getPages,
-} from "../../redux/actions/movieActions";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import MovieItem from "../MovieItem";
+import Style from "./style";
+
+import { getMovieListCount } from "../../redux/actions/movieActions";
 import { CLEAR_MOVIE_LIST } from "../../redux/actions/actionContants";
 
 const MovieList = ({ res, ...props }) => {
@@ -48,14 +46,6 @@ const MovieList = ({ res, ...props }) => {
           setMobileMovieIncoming(res.items);
         }
       );
-    }
-    if (!page) {
-      dispatch(getPages(1));
-      dispatch(getMovieListByPage(3, 1));
-      dispatch(getMovieListByPage(4, 1));
-    }
-    for (let i = 1; i <= page; i++) {
-      setTimeout(dispatch(getMovieListByPage(i)), i * 300);
     }
     setChecked(true);
   }, [page, dispatch, res]);
@@ -260,6 +250,7 @@ const MovieList = ({ res, ...props }) => {
         disableGutters
         maxWidth="md"
         className={classes.movieListContainer}
+        id="movieList"
       >
         <Box className={classes.boxTitle} mb={2}>
           <Box
@@ -292,4 +283,4 @@ const MovieList = ({ res, ...props }) => {
   );
 };
 
-export default MovieList;
+export default memo(MovieList);

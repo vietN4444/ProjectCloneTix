@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import Mobile from "../../assets/imgs/mobile.png";
-import React from "react";
+import React, { memo } from "react";
 import Slider from "react-slick";
 import Style from "./style";
 
@@ -92,4 +92,4 @@ const AppIntro = (props) => {
   );
 };
 
-export default AppIntro;
+export default memo(AppIntro);

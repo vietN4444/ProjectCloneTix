@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Typography, Link } from "@material-ui/core";
-import React, { useCallback, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 
 import NewItem from "../NewsItem";
 import Style from "./style";
@@ -294,7 +294,12 @@ const News = (props) => {
   };
 
   return (
-    <Container disableGutters maxWidth="md" className={classes.newsContainer}>
+    <Container
+      disableGutters
+      maxWidth="md"
+      className={classes.newsContainer}
+      id="news"
+    >
       <Box className={classes.boxTitle} mb={2}>
         <Box
           className={tab === 0 ? classes.title : classes.subTitle}
@@ -339,4 +344,4 @@ const News = (props) => {
   );
 };
 
-export default News;
+export default memo(News);

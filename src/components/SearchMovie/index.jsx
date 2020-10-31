@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMovieByName } from "../../redux/actions/movieActions";
 
@@ -20,18 +20,11 @@ import Style from "./style";
 
 const SearchMovie = (props) => {
   const dispatch = useDispatch();
-  const ref = useRef(null);
 
   const movieListSearch = useSelector((state) => state.movie.movieSearch);
 
-  const [heightInput, setHeightInput] = useState(0);
   const [movieSearch, setMovieSearch] = useState("");
   const [toogleListItem, setToogleListItem] = useState(true);
-
-  useEffect(() => {
-    const heightInput = ref.current.offsetHeight;
-    setHeightInput(heightInput);
-  }, [setHeightInput, heightInput]);
 
   const handleChange = useCallback(
     (e) => {
@@ -117,7 +110,6 @@ const SearchMovie = (props) => {
         <form>
           <TextField
             onChange={handleChange}
-            ref={ref}
             label="Tìm kiếm phim"
             variant="outlined"
             color="secondary"

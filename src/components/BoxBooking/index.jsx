@@ -1,9 +1,10 @@
 import { Box, Button, Container, Grid, Typography } from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { getCinemaByMovie } from "../../redux/actions/cinemaActions";
-import { getMovieList } from "../../redux/actions/movieActions";
+
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Style from "./style";
 
 const BoxBooking = (props) => {
@@ -22,10 +23,6 @@ const BoxBooking = (props) => {
 
   const movieList = useSelector((state) => state.movie.movieBoxBooking);
   const cinemaList = useSelector((state) => state.cinema.cinemaBooking);
-
-  useEffect(() => {
-    dispatch(getMovieList());
-  }, [dispatch]);
 
   useEffect(() => {
     let handler = (event) => {

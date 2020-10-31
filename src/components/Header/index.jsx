@@ -26,7 +26,12 @@ import Style from "./style";
 import { REMOVE_TOKEN } from "../../redux/actions/actionContants";
 import { MenuOpen, Close, ExpandLess, ExpandMore } from "@material-ui/icons";
 
-const navBar = ["Lịch Chiếu", "Cụm Rạp", "Tin Tức", "Ứng dụng"];
+const navBar = [
+  { title: "Lịch Chiếu", id: "movieList" },
+  { title: "Cụm Rạp", id: "schedules" },
+  { title: "Tin Tức", id: "news" },
+  { title: "Ứng dụng", id: "appintro" },
+];
 const domainImg = "https://ui-avatars.com/api/?name=";
 
 function HeaderComponent(props) {
@@ -62,6 +67,12 @@ function HeaderComponent(props) {
       document.removeEventListener("mousedown", handler);
     };
   });
+
+  const scrollTo = useCallback((id) => {
+    if (!document.getElementById(id)) return;
+    const ele = document.getElementById(id)?.offsetTop - 80;
+    window.scrollTo({ top: ele, behavior: "smooth" });
+  }, []);
 
   const changeRes = () => {
     if (window.innerWidth <= 1280) {
@@ -116,8 +127,12 @@ function HeaderComponent(props) {
                   {navBar.map((item, index) => {
                     return (
                       <li key={index}>
-                        <Link href="#" variant="subtitle1" underline="none">
-                          {item}
+                        <Link
+                          variant="subtitle1"
+                          underline="none"
+                          onClick={() => scrollTo(item.id)}
+                        >
+                          {item.title}
                         </Link>
                       </li>
                     );

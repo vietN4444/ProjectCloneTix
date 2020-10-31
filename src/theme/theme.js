@@ -111,6 +111,7 @@ const theme = createMuiTheme({
   },
   props: {
     widthSliderBtn: 100,
+    heightHeader: 60,
   },
   spacing: 10,
   mixins: {},

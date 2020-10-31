@@ -47,6 +47,7 @@ const Style = makeStyles((theme) => ({
         "& >a": {
           transition: "all 0.2s",
           color: theme.palette.text.primary,
+          cursor: "pointer",
           "&:hover": {
             color: theme.palette.text.secondary,
           },

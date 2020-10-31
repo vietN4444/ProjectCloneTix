@@ -13,6 +13,20 @@ const Style = makeStyles((theme) => ({
       },
     },
   },
+  container: {
+    position: "fixed",
+    top: theme.props.heightHeader,
+    left: 0,
+    width: "100%",
+    height: "100vh",
+    display: "block",
+    zIndex: 6,
+    background: "#fff",
+    "& img": {
+      margin: "0 auto",
+      display: "block",
+    },
+  },
 }));
 
 export default Style;

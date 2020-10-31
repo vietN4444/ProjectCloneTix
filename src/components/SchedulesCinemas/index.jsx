@@ -10,19 +10,16 @@ import {
   Tabs,
   Typography,
 } from "@material-ui/core";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import EventIcon from "@material-ui/icons/Event";
 
 import Style from "./style";
-import {
-  getCinemaInformation,
-  getCinemaSchedules,
-} from "../../redux/actions/cinemaActions";
+import { getCinemaSchedules } from "../../redux/actions/cinemaActions";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -282,16 +279,11 @@ const TabsSchdulesItem = ({ dataMovie, ...props }) => {
 };
 
 const SchedulesCinemas = (props) => {
-  const dispatch = useDispatch();
   const classes = Style(props);
   const cinemaList = useSelector((state) => state.cinema.cinemaList);
 
-  useEffect(() => {
-    dispatch(getCinemaInformation());
-  }, [dispatch]);
-
   return (
-    <Box>
+    <Box id="schedules">
       <Container
         maxWidth="md"
         disableGutters
@@ -303,4 +295,4 @@ const SchedulesCinemas = (props) => {
   );
 };
 
-export default SchedulesCinemas;
+export default memo(SchedulesCinemas);

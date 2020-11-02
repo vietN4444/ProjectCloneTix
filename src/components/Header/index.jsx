@@ -70,6 +70,11 @@ function HeaderComponent(props) {
 
   const scrollTo = useCallback((id) => {
     if (!document.getElementById(id)) return;
+    if (id === "schedules" || id === "appintro") {
+      const ele = document.getElementById(id)?.offsetTop - 60;
+      window.scrollTo({ top: ele, behavior: "smooth" });
+      return;
+    }
     const ele = document.getElementById(id)?.offsetTop - 80;
     window.scrollTo({ top: ele, behavior: "smooth" });
   }, []);

@@ -1,57 +1,17 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardMedia,
-  Typography,
-} from "@material-ui/core";
-import PlayVideo from "../../assets/imgs/play-video.png";
-import BackgroundDefaultMovie from "../../assets/imgs/defaultFilms.png";
-import {
-  SET_MODAL_STATUS,
-  SET_TRAILER,
-} from "../../redux/actions/actionContants";
+import { Box, Button, Card, CardActions, Typography } from "@material-ui/core";
+
 import React from "react";
 import Style from "./style";
-import { useDispatch } from "react-redux";
+import MovieItemCard from "../MovieItemCard";
 
 const MovieItem = ({ data, ...props }) => {
-  const dispatch = useDispatch();
   const classes = Style(props);
-  const { tenPhim, hinhAnh, trailer } = data;
-
-  const setTrailer = () => {
-    dispatch({
-      type: SET_TRAILER,
-      payload: trailer,
-    });
-    dispatch({
-      type: SET_MODAL_STATUS,
-    });
-  };
+  const { tenPhim } = data;
 
   return (
     <>
       <Card className={classes.movieItem} elevation={0}>
-        <CardActionArea className={classes.movieItemContent}>
-          <CardMedia
-            component="img"
-            image={hinhAnh}
-            onError={(ev) => {
-              ev.target.src = BackgroundDefaultMovie;
-            }}
-            title="Contemplative Reptile"
-          />
-          <Box className={`${classes.movieItemBgLinear} bgLinear`}></Box>
-          <Box
-            className={`${classes.movieItemBtnVideo} btnVideo`}
-            onClick={setTrailer}
-          >
-            <img src={PlayVideo} alt="icon" />
-          </Box>
-        </CardActionArea>
+        <MovieItemCard data={data} />
         <CardActions className={classes.movieItemDetail}>
           <Box className={classes.movieItemDetailContainer}>
             <Box className={classes.movieItemDetailName}>

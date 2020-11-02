@@ -1,36 +1,6 @@
-const HeightMovie = 350;
 const { makeStyles } = require("@material-ui/core");
 
 const Style = makeStyles((theme) => ({
-  movieItemBtnVideo: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 70,
-    height: 70,
-    opacity: 0,
-    transition: "opacity 0.3s",
-    "&:hover": {
-      opacity: "0.7 !important",
-    },
-    "& > img": {
-      width: "100%",
-      objectFit: "cover",
-      display: "block",
-    },
-  },
-  movieItemBgLinear: {
-    position: "absolute",
-    top: "150%",
-    left: 0,
-    width: "100%",
-    height: "100%",
-    background: "linear-gradient(to top, #000, transparent 100%)",
-    opacity: 0,
-    transition: "all 0.4s",
-    pointerEvents: "none",
-  },
   movieItemDetail: {
     padding: "8px 0",
     overflow: "hidden",
@@ -73,15 +43,6 @@ const Style = makeStyles((theme) => ({
     opacity: 0,
     transition: "all 0.5s",
   },
-  movieItemContent: {
-    overflow: "hidden",
-    height: HeightMovie,
-    maxHeight: HeightMovie,
-    "& >img": {
-      borderRadius: 4,
-      height: "100%",
-    },
-  },
   movieItem: {
     overflow: "unset",
     "&:hover .btnVideo": {
@@ -98,26 +59,6 @@ const Style = makeStyles((theme) => ({
     "&:hover > button": {
       boxShadow:
         "0 4px 10px 2px rgba(66,66,66,0.8), 0 5px 8px 0px rgba(0,0,0,0.14), 0 5px 10px 0px rgba(0,0,0,0.12)",
-    },
-  },
-
-  "@media (max-width: 736px)": {
-    movieItemContent: {
-      "& >img": {
-        objectFit: "fill",
-      },
-    },
-    movieItemBtnVideo: {
-      display: "none",
-    },
-  },
-  "@media (max-width: 400px)": {
-    movieItemContent: {
-      height: 200,
-      maxHeight: 200,
-      "& >img": {
-        objectFit: "fill",
-      },
     },
   },
 }));

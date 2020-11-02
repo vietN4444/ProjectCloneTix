@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/Signup";
+import DetailPages from "./pages/Detail";
 import { SET_TOKEN } from "./redux/actions/actionContants";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/profile" component={Profile} />
         <Route path="/signin" component={SignIn} />
         <Route path="/signup" component={SignUp} />
+        <Route path="/detail" component={DetailPages} />
         <Route path="/" component={Home} />
       </Switch>
     </BrowserRouter>

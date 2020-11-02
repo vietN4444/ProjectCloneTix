@@ -21,6 +21,7 @@ const theme = createMuiTheme({
     text: {
       primary: "#000",
       secondary: "#fb4226",
+      lightGrey: "#e9e9e9",
       grey: "#949494",
       white: "#fff",
       dark: "#333",
@@ -39,6 +40,8 @@ const theme = createMuiTheme({
       blackBlur: "rgba(0, 0, 0, 0.7)",
       whiteRgba: "rgba(238, 238, 238, 0.88)",
       greyRgba: "rgba(246, 246, 246, 0.5)",
+      blueDark: "rgb(10, 32, 41)",
+      green: "#7ed321",
     },
   },
   typography: {
@@ -48,6 +51,10 @@ const theme = createMuiTheme({
     fontWeightBold: 700,
     h1: {
       fontSize: 44,
+      fontWeight: 700,
+      lineHeight: 1.42857143,
+      letterSpacing: "normal",
+      fontFamily: `"sfTextRegular"`,
     },
     h2: {
       fontSize: 40,
@@ -112,6 +119,7 @@ const theme = createMuiTheme({
   props: {
     widthSliderBtn: 100,
     heightHeader: 60,
+    widthGridDetailPage: 870,
   },
   spacing: 10,
   mixins: {},

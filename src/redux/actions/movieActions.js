@@ -159,3 +159,18 @@ export const deleteMovie = (maPhim) => {
       });
   };
 };
+
+export const getDetailMovie = (maPhim) => {
+  return (dispatch) => {
+    return connector({
+      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${maPhim}`,
+      method: "GET",
+    })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};

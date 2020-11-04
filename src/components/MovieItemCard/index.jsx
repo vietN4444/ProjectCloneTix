@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, CardActionArea, CardMedia } from "@material-ui/core";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import {
   SET_MODAL_STATUS,
@@ -13,10 +14,12 @@ import Style from "./style";
 
 const MovieItemCard = ({ data, ...props }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const classes = Style(props);
-  const { hinhAnh, trailer } = data;
+  const { hinhAnh, trailer, maPhim } = data;
 
-  const setTrailer = () => {
+  const setTrailer = (e) => {
+    e.stopPropagation();
     dispatch({
       type: SET_TRAILER,
       payload: trailer,
@@ -27,7 +30,10 @@ const MovieItemCard = ({ data, ...props }) => {
   };
 
   return (
-    <CardActionArea className={classes.movieItemContent}>
+    <CardActionArea
+      className={classes.movieItemContent}
+      onClick={() => history.push("/detail/" + maPhim)}
+    >
       <CardMedia
         component="img"
         image={hinhAnh}

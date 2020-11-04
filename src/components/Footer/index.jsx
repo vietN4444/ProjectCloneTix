@@ -62,35 +62,44 @@ function FooterComponent(props) {
                       target="_blank"
                       title="CGV"
                     >
-                      <img src="./imgs/cgv.png" alt="logo" />
+                      <img src="https://i.ibb.co/qdFj9dC/cgv.png" alt="logo" />
                     </Link>
                     <Link
                       href="https://www.bhdstar.vn/"
                       target="_blank"
                       title="BHD"
                     >
-                      <img src="./imgs/bhd.png" alt="logo" />
+                      <img src="https://i.ibb.co/0Fr9MgB/bhd.png" alt="logo" />
                     </Link>
                     <Link
                       href="https://www.galaxycine.vn/"
                       target="_blank"
                       title="Galaxy"
                     >
-                      <img src="./imgs/galaxycine.png" alt="logo" />
+                      <img
+                        src="https://i.ibb.co/qDbGdBX/galaxycine.png"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="http://cinestar.com.vn/"
                       target="_blank"
                       title="Cinestar"
                     >
-                      <img src="./imgs/cinestar.png" alt="logo" />
+                      <img
+                        src="https://i.ibb.co/cwmKXYS/cinestar.png"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="http://lottecinemavn.com/LCHS/index.aspx"
                       target="_blank"
                       title="Lotte"
                     >
-                      <img src="./imgs/lotte.png" alt="logo" />
+                      <img
+                        src="https://i.ibb.co/hRDFsvL/lotte.png"
+                        alt="logo"
+                      />
                     </Link>
                   </Box>
                   <Box className={classes.footerTopContentLogo}>
@@ -99,35 +108,46 @@ function FooterComponent(props) {
                       target="_blank"
                       title="Megags"
                     >
-                      <img id="Megags" src="./imgs/megags.png" alt="logo" />
+                      <img
+                        id="Megags"
+                        src="https://i.ibb.co/JzFt1TK/megags.png"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="https://www.betacineplex.vn/"
                       target="_blank"
                       title="Beta"
                     >
-                      <img src="./imgs/bt.jpg" alt="logo" />
+                      <img src="https://i.ibb.co/dmwqNLN/bt.jpg" alt="logo" />
                     </Link>
                     <Link
                       href="http://ddcinema.vn/"
                       target="_blank"
                       title="DDC"
                     >
-                      <img src="./imgs/dongdacinema.png" alt="logo" />
+                      <img
+                        src="https://i.ibb.co/M8bQP1D/dongdacinema.png"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="https://touchcinema.com/"
                       target="_blank"
                       title="Touch Cinema"
                     >
-                      <img id="touchcinema" src="./imgs/TOUCH.png" alt="logo" />
+                      <img
+                        id="touchcinema"
+                        src="https://i.ibb.co/KDS2fJS/TOUCH.png"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="https://cinemaxvn.com/"
                       target="_blank"
                       title="Cinemax"
                     >
-                      <img src="./imgs/cnx.jpg" alt="logo" />
+                      <img src="https://i.ibb.co/mCFM7CQ/cnx.jpg" alt="logo" />
                     </Link>
                   </Box>
                   <Box className={classes.footerTopContentLogo}>
@@ -136,35 +156,47 @@ function FooterComponent(props) {
                       target="_blank"
                       title="Starlight"
                     >
-                      <img src="./imgs/STARLIGHT.png" alt="logo" />
+                      <img
+                        src="https://i.ibb.co/z7R48VW/STARLIGHT.png"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="https://www.dcine.vn/"
                       target="_blank"
                       title="Dcine"
                     >
-                      <img src="./imgs/dcine.png" alt="logo" />
+                      <img
+                        src="https://i.ibb.co/QQRSvht/dcine.png"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="https://zalopay.vn/"
                       target="_blank"
                       title="ZaloPay"
                     >
-                      <img src="./imgs/zalopay_icon.png" alt="logo" />
+                      <img
+                        src="https://i.ibb.co/mJCB5jQ/zalopay-icon.png"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="https://www.payoo.vn/"
                       target="_blank"
                       title="Payoo"
                     >
-                      <img src="./imgs/payoo.jpg" alt="logo" />
+                      <img
+                        src="https://i.ibb.co/m4KjWCb/payoo.jpg"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="https://portal.vietcombank.com.vn/Pages/Home.aspx"
                       target="_blank"
                       title="Vietcombank"
                     >
-                      <img src="./imgs/VCB.png" alt="logo" />
+                      <img src="https://i.ibb.co/r3nPSyr/VCB.png" alt="logo" />
                     </Link>
                   </Box>
                   <Box className={classes.footerTopContentLogo}>
@@ -173,28 +205,37 @@ function FooterComponent(props) {
                       target="_blank"
                       title="Agribank"
                     >
-                      <img src="./imgs/AGRIBANK.png" alt="logo" />
+                      <img
+                        src="https://i.ibb.co/CmLW0Pm/AGRIBANK.png"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="https://www.vietinbank.vn/web/home/vn/index.html"
                       target="_blank"
                       title="Vietinbank"
                     >
-                      <img src="./imgs/VIETTINBANK.png" alt="logo" />
+                      <img
+                        src="https://i.ibb.co/cx8DVwB/VIETTINBANK.png"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="https://www.indovinabank.com.vn/"
                       target="_blank"
                       title="IVB"
                     >
-                      <img src="./imgs/IVB.png" alt="logo" />
+                      <img src="https://i.ibb.co/x5QtPkL/IVB.png" alt="logo" />
                     </Link>
                     <Link
                       href="https://webv3.123go.vn/"
                       target="_blank"
                       title="123Go"
                     >
-                      <img src="./imgs/123go.png" alt="logo" />
+                      <img
+                        src="https://i.ibb.co/k9VvcZf/123go.png"
+                        alt="logo"
+                      />
                     </Link>
                     <Link
                       href="https://zingnews.vn/"

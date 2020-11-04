@@ -27,7 +27,7 @@ function App() {
         <Route path="/profile" component={Profile} />
         <Route path="/signin" component={SignIn} />
         <Route path="/signup" component={SignUp} />
-        <Route path="/detail" component={DetailPages} />
+        <Route path="/detail/:id" component={DetailPages} />
         <Route path="/" component={Home} />
       </Switch>
     </BrowserRouter>

@@ -32,6 +32,7 @@ const Style = makeStyles((theme) => ({
     height: 70,
     opacity: 0,
     transition: "opacity 0.3s",
+    zIndex: 20,
     "&:hover": {
       opacity: "0.7 !important",
     },

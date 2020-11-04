@@ -1,4 +1,5 @@
 import {
+  DELETE_CINEMA_DATA,
   GET_CINEMA_BOXBOOKING,
   GET_INFORMATION_CINEMA,
   GET_SCHEDULES_CINEMA,
@@ -22,6 +23,9 @@ const reducer = (state = initialState, { type, payload }) => {
     }
     case GET_CINEMA_BOXBOOKING: {
       return { ...state, cinemaBooking: payload };
+    }
+    case DELETE_CINEMA_DATA: {
+      return { ...state, cinemaList: [], cinemaSchedules: [] };
     }
     default:
       return state;

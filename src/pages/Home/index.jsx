@@ -23,6 +23,7 @@ import ArrowToTop from "../../assets/imgs/arrowToTop.png";
 import Style from "./style";
 import { getCinemaInformation } from "../../redux/actions/cinemaActions";
 import Gif from "../../assets/imgs/Gif.gif";
+import { DELETE_CINEMA_DATA } from "../../redux/actions/actionContants";
 
 const Home = (props) => {
   const classes = Style(props);
@@ -84,6 +85,9 @@ const Home = (props) => {
   useEffect(() => {
     return () => {
       setTimeout(() => setLoadingImage(true));
+      dispatch({
+        type: DELETE_CINEMA_DATA,
+      });
     };
   }, []);
 

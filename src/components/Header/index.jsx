@@ -44,7 +44,7 @@ function HeaderComponent(props) {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [imgAvatar, setImgAvatar] = useState(
-    "https://api.adorable.io/avatars/100/"
+    "https://ui-avatars.com/api/?name="
   );
   const [gutterContainer, setGutterContainer] = useState(true);
   const [displayHeaderNav, setDisplayHeaderNav] = useState(true);
@@ -122,9 +122,9 @@ function HeaderComponent(props) {
             className={classes.headerContent}
           >
             <Box className={classes.headerLogo}>
-              <Link href="#">
+              <NavLink to="/">
                 <img src={WebLogo} alt="logo" />
-              </Link>
+              </NavLink>
             </Box>
             {displayHeaderNav ? (
               <Box className={classes.headerNav}>
@@ -157,7 +157,7 @@ function HeaderComponent(props) {
                         <img
                           src={`${imgAvatar}${user.userName}`}
                           alt="avatar"
-                          onError={() => setImgAvatar(domainImg)}
+                          onError={() => setImgAvatar(Avatar)}
                         />
                         <Typography variant="body1" component="p">
                           {user.userName}

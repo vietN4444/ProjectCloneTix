@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import {
-  SET_MODAL_STATUS,
+  SET_MODAL_TRAILER,
   SET_TRAILER,
 } from "../../redux/actions/actionContants";
 
@@ -25,7 +25,7 @@ const MovieItemCard = ({ data, ...props }) => {
       payload: trailer,
     });
     dispatch({
-      type: SET_MODAL_STATUS,
+      type: SET_MODAL_TRAILER,
     });
   };
 

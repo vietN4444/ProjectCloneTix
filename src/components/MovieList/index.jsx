@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Container,
-  Fade,
-  Grid,
-  Typography,
-} from "@material-ui/core";
+import { Box, Button, Container, Fade, Grid } from "@material-ui/core";
 import React, { memo, useCallback, useEffect, useState } from "react";
 import Slider from "react-slick";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +10,9 @@ import Style from "./style";
 
 import { getMovieListCount } from "../../redux/actions/movieActions";
 import { CLEAR_MOVIE_LIST } from "../../redux/actions/actionContants";
+import NavbarTabTitle from "../NavbarTabTitle";
+
+const arrNavbar = ["Đang Chiếu", "Sắp Chiếu"];
 
 const MovieList = ({ res, ...props }) => {
   const classes = Style(props);
@@ -94,63 +90,62 @@ const MovieList = ({ res, ...props }) => {
     if (!tab) {
       return movieList.map((ele, index) => {
         return (
-          <Box key={index}>
-            <Grid container spacing={2}>
-              {movieList[index].items.map((movie, index2) => {
-                return (
-                  <Grid
-                    key={index2}
-                    item
-                    md={3}
-                    sm={3}
-                    className={classes.gridItem}
-                  >
-                    <Fade
-                      key={index}
-                      in={checked}
-                      timeout={{
-                        enter: 0.4,
-                        exit: 0.4,
-                      }}
+          <Fade
+            key={index}
+            in={checked}
+            timeout={{
+              enter: 0.4,
+            }}
+          >
+            <Box key={index}>
+              <Grid container spacing={2}>
+                {movieList[index].items.map((movie, index2) => {
+                  return (
+                    <Grid
+                      key={index2}
+                      item
+                      md={3}
+                      sm={3}
+                      className={classes.gridItem}
                     >
                       <MovieItem data={movie} />
-                    </Fade>
-                  </Grid>
-                );
-              })}
-            </Grid>
-          </Box>
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            </Box>
+          </Fade>
         );
       });
     } else {
       return movieIncoming.map((ele, index) => {
         return (
-          <Box key={index}>
-            <Grid container spacing={2}>
-              {movieIncoming[index].items.map((movie, index2) => {
-                return (
-                  <Grid
-                    key={index2}
-                    item
-                    md={3}
-                    sm={3}
-                    className={classes.gridItem}
-                  >
-                    <Fade
-                      key={index}
-                      in={checked}
-                      timeout={{
-                        enter: 0.2,
-                        exit: 0.2,
-                      }}
+          <Fade
+            key={index}
+            in={checked}
+            timeout={{
+              enter: 0.2,
+              exit: 0.2,
+            }}
+          >
+            <Box key={index}>
+              <Grid container spacing={2}>
+                {movieIncoming[index].items.map((movie, index2) => {
+                  return (
+                    <Grid
+                      key={index2}
+                      item
+                      md={3}
+                      sm={3}
+                      className={classes.gridItem}
                     >
                       <MovieItem data={movie} />
-                    </Fade>
-                  </Grid>
-                );
-              })}
-            </Grid>
-          </Box>
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            </Box>
+          </Fade>
         );
       });
     }
@@ -252,24 +247,11 @@ const MovieList = ({ res, ...props }) => {
         className={classes.movieListContainer}
         id="movieList"
       >
-        <Box className={classes.boxTitle} mb={2}>
-          <Box
-            className={!tab ? classes.title : classes.subTitle}
-            onClick={() => handleSetTab(0)}
-          >
-            <Typography variant="h4" component="h4">
-              Đang công chiếu
-            </Typography>
-          </Box>
-          <Box
-            className={tab ? classes.title : classes.subTitle}
-            onClick={() => handleSetTab(1)}
-          >
-            <Typography variant="h4" component="h4">
-              Sắp chiếu
-            </Typography>
-          </Box>
-        </Box>
+        <NavbarTabTitle
+          handleSetTab={handleSetTab}
+          tab={tab}
+          dataNav={arrNavbar}
+        />
 
         {res === "pc" ? (
           <Box className={classes.slider}>

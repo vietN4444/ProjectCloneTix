@@ -12,7 +12,7 @@ import Wrapper from "../../HOCs/functionWrapper";
 import SliderComponent from "../../components/Slider";
 import BoxBooking from "../../components/BoxBooking";
 import MovieList from "../../components/MovieList";
-import ModalVideoPopup from "../../components/TrailerPopup";
+import { ModalVideoPopup } from "../../components/ModalPopup";
 import AppIntro from "../../components/AppIntro";
 import SearchMovie from "../../components/SearchMovie";
 import Break from "../../components/Break";
@@ -29,7 +29,7 @@ const Home = (props) => {
   const classes = Style(props);
   const dispatch = useDispatch();
 
-  const status = useSelector((state) => state.status.modal);
+  const status = useSelector((state) => state.status.modalTrailer);
   const page = useSelector((state) => state.movie.pages);
 
   const [componentSlider, setComponentSlider] = useState(true);

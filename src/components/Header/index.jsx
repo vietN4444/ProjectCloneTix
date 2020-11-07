@@ -43,9 +43,7 @@ function HeaderComponent(props) {
   const user = useSelector((state) => state.auth);
 
   const [openMenu, setOpenMenu] = useState(false);
-  const [imgAvatar, setImgAvatar] = useState(
-    "https://ui-avatars.com/api/?name="
-  );
+  const [imgAvatar, setImgAvatar] = useState(domainImg);
   const [gutterContainer, setGutterContainer] = useState(true);
   const [displayHeaderNav, setDisplayHeaderNav] = useState(true);
   const [displayMobile, setDisplayMobile] = useState(false);

@@ -1,3 +1,5 @@
+const widthHeightAvatarComments = 36;
+
 const { makeStyles } = require("@material-ui/core");
 
 const Style = makeStyles((theme) => ({
@@ -127,6 +129,58 @@ const Style = makeStyles((theme) => ({
     ...theme.typography.subtitle2,
     color: theme.palette.text.lightGrey,
     textAlign: "center",
+  },
+  tabStatsItem: {
+    "& p": {
+      ...theme.typography.h6,
+      color: theme.palette.text.lightGrey,
+      fontSize: theme.typography.subtitle1.fontSize,
+      marginBottom: 16,
+    },
+    "& .mainTitle": {
+      color: theme.palette.text.white,
+    },
+    "& > ul": {
+      listStyle: "none",
+      margin: 0,
+      padding: 0,
+      "& > li": {
+        display: "flex",
+        "& > p:first-child": {
+          width: "35%",
+        },
+        "& > p:last-child": {
+          width: "40%",
+        },
+      },
+    },
+  },
+  contentTab: {
+    paddingBottom: 60,
+  },
+  tabComments: {
+    maxWidth: 580,
+    margin: "0 auto",
+  },
+  tabCommentsHeader: {
+    background: theme.palette.primary.main,
+    display: "flex",
+    alignItems: "center",
+    borderRadius: 5,
+    padding: "12px 18px",
+    "& > img": {
+      height: widthHeightAvatarComments,
+      width: widthHeightAvatarComments,
+      borderRadius: "50%",
+      marginRight: 10,
+    },
+    "& > p": {
+      ...theme.typography.subtitle2,
+      color: theme.palette.grey[700],
+    },
+  },
+  tabCommentStars: {
+    marginLeft: "auto",
   },
 }));
 

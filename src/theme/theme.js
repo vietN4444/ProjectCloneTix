@@ -16,6 +16,7 @@ const theme = createMuiTheme({
       300: "#e9e9e9",
       400: "#d8d8d8",
       500: "#9b9b9b",
+      700: "#888",
       800: "#4a4a4a",
     },
     text: {
@@ -23,11 +24,14 @@ const theme = createMuiTheme({
       secondary: "#fb4226",
       lightGrey: "#e9e9e9",
       grey: "#949494",
+      greyDark: "#737576",
       white: "#fff",
       dark: "#333",
       darkLight: "#4a4a4a",
       whiteGrey: "#ececec",
       green: "#108f3e",
+      greenGem: "#91d25a",
+      greenLight: "#7ed321",
       bhdColor: "#8bc541",
       cnsColor: "#df0d7a",
       lotteColor: "#ca4137",
@@ -58,6 +62,10 @@ const theme = createMuiTheme({
     },
     h2: {
       fontSize: 40,
+      fontWeight: 700,
+      lineHeight: 1.42857143,
+      letterSpacing: "normal",
+      fontFamily: `"sfMedium"`,
     },
     h3: {
       fontSize: 32,

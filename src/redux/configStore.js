@@ -6,6 +6,7 @@ import dashboardReducer from "./redux/dashboardReducer";
 import profileReducer from "./redux/profileReducer";
 import authReducer from "./redux/authReducer";
 import cinemaReducer from "./redux/cinemaReducer";
+import commentsReducer from "./redux/commentsReducer";
 
 const rootReducer = combineReducers({
   //State
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   auth: authReducer,
   cinema: cinemaReducer,
+  comments: commentsReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

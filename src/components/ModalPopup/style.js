@@ -135,6 +135,12 @@ const Style = makeStyles((theme) => ({
       },
     },
   },
+  txtError: {
+    ...theme.typography.subtitle2,
+    color: theme.palette.text.secondary,
+    margin: "8px 0",
+    textAlign: "center",
+  },
 }));
 
 export default Style;

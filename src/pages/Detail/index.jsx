@@ -99,7 +99,7 @@ const DetailPages = (props) => {
   const renderTabContent = useCallback(() => {
     switch (tab) {
       // Tab lich chieu
-      case 0: {
+      case 2: {
         return <SchedulesPagesDetail dataCinemaList={detailMovie} />;
       }
       // Tab thong tin
@@ -116,7 +116,7 @@ const DetailPages = (props) => {
           </Grid>
         );
       }
-      case 2: {
+      case 0: {
         return (
           <Box className={classes.tabComments}>
             <Box
@@ -141,7 +141,7 @@ const DetailPages = (props) => {
         return null;
       }
     }
-  }, [tab, detailMovie, checked, user, imgAvatar]);
+  }, [tab, detailMovie, checked, user, imgAvatar, comments]);
 
   return (
     <Box style={{ minHeight: 800 }} className={classes.body}>

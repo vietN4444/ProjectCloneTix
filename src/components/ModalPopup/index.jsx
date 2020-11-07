@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Style from "./style";
 
 import CloseImage from "../../assets/imgs/close.png";
@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   SET_MODAL_TRAILER,
   SET_MODAL_COMMENTS,
+  SET_COMMENTS,
 } from "../../redux/actions/actionContants";
 import { Rating } from "@material-ui/lab";
 
@@ -64,6 +65,17 @@ export const ModalComments = (props) => {
 
   const [value, setValue] = useState(3);
   const [checked, setChecked] = useState(false);
+  const [vote, setVote] = useState(6);
+  const [error, setErros] = useState(false);
+  const [comments, setComments] = useState({
+    userName: "",
+    time: "1 giây trước",
+    vote: 0,
+    comment: "",
+    like: 0,
+  });
+
+  const userName = useSelector((state) => state.auth.userName);
 
   const handleModal = () => {
     dispatch({
@@ -71,9 +83,51 @@ export const ModalComments = (props) => {
     });
   };
 
+  const rating = useCallback(
+    (value) => {
+      if (value === null) {
+        setValue(0);
+        setComments({ ...comments, vote: 0 });
+        setVote(0);
+        return;
+      }
+      setValue(value);
+      setComments({ ...comments, vote: value });
+      setVote(value * 2);
+    },
+    [comments]
+  );
+
+  const handleInput = useCallback(
+    (e) => {
+      const str = e.target.value;
+      setComments({ ...comments, comment: str });
+    },
+    [comments]
+  );
+
+  const submitComments = useCallback(() => {
+    if (comments.comment === "") {
+      setErros(true);
+      return;
+    }
+    dispatch({
+      type: SET_COMMENTS,
+      payload: comments,
+    });
+    dispatch({
+      type: SET_MODAL_COMMENTS,
+    });
+    setErros(false);
+  }, [comments]);
+
   useEffect(() => {
     setTimeout(setChecked(!checked), 500);
   }, []);
+
+  useEffect(() => {
+    setComments({ ...comments, userName: userName });
+  }, [userName]);
 
   return (
     <Fade in={checked}>
@@ -90,12 +144,12 @@ export const ModalComments = (props) => {
               borderColor="transparent"
               className={classes.voteComments}
             >
-              <Typography>6.0</Typography>
+              <Typography>{vote === 10 ? vote : `${vote}.0`}</Typography>
               <Rating
                 name="simple-controlled"
                 value={value}
                 onChange={(event, newValue) => {
-                  setValue(newValue);
+                  rating(newValue);
                 }}
               />
             </Box>
@@ -108,9 +162,20 @@ export const ModalComments = (props) => {
                 variant="outlined"
                 placeholder="Nói cho mọi người biết bạn nghĩ gì về phim này..."
                 color="secondary"
+                onChange={handleInput}
               />
             </Box>
-            <Button variant="contained" color="secondary" className="btnSubmit">
+            {error ? (
+              <Typography className={classes.txtError}>
+                Hãy cho TIX biết suy nghĩ của bạn
+              </Typography>
+            ) : null}
+            <Button
+              variant="contained"
+              color="secondary"
+              className="btnSubmit"
+              onClick={submitComments}
+            >
               Đăng
             </Button>
           </Box>

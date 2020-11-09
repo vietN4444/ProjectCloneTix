@@ -153,6 +153,19 @@ const Style = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
+  "@media (max-width: 800px)": {
+    tabs: {
+      "&.tabsAvatar": {
+        width: "fit-content",
+      },
+    },
+    avatarCinema: {
+      marginRight: 0,
+    },
+    tabsItemMainTxt: {
+      marginLeft: 14,
+    },
+  },
 }));
 
 export default Style;

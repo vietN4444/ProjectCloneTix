@@ -3,6 +3,14 @@ const widthModalComments = 780;
 const { makeStyles } = require("@material-ui/core");
 
 const Style = makeStyles((theme) => ({
+  modalVideo: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    zIndex: 100,
+  },
   modal: {
     position: "fixed",
     top: 0,
@@ -140,6 +148,31 @@ const Style = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     margin: "8px 0",
     textAlign: "center",
+  },
+
+  "@media (max-width: 900px)": {
+    modalVideoContainer: {
+      width: 780,
+    },
+  },
+  "@media (max-width: 780px)": {
+    modalCommentsContainer: {
+      width: "100%",
+    },
+    modalComments: {
+      height: "fit-content",
+      paddingBottom: 100,
+    },
+    modalVideoContainer: {
+      width: "90%",
+    },
+  },
+  "@media (max-width: 500px)": {
+    input: {
+      "& textarea": {
+        fontSize: theme.typography.subtitle2.fontSize,
+      },
+    },
   },
 }));
 

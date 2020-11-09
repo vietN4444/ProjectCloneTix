@@ -67,6 +67,7 @@ export const ModalComments = (props) => {
   const [checked, setChecked] = useState(false);
   const [vote, setVote] = useState(6);
   const [error, setErros] = useState(false);
+  const [rowTextarea, setRowTextarea] = useState(2);
   const [comments, setComments] = useState({
     userName: "",
     time: "1 giây trước",
@@ -76,6 +77,16 @@ export const ModalComments = (props) => {
   });
 
   const userName = useSelector((state) => state.auth.userName);
+
+  const changeRes = () => {
+    if (window.innerWidth <= 500) {
+      setRowTextarea(4);
+    } else {
+      setRowTextarea(2);
+    }
+  };
+
+  window.addEventListener("resize", changeRes);
 
   const handleModal = () => {
     dispatch({
@@ -122,6 +133,7 @@ export const ModalComments = (props) => {
   }, [comments]);
 
   useEffect(() => {
+    changeRes();
     setTimeout(setChecked(!checked), 500);
   }, []);
 
@@ -158,7 +170,7 @@ export const ModalComments = (props) => {
                 className={classes.input}
                 label="Comments Here"
                 multiline
-                rows={2}
+                rows={rowTextarea}
                 variant="outlined"
                 placeholder="Nói cho mọi người biết bạn nghĩ gì về phim này..."
                 color="secondary"

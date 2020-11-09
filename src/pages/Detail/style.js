@@ -15,6 +15,22 @@ const Style = makeStyles((theme) => ({
       maxHeight: 560,
     },
   },
+  sliderMobileContainter: {
+    marginBottom: 30,
+  },
+  sliderMobile: {
+    position: "relative",
+    overflow: "hidden",
+    "& > img": {
+      width: "100%",
+      display: "block",
+      maxHeight: 300,
+    },
+    "& iframe": {
+      width: "100%",
+      marginBottom: 10,
+    },
+  },
   slider: {
     top: 0,
     left: 0,
@@ -181,6 +197,101 @@ const Style = makeStyles((theme) => ({
   },
   tabCommentStars: {
     marginLeft: "auto",
+  },
+  playvideo: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%,-50%)",
+  },
+  backgroundOverplay: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    background: "linear-gradient(to top, rgb(10, 32, 41), transparent 100%)",
+    top: 0,
+  },
+  sliderMobileTxt: {
+    padding: "0 15px",
+    "& > p": {
+      ...theme.typography.subtitle2,
+      color: theme.palette.grey[500],
+      margin: 0,
+    },
+    "& > h2": {
+      ...theme.typography.h4,
+      color: theme.palette.text.lightGrey,
+      margin: "4px 0",
+      lineHeight: 1.2,
+    },
+  },
+  txtErrTrailer: {
+    ...theme.typography.subtitle2,
+    color: theme.palette.text.white,
+    textAlign: "center",
+  },
+
+  "@media (max-width: 960px)": {
+    gridContainer: {
+      maxWidth: "100%",
+      width: "100%",
+      padding: "0 20px",
+    },
+  },
+  "@media (max-width: 850px)": {
+    filmContainer: {
+      "& > div:nth-child(1)": {
+        maxWidth: "28%",
+        flexBasis: "28%",
+      },
+      "& > div:nth-child(2)": {
+        maxWidth: "47%",
+        flexBasis: "47%",
+      },
+    },
+  },
+  "@media (max-width: 800px)": {
+    filmContainer: {
+      "& > div:nth-child(1)": {
+        maxWidth: "30%",
+        flexBasis: "30%",
+      },
+      "& > div:nth-child(2)": {
+        maxWidth: "45%",
+        flexBasis: "45%",
+      },
+    },
+  },
+  "@media (max-width: 600px)": {
+    tabStatsItem: {
+      width: "100%",
+    },
+  },
+  "@media (max-width: 600px)": {
+    tabStatsItem: {
+      "& > ul": {
+        "& > li": {
+          "& > p": {
+            width: "50%!important",
+          },
+        },
+      },
+    },
+    sliderMobile: {
+      "&  iframe": {
+        height: 280,
+      },
+    },
+  },
+  "@media (max-width: 500px)": {
+    tabCommentStars: {
+      "& >img": {
+        width: 80,
+      },
+    },
+    tabComments: {
+      margin: "0 -10px",
+    },
   },
 }));
 

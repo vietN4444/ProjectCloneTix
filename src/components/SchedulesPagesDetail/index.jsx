@@ -4,7 +4,6 @@ import {
   AccordionSummary,
   Avatar,
   Box,
-  Fade,
   Grid,
   Tab,
   Tabs,
@@ -57,7 +56,7 @@ const TabsSchdulesItem = ({ logo, dataMovie, ...props }) => {
       // if (index >= 10) return null;
       const newStr = btn.ngayChieuGioChieu.replace("T", " - ");
       return (
-        <Grid key={index} item md={4}>
+        <Grid key={index} item md={4} sm={4}>
           <Link to="" className={classes.txtTabsItemBtn}>
             <EventIcon />
             <Typography component="span">{newStr.slice(0, 18)}</Typography>
@@ -108,14 +107,24 @@ const TabsSchdulesItem = ({ logo, dataMovie, ...props }) => {
 const SchedulesPagesDetail = ({ dataCinemaList, ...props }) => {
   const classes = Style(props);
   const [value, setValue] = useState(0);
-  const [checked, setChecked] = useState(false);
+  const [avatarTitle, setAvatarTitle] = useState(true);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const changeRes = () => {
+    if (window.innerWidth <= 800) {
+      setAvatarTitle(false);
+    } else {
+      setAvatarTitle(true);
+    }
+  };
+
+  window.addEventListener("resize", changeRes);
+
   useEffect(() => {
-    setTimeout(setChecked(true), 800);
+    changeRes();
   }, []);
 
   const renderTabAvatar = useCallback(() => {
@@ -135,12 +144,14 @@ const SchedulesPagesDetail = ({ dataCinemaList, ...props }) => {
               src={cinema.logo}
             />
           }
-          label={<Typography variant="h6">{str}</Typography>}
+          label={
+            avatarTitle ? <Typography variant="h6">{str}</Typography> : null
+          }
           {...a11yProps(index)}
         />
       );
     });
-  }, [dataCinemaList]);
+  }, [dataCinemaList, avatarTitle]);
 
   const renderTabPanel = useCallback(() => {
     return dataCinemaList?.heThongRapChieu.map((cinema, index) => {
@@ -166,21 +177,19 @@ const SchedulesPagesDetail = ({ dataCinemaList, ...props }) => {
   }, [dataCinemaList, value]);
 
   return (
-    <Fade in={checked}>
-      <Box className={classes.schedulesCinemas}>
-        <Tabs
-          orientation="vertical"
-          variant="fullWidth"
-          value={value}
-          onChange={handleChange}
-          aria-label="Vertical tabs example"
-          className={`${classes.tabs} tabsAvatar`}
-        >
-          {renderTabAvatar()}
-        </Tabs>
-        {renderTabPanel()}
-      </Box>
-    </Fade>
+    <Box className={classes.schedulesCinemas}>
+      <Tabs
+        orientation="vertical"
+        variant="fullWidth"
+        value={value}
+        onChange={handleChange}
+        aria-label="Vertical tabs example"
+        className={`${classes.tabs} tabsAvatar`}
+      >
+        {renderTabAvatar()}
+      </Tabs>
+      {renderTabPanel()}
+    </Box>
   );
 };
 

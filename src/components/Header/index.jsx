@@ -14,7 +14,7 @@ import {
   Collapse,
 } from "@material-ui/core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -32,10 +32,12 @@ const navBar = [
   { title: "Tin Tức", id: "news" },
   { title: "Ứng dụng", id: "appintro" },
 ];
+
 const domainImg = "https://ui-avatars.com/api/?name=";
 
 function HeaderComponent(props) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const ref = useRef(0);
   const menuRef = useRef();
   const signInRef = useRef();
@@ -75,6 +77,31 @@ function HeaderComponent(props) {
     }
     const ele = document.getElementById(id)?.offsetTop - 80;
     window.scrollTo({ top: ele, behavior: "smooth" });
+  }, []);
+
+  const scrollToMobile = useCallback((id) => {
+    if (!document.getElementById(id)) {
+      setAuthDrawer(false);
+      history.push("/");
+      setTimeout(() => {
+        if (id === "schedules" || id === "appintro") {
+          const ele = document.getElementById(id)?.offsetTop - 60;
+          window.scrollTo({ top: ele, behavior: "smooth" });
+          return;
+        }
+        const ele = document.getElementById(id)?.offsetTop - 80;
+        window.scrollTo({ top: ele, behavior: "smooth" });
+      }, 2000);
+      return;
+    }
+    if (id === "schedules" || id === "appintro") {
+      const ele = document.getElementById(id)?.offsetTop - 60;
+      window.scrollTo({ top: ele, behavior: "smooth" });
+      return;
+    }
+    const ele = document.getElementById(id)?.offsetTop - 80;
+    window.scrollTo({ top: ele, behavior: "smooth" });
+    setAuthDrawer(false);
   }, []);
 
   const changeRes = () => {
@@ -306,9 +333,10 @@ function HeaderComponent(props) {
                           button
                           key={index}
                           className={classes.navItem}
+                          onClick={() => scrollToMobile(navItem.id)}
                         >
                           <ListItemText
-                            primary={navItem}
+                            primary={navItem.title}
                             className={classes.txtNavItem}
                           />
                         </ListItem>

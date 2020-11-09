@@ -4,11 +4,15 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "react-circular-progressbar/dist/styles.css";
+// import SweetAlert from "sweetalert2-react";
+import { withSwalInstance } from "sweetalert2-react";
+import Swal from "sweetalert2";
 
 import backgroundSlider from "../../assets/imgs/movieBackground.jpg";
 import Star from "../../assets/imgs/star.png";
 import ListStar from "../../assets/imgs/listStar.png";
 import Avatar from "../../assets/imgs/avatar.png";
+import PlayVideo from "../../assets/imgs/play-video.png";
 
 import MovieItemCard from "../../components/MovieItemCard";
 import Wrapper from "../../HOCs/functionWrapper";
@@ -18,7 +22,11 @@ import { ModalComments, ModalVideoPopup } from "../../components/ModalPopup";
 import NavbarTabTitle from "../../components/NavbarTabTitle";
 import SchedulesPagesDetail from "../../components/SchedulesPagesDetail";
 import Comments from "../../components/Comments";
-import { SET_MODAL_COMMENTS } from "../../redux/actions/actionContants";
+import {
+  SET_MODAL_COMMENTS,
+  SET_MODAL_TRAILER,
+} from "../../redux/actions/actionContants";
+import MobileSchedulesDetailMovie from "../../components/MobileSchedulesDetailMovie";
 
 const arrNavbar = ["Lịch chiếu", "Thông Tin", "Đánh Giá"];
 const arrInfoMovie = {
@@ -38,6 +46,15 @@ const DetailPages = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
+  const SweetAlert = withSwalInstance(
+    Swal.mixin({
+      icon: "error",
+      onClose: () => {
+        dispatch({ type: SET_MODAL_TRAILER });
+      },
+    })
+  );
+
   const statusTrailer = useSelector((state) => state.status.modalTrailer);
   const statusComments = useSelector((state) => state.status.modalComments);
   const comments = useSelector((state) => state.comments.listComments);
@@ -47,14 +64,10 @@ const DetailPages = (props) => {
   const [tab, setTab] = useState(0);
   const [checked, setChecked] = useState(false);
   const [detailMovie, setDetailMovie] = useState(null);
-  // const [comments, setComments] = useState(arrComments);
-
-  useEffect(() => {
-    dispatch(getDetailMovie(id)).then((res) => {
-      setDetailMovie(res);
-    });
-    setChecked(true);
-  }, []);
+  const [sliderMobile, setSliderMobile] = useState(false);
+  const [trailer, setTrailer] = useState(false);
+  const [scheduleMobile, setScheduleMobile] = useState(false);
+  const [displayListstar, setDisplayListstar] = useState(true);
 
   const renderTime = useCallback(() => {
     const index = detailMovie?.ngayKhoiChieu.search("T");
@@ -72,6 +85,35 @@ const DetailPages = (props) => {
       );
     });
   }, []);
+
+  const changeRes = () => {
+    if (window.innerWidth <= 736) {
+      setSliderMobile(true);
+      setScheduleMobile(true);
+    } else {
+      setSliderMobile(false);
+      setScheduleMobile(false);
+    }
+    if (window.innerWidth <= 350) {
+      setDisplayListstar(false);
+    } else {
+      setDisplayListstar(true);
+    }
+  };
+
+  window.addEventListener("resize", changeRes);
+  console.log(detailMovie);
+
+  useEffect(() => {
+    dispatch(getDetailMovie(id)).then((res) => {
+      setDetailMovie(res);
+    });
+    setChecked(true);
+  }, []);
+
+  useEffect(() => {
+    changeRes();
+  });
 
   const handleSetTab = useCallback(
     (num) => {
@@ -99,24 +141,26 @@ const DetailPages = (props) => {
   const renderTabContent = useCallback(() => {
     switch (tab) {
       // Tab lich chieu
-      case 2: {
+      case 0: {
+        if (scheduleMobile)
+          return <MobileSchedulesDetailMovie dataCinemaList={detailMovie} />;
         return <SchedulesPagesDetail dataCinemaList={detailMovie} />;
       }
       // Tab thong tin
       case 1: {
         return (
           <Grid container spacing={1}>
-            <Grid item md={6} className={classes.tabStatsItem}>
+            <Grid item md={6} sm={6} className={classes.tabStatsItem}>
               <ul>{renderStats()}</ul>
             </Grid>
-            <Grid item md={6} className={classes.tabStatsItem}>
+            <Grid item md={6} sm={6} className={classes.tabStatsItem}>
               <Typography className="mainTitle">Nội dung</Typography>
               <Typography>{detailMovie?.moTa}</Typography>
             </Grid>
           </Grid>
         );
       }
-      case 0: {
+      case 2: {
         return (
           <Box className={classes.tabComments}>
             <Box
@@ -129,9 +173,11 @@ const DetailPages = (props) => {
                 onError={() => setImgAvatar(Avatar)}
               />
               <Typography>Bạn nghĩ gì về phim này?</Typography>
-              <Box className={classes.tabCommentStars}>
-                <img src={ListStar} alt="listStar" />
-              </Box>
+              {displayListstar ? (
+                <Box className={classes.tabCommentStars}>
+                  <img src={ListStar} alt="listStar" />
+                </Box>
+              ) : null}
             </Box>
             <Box className={classes.tabCommentsBody}>{renderComments()}</Box>
           </Box>
@@ -141,71 +187,136 @@ const DetailPages = (props) => {
         return null;
       }
     }
-  }, [tab, detailMovie, checked, user, imgAvatar, comments]);
+  }, [
+    tab,
+    detailMovie,
+    checked,
+    user,
+    imgAvatar,
+    comments,
+    scheduleMobile,
+    displayListstar,
+  ]);
+
+  const renderTrailerIframe = useCallback(() => {
+    if (!detailMovie.trailer.includes("https://www.youtube.com/embed"))
+      return (
+        <>
+          <img src={backgroundSlider} alt="slider" />
+          <Box className={classes.backgroundOverplay}></Box>
+          <Box className={classes.playvideo}>
+            <Typography class={classes.txtErrTrailer}>
+              OPPS! Phim chưa cập nhật trailer.
+            </Typography>
+          </Box>
+        </>
+      );
+    return (
+      <iframe
+        title="youtube"
+        width={560}
+        height={315}
+        src={detailMovie?.trailer + "?autoplay=1"}
+        frameBorder={0}
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    );
+  }, [detailMovie]);
 
   return (
-    <Box style={{ minHeight: 800 }} className={classes.body}>
-      <Box className={classes.sliderWrapper}>
-        <img src={backgroundSlider} alt="slider" />
-        <Box className={classes.slider}>
-          <Box className={classes.gridContainer}>
-            <Grid container spacing={1}>
-              <Grid className={classes.filmItem} item md={3}>
-                <Card className={classes.movieItem}>
-                  <MovieItemCard
-                    data={{
-                      hinhAnh: detailMovie?.hinhAnh,
-                      trailer: detailMovie?.trailer,
-                    }}
-                  />
-                </Card>
-              </Grid>
-              <Grid className={classes.filmItem} item md={6}>
-                <Box className={classes.filmDetail}>
-                  <Box className={classes.filmDetailContent}>
-                    <Typography>{renderTime()}</Typography>
-                    <Box className={classes.filmDetailTitle}>
-                      <Typography component="span">C18</Typography>
-                      <Typography>{detailMovie?.tenPhim}</Typography>
-                    </Box>
-                    <Typography>
-                      100 phút - {detailMovie?.danhGia} IMDb - 2D/Digital
-                    </Typography>
-                  </Box>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    className={classes.filmDetailBtn}
-                  >
-                    Mua vé
-                  </Button>
+    <Box className={classes.body}>
+      {sliderMobile ? (
+        <Box className={classes.sliderMobileContainter}>
+          <Box className={classes.sliderMobile}>
+            {trailer ? (
+              renderTrailerIframe()
+            ) : (
+              <>
+                <img src={backgroundSlider} alt="slider" />
+                <Box className={classes.backgroundOverplay}></Box>
+                <Box
+                  className={classes.playvideo}
+                  onClick={() => setTrailer(true)}
+                >
+                  <img src={PlayVideo} alt="playicon" />
                 </Box>
-              </Grid>
-              <Grid className={classes.filmItem} item md={3}>
-                <Box className={classes.filmItemEvaluate}>
-                  <Box className={classes.filmItemCircleProgress}>
-                    <CircularProgressbar
-                      value={80}
-                      strokeWidth={6}
-                      className={classes.progressCircle}
-                    />
-                    <Typography>8.0</Typography>
-                  </Box>
-                  <Box className={classes.star}>
-                    <img src={Star} alt="star" />
-                    <img src={Star} alt="star" />
-                    <img src={Star} alt="star" />
-                    <img src={Star} alt="star" />
-                  </Box>
-                  <Typography className={classes.txtVote}>
-                    169 người đánh giá
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
+              </>
+            )}
+          </Box>
+          <Box className={classes.sliderMobileTxt}>
+            <Typography>{renderTime()}</Typography>
+            <Typography component="h2">
+              {detailMovie?.tenPhim} - (C18)
+            </Typography>
+            <Typography>
+              100 phút - {detailMovie?.danhGia} IMDb - 2D/Digital
+            </Typography>
           </Box>
         </Box>
-      </Box>
+      ) : (
+        <Box className={classes.sliderWrapper}>
+          <img src={backgroundSlider} alt="slider" />
+          <Box className={classes.slider}>
+            <Box className={classes.gridContainer}>
+              <Grid container spacing={1} className={classes.filmContainer}>
+                <Grid className={classes.filmItem} item md={3} sm={3}>
+                  <Card className={classes.movieItem}>
+                    <MovieItemCard
+                      data={{
+                        hinhAnh: detailMovie?.hinhAnh,
+                        trailer: detailMovie?.trailer,
+                      }}
+                    />
+                  </Card>
+                </Grid>
+                <Grid className={classes.filmItem} item md={6} sm={6}>
+                  <Box className={classes.filmDetail}>
+                    <Box className={classes.filmDetailContent}>
+                      <Typography>{renderTime()}</Typography>
+                      <Box className={classes.filmDetailTitle}>
+                        <Typography component="span">C18</Typography>
+                        <Typography>{detailMovie?.tenPhim}</Typography>
+                      </Box>
+                      <Typography>
+                        100 phút - {detailMovie?.danhGia} IMDb - 2D/Digital
+                      </Typography>
+                    </Box>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      className={classes.filmDetailBtn}
+                    >
+                      Mua vé
+                    </Button>
+                  </Box>
+                </Grid>
+                <Grid className={classes.filmItem} item md={3} sm={3}>
+                  <Box className={classes.filmItemEvaluate}>
+                    <Box className={classes.filmItemCircleProgress}>
+                      <CircularProgressbar
+                        value={80}
+                        strokeWidth={6}
+                        className={classes.progressCircle}
+                      />
+                      <Typography>8.0</Typography>
+                    </Box>
+                    <Box className={classes.star}>
+                      <img src={Star} alt="star" />
+                      <img src={Star} alt="star" />
+                      <img src={Star} alt="star" />
+                      <img src={Star} alt="star" />
+                    </Box>
+                    <Typography className={classes.txtVote}>
+                      169 người đánh giá
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        </Box>
+      )}
       <NavbarTabTitle
         handleSetTab={handleSetTab}
         tab={tab}
@@ -217,7 +328,18 @@ const DetailPages = (props) => {
           <Fade in={checked}>{renderTabContent()}</Fade>
         </Box>
       </Box>
-      {statusTrailer ? <ModalVideoPopup /> : null}
+      {detailMovie?.trailer.includes("https://www.youtube.com/embed") ? (
+        statusTrailer ? (
+          <ModalVideoPopup />
+        ) : null
+      ) : (
+        <SweetAlert
+          show={statusTrailer}
+          title="Opps..."
+          text="Phim chưa có trailer"
+          confirmButtonColor="#fb4226"
+        />
+      )}
       {statusComments ? <ModalComments /> : null}
     </Box>
   );

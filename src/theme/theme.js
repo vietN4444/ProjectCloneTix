@@ -16,6 +16,7 @@ const theme = createMuiTheme({
       300: "#e9e9e9",
       400: "#d8d8d8",
       500: "#9b9b9b",
+      600: "#afafaf",
       700: "#888",
       800: "#4a4a4a",
     },
@@ -37,6 +38,9 @@ const theme = createMuiTheme({
       lotteColor: "#ca4137",
       megaColor: "#e5a813",
       cgvColor: "#e71a0f",
+      greenPrice: "#44c020",
+      blue: "#4a90e2",
+      ogrange: "#f79320",
     },
     background: {
       dark: "#222",
@@ -46,6 +50,7 @@ const theme = createMuiTheme({
       greyRgba: "rgba(246, 246, 246, 0.5)",
       blueDark: "rgb(10, 32, 41)",
       green: "#7ed321",
+      whiteGrey: "#bbb",
     },
   },
   typography: {

@@ -258,7 +258,7 @@ const MovieList = ({ res, ...props }) => {
             <Slider {...settingsTwo}>{renderMovieList()}</Slider>
           </Box>
         ) : (
-          <Box>{renderMovieListMobile()}</Box>
+          <Box className={classes.movieListWrapper}>{renderMovieListMobile()}</Box>
         )}
       </Container>
     </>

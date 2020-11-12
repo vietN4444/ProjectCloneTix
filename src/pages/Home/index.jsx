@@ -62,7 +62,7 @@ const Home = (props) => {
 
   useEffect(() => {
     changeRes();
-    setTimeout(() => setLoadingImage(false), 1100);
+    setTimeout(() => setLoadingImage(false), 900);
   }, []);
 
   useEffect(() => {

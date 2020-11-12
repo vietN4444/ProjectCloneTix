@@ -105,6 +105,11 @@ const Style = makeStyles((theme) => ({
       maxWidth: 736,
     },
   },
+  "@media (max-width: 736px) and (min-width: 500px)": {
+    movieListWrapper: {
+      padding: "0 20px",
+    },
+  },
   "@media (max-width: 600px)": {
     gridItem: {
       maxWidth: "50%",

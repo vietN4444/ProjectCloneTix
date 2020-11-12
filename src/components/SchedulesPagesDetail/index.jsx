@@ -14,9 +14,24 @@ import PropTypes from "prop-types";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import EventIcon from "@material-ui/icons/Event";
+import AvaCGV from "../../assets/imgs/avacgv.jpg";
 
 import Style from "./style";
 import { Link } from "react-router-dom";
+
+const arrAvatarCinema = {
+  BHDStar:
+    "https://s3img.vcdn.vn/123phim/2018/09/bhd-star-vincom-thao-dien-15379553942188.jpg",
+  LotteCinima:
+    "https://s3img.vcdn.vn/123phim/2018/10/lotte-cinema-nam-sai-gon-15383867312967.jpg",
+  CineStar:
+    "https://s3img.vcdn.vn/123phim/2018/10/cinestar-hai-ba-trung-15383833704033.jpg",
+  MegaGS:
+    "https://s3img.vcdn.vn/123phim/2018/09/mega-gs-cao-thang-15380164745357.jpg",
+  Galaxy:
+    "https://s3img.vcdn.vn/123phim/2018/09/ddc-dong-da-15379624326697.jpg",
+  CGV: AvaCGV,
+};
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -48,8 +63,9 @@ function a11yProps(index) {
 }
 
 // Schedules Item
-const TabsSchdulesItem = ({ logo, dataMovie, ...props }) => {
+const TabsSchdulesItem = ({ id, dataMovie, ...props }) => {
   const classes = Style(props);
+  let currentID = id;
 
   const renderTabsBtnItem = useCallback(() => {
     return dataMovie.lichChieuPhim?.map((btn, index) => {
@@ -78,7 +94,7 @@ const TabsSchdulesItem = ({ logo, dataMovie, ...props }) => {
           <Avatar
             className={classes.avatarCinema}
             variant="rounded"
-            src={logo}
+            src={arrAvatarCinema[currentID]}
           />
           <Box className={classes.tabsItemMainTxt}>
             <Box className={classes.nameMovie}>
@@ -167,7 +183,7 @@ const SchedulesPagesDetail = ({ dataCinemaList, ...props }) => {
               <TabsSchdulesItem
                 key={index2}
                 dataMovie={data}
-                logo={cinema.logo}
+                id={cinema.maHeThongRap}
               />
             );
           })}

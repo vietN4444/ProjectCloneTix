@@ -15,7 +15,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import AvaCGV from "../../assets/imgs/avacgv.jpg";
 import Style from "./style";
-import { elementType } from "prop-types";
 
 const arrAvatarCinema = {
   BHDStar:

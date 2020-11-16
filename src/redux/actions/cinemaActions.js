@@ -1,6 +1,7 @@
 import connector from "../../config/restConnector";
 import {
   GET_CINEMA_BOXBOOKING,
+  GET_CINEMA_CHECKOUT,
   GET_INFORMATION_CINEMA,
   GET_SCHEDULES_CINEMA,
 } from "./actionContants";
@@ -58,6 +59,25 @@ export const getCinemaByMovie = (nameMovie) => {
         dispatch({
           type: GET_CINEMA_BOXBOOKING,
           payload: arrData,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const getCinemaCheckout = (id) => {
+  return (dispatch) => {
+    connector({
+      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=17017`,
+      method: "GET",
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch({
+          type: GET_CINEMA_CHECKOUT,
+          payload: res.data,
         });
       })
       .catch((err) => {

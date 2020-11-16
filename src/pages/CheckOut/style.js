@@ -1,5 +1,8 @@
 const heightHeader = 80;
 const heightBtn = 60;
+const screenBody = 550;
+const widthHeightSeat = 32;
+const widthHeightSeatNote = 18;
 
 const { makeStyles } = require("@material-ui/core");
 
@@ -72,7 +75,7 @@ const Style = makeStyles((theme) => ({
   },
 
   checkOutContainer: {
-    height: `calc(100vh - ${heightHeader})`,
+    height: `calc(100vh - ${heightHeader}px)`,
   },
   checkOutRightContainer: {
     position: "fixed",
@@ -85,10 +88,17 @@ const Style = makeStyles((theme) => ({
     boxShadow: "0 0 15px rgba(0, 0, 0, 0.3)",
   },
   checkOutRightContent: {
+    height: `calc(100% - ${heightBtn}px)`,
     minHeight: `calc(100% - ${heightBtn}px)`,
     overflowY: "scroll",
     padding: "0 5%",
+    paddingRight: "calc(5% + 4px)",
     paddingBottom: 40,
+    "&:hover": {
+      "&::-webkit-scrollbar-thumb": {
+        display: "block",
+      },
+    },
     "&::-webkit-scrollbar": {
       width: 4,
     },
@@ -96,6 +106,7 @@ const Style = makeStyles((theme) => ({
       background: "#e9e9e9",
     },
     "&::-webkit-scrollbar-thumb": {
+      display: "none",
       background: theme.palette.background.whiteGrey,
       borderRadius: 200,
     },
@@ -283,13 +294,13 @@ const Style = makeStyles((theme) => ({
       fill: theme.palette.secondary.main,
       position: "relative",
       top: "3px",
+    },
+    "& > span": {
+      ...theme.typography.body1,
+      fontSize: theme.typography.body2.fontSize,
+      color: theme.palette.text.darkLight,
       "& > span": {
-        ...theme.typography.body1,
-        fontSize: theme.typography.body2.fontSize,
-        color: theme.palette.text.darkLight,
-        "& > span": {
-          color: theme.palette.text.ogrange,
-        },
+        color: theme.palette.text.ogrange,
       },
     },
   },
@@ -306,6 +317,250 @@ const Style = makeStyles((theme) => ({
         fontSize: 22,
         color: theme.palette.text.lightGrey,
         textTransform: "none",
+      },
+    },
+  },
+  checkOutmethodPay: {
+    flexDirection: "column",
+    alignItems: "flex-start",
+    padding: "12px 0",
+    marginBottom: "40%",
+    border: "none",
+    cursor: "pointer",
+    "& > p": {
+      ...theme.typography.subtitle1,
+      color: theme.palette.text.dark,
+      marginBottom: 10,
+    },
+  },
+  methodPayContent: {
+    width: "100%",
+    "& > span": {
+      ...theme.typography.body1,
+      color: theme.palette.text.secondary,
+    },
+  },
+  methodPayLabel: {
+    display: "flex",
+    alignItems: "center",
+    "& > img": {
+      width: "auto",
+      maxWidth: 40,
+      marginRight: 15,
+    },
+    "& > p": {
+      ...theme.typography.subtitle1,
+      color: theme.palette.text.dark,
+      "& > span": {
+        ...theme.typography.body1,
+        fontSize: 11,
+        color: theme.palette.text.red,
+        display: "block",
+      },
+    },
+  },
+  label: {
+    "& .MuiIconButton-colorSecondary": {
+      color: theme.palette.grey[200],
+      "&:hover": {
+        backgroundColor: "rgba(38, 108, 251, 0.04)",
+      },
+    },
+    "& .MuiRadio-colorSecondary.Mui-checked": {
+      color: theme.palette.text.blue,
+    },
+    "& .MuiSvgIcon-root": {
+      width: 26,
+      height: 26,
+    },
+  },
+
+  // CheckOutLeft
+  checkOutLeft: {
+    height: "100%",
+  },
+  checkOutLeftContainer: {
+    // height: "100%",
+    height: "max-content",
+    width: "75%",
+    display: "flex",
+  },
+  checkOutLeftModal: {
+    width: "5.5%",
+    background: theme.palette.background.blackBlur,
+  },
+  checkOutLeftContent: {
+    width: "93%",
+    background: theme.palette.primary.main,
+    paddingTop: 30,
+  },
+  checkOutLeftGrid: {
+    width: "90%",
+    margin: "0 auto",
+  },
+  // &Header
+  checkOutLeftHeader: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  headerLeft: {
+    display: "flex",
+    alignItems: "center",
+    "& > img": {
+      width: 48,
+      marginRight: 10,
+    },
+  },
+  headerLeftDetailCinema: {
+    "& > p": {
+      ...theme.typography.subtitle1,
+      fontSize: theme.typography.h6.fontSize,
+      color: theme.palette.text.dark,
+      "& > span": {
+        fontSize: theme.typography.h6.fontSize,
+        color: theme.palette.grey[500],
+      },
+      "&:last-child": {
+        "& > span": {
+          fontSize: theme.typography.subtitle1.fontSize,
+        },
+      },
+    },
+  },
+  headerRight: {
+    "& > span": {
+      ...theme.typography.body1,
+      fontSize: 10,
+      color: theme.palette.grey[500],
+      lineHeight: 0,
+      textAlign: "center",
+    },
+    "& > p": {
+      ...theme.typography.h6,
+      fontSize: 29,
+      color: theme.palette.text.secondary,
+      lineHeight: 1,
+      textAlign: "center",
+    },
+  },
+  // &Body
+  bodyContainer: {
+    width: "100%",
+    margin: "0 auto",
+    "& > img": {
+      width: "100%",
+    },
+  },
+  checkoutScreen: {
+    display: "flex",
+    width: screenBody,
+    margin: "0 auto",
+    flexWrap: "wrap",
+  },
+
+  checkoutScreenSeatList: {
+    width: "100%",
+    justifyContent: "center",
+    "& > div": {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  },
+
+  seatBtn: {
+    padding: 0,
+    margin: "0 5px",
+    color: theme.palette.background.seatNormal,
+    cursor: "pointer",
+    position: "relative",
+    marginBottom: 5,
+    display: "flex",
+    "& > svg": {
+      width: widthHeightSeat,
+      height: widthHeightSeat,
+    },
+    "&.seatVip": {
+      color: theme.palette.background.seatVip,
+      "& > div": {
+        background: theme.palette.background.seatVip,
+      },
+    },
+  },
+
+  seatNumber: {
+    position: "absolute",
+    background: theme.palette.background.seatNormal,
+    width: 20,
+    top: "-1px",
+    left: "50%",
+    borderRadius: "50%",
+    minHeight: 20,
+    transform: "translateX(-50%)",
+    "& > p": {
+      ...theme.typography.body1,
+      fontSize: 10,
+      color: theme.palette.text.white,
+      position: "absolute",
+      left: "50%",
+      top: "50%",
+      transform: "translate(-50%,-50%)",
+    },
+  },
+  checkoutScreenNote: {
+    display: "flex",
+    width: "80%",
+    margin: "0 auto",
+    justifyContent: "space-around",
+    marginTop: 60,
+    paddingBottom: 10,
+  },
+  checkoutScreenNoteItem: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    "& > p": {
+      ...theme.typography.body1,
+      fontSize: theme.typography.body2.fontSize,
+      color: theme.palette.grey[500],
+    },
+  },
+  seatNote: {
+    position: "relative",
+    color: theme.palette.background.seatNormal,
+    display: "flex",
+    "& > svg": {
+      width: widthHeightSeatNote,
+      height: widthHeightSeatNote,
+    },
+    "& > div": {
+      position: "absolute",
+      background: theme.palette.background.seatNormal,
+      width: 10,
+      top: "-1px",
+      left: "50%",
+      borderRadius: "50%",
+      minHeight: 10,
+      transform: "translateX(-50%)",
+    },
+    "&.seatVip": {
+      color: theme.palette.background.seatVip,
+      "& > div": {
+        background: theme.palette.background.seatVip,
+      },
+    },
+    "&.seatChoosing": {
+      color: theme.palette.background.seatChoosing,
+      "& > div": {
+        background: theme.palette.background.seatChoosing,
+      },
+    },
+    "&.seatBooked": {
+      color: theme.palette.background.seatBooked,
+      "& > div": {
+        background: theme.palette.background.seatBooked,
       },
     },
   },

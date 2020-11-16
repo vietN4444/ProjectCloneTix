@@ -1,6 +1,7 @@
 import {
   DELETE_CINEMA_DATA,
   GET_CINEMA_BOXBOOKING,
+  GET_CINEMA_CHECKOUT,
   GET_INFORMATION_CINEMA,
   GET_SCHEDULES_CINEMA,
 } from "../actions/actionContants";
@@ -9,6 +10,8 @@ let initialState = {
   cinemaList: [],
   cinemaSchedules: [],
   cinemaBooking: [],
+  cinemaCheckoutInfo: [],
+  cinemaCheckoutSeat: [],
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -26,6 +29,13 @@ const reducer = (state = initialState, { type, payload }) => {
     }
     case DELETE_CINEMA_DATA: {
       return { ...state, cinemaList: [], cinemaSchedules: [] };
+    }
+    case GET_CINEMA_CHECKOUT: {
+      return {
+        ...state,
+        cinemaCheckoutInfo: payload.thongTinPhim,
+        cinemaCheckoutSeat: payload.danhSachGhe,
+      };
     }
     default:
       return state;

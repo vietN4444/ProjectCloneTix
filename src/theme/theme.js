@@ -13,6 +13,7 @@ const theme = createMuiTheme({
       dark: "#d63038",
     },
     grey: {
+      200: "#ccc",
       300: "#e9e9e9",
       400: "#d8d8d8",
       500: "#9b9b9b",
@@ -27,6 +28,7 @@ const theme = createMuiTheme({
       grey: "#949494",
       greyDark: "#737576",
       white: "#fff",
+      red: "#ff0000",
       dark: "#333",
       darkLight: "#4a4a4a",
       whiteGrey: "#ececec",
@@ -51,6 +53,10 @@ const theme = createMuiTheme({
       blueDark: "rgb(10, 32, 41)",
       green: "#7ed321",
       whiteGrey: "#bbb",
+      seatNormal: "#3e515d",
+      seatVip: "#f7b500",
+      seatChoosing: "#44c020",
+      seatBooked: "#e7eaec",
     },
   },
   typography: {

@@ -1,4 +1,7 @@
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Avatar,
   Box,
   Button,
@@ -18,6 +21,8 @@ import AvatarImg from "../../assets/imgs/avatar.png";
 import ComboImg from "../../assets/imgs/popcorn.png";
 import AvaCinema from "../../assets/imgs/cinema1.png";
 import Screen from "../../assets/imgs/screen.png";
+import Combo from "../../assets/imgs/combo.png";
+import Information from "../../assets/imgs/information.png";
 import MethodPayAtm from "../../assets/imgs/methodPayAtm.png";
 import MethodPayCC from "../../assets/imgs/methodPaycc.png";
 import MethodPayoo from "../../assets/imgs/methodPayoo.png";
@@ -26,6 +31,9 @@ import MethodZalo from "../../assets/imgs/methodZalo.jpg";
 import Style from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import { getCinemaCheckout } from "../../redux/actions/cinemaActions";
+import { ModalCombo } from "../../components/ModalPopup";
+import { SET_MODAL_COMBO } from "../../redux/actions/actionContants";
+import SeatItem from "../../components/SeatItem";
 
 const arrMethodPay = [
   { value: "atm", label: "Thanh toán qua ZaloPay", img: MethodZalo },
@@ -44,6 +52,8 @@ const CheckOut = (props) => {
 
   const data = useSelector((state) => state.cinema.cinemaCheckoutInfo);
   const seatList = useSelector((state) => state.cinema.cinemaCheckoutSeat);
+  const modalCombo = useSelector((state) => state.status.modalCombo);
+  const dataCombo = useSelector((state) => state.combo.combo);
 
   const [ticketTotal, setTicketTotal] = useState({
     price: 0,
@@ -66,15 +76,7 @@ const CheckOut = (props) => {
     return seatListVip.map((seat, index) => {
       return (
         <Grid key={index} item md={1} sm={1}>
-          <Box
-            className={`${classes.seatBtn} seatVip 
-            ${seat.daDat ? null : "booked"}`}
-          >
-            <WeekendIcon />
-            <Box className={classes.seatNumber}>
-              <Typography></Typography>
-            </Box>
-          </Box>
+          <SeatItem seat={seat} />
         </Grid>
       );
     });
@@ -87,12 +89,7 @@ const CheckOut = (props) => {
     return seatListNormal.slice(48).map((seat, index) => {
       return (
         <Grid key={index} item md={1} sm={1}>
-          <Box className={`${classes.seatBtn} ${seat.daDat ? null : "booked"}`}>
-            <WeekendIcon />
-            <Box className={classes.seatNumber}>
-              <Typography></Typography>
-            </Box>
-          </Box>
+          <SeatItem seat={seat} />
         </Grid>
       );
     });
@@ -104,12 +101,7 @@ const CheckOut = (props) => {
     return seatListNormal.slice(0, 48).map((seat, index) => {
       return (
         <Grid key={index} item md={1} sm={1}>
-          <Box className={`${classes.seatBtn} ${seat.daDat ? null : "booked"}`}>
-            <WeekendIcon />
-            <Box className={classes.seatNumber}>
-              <Typography></Typography>
-            </Box>
-          </Box>
+          <SeatItem seat={seat} />
         </Grid>
       );
     });
@@ -152,17 +144,11 @@ const CheckOut = (props) => {
     );
   }, [seconds, minutes]);
 
-  useEffect(() => {
-    dispatch(getCinemaCheckout());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (totalSeconds >= 0) {
-      setTimeout(contdown, 1000);
-    } else {
-      clearTimeout(contdown);
-    }
-  }, [totalSeconds]);
+  const handleCombo = useCallback(() => {
+    dispatch({
+      type: SET_MODAL_COMBO,
+    });
+  }, [modalCombo]);
 
   const renderMethodPayRadio = useCallback(() => {
     return arrMethodPay.map((ele, index) => {
@@ -203,6 +189,59 @@ const CheckOut = (props) => {
       );
     });
   }, []);
+
+  const renderCombo = useCallback(() => {
+    return dataCombo.map((combo, index) => {
+      return (
+        <Box key={index} className={classes.comboContent}>
+          <Box className={classes.comboHeaderTitle}>
+            <Typography>{combo.title}</Typography>
+          </Box>
+          {combo.listItem.map((item, index2) => {
+            return (
+              <Grid key={index2} container className={classes.comboItem}>
+                <Grid item md={2} sm={3} className="comboLogo">
+                  <img src={Combo} alt="combo" />
+                </Grid>
+                <Grid item md={7} sm={5} className="comboDetail">
+                  <Accordion className={classes.collapse}>
+                    <AccordionSummary
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <img src={Information} alt="info" />
+                      {item.itemTitle}
+                    </AccordionSummary>
+                    <AccordionDetails className="collapseDetails">
+                      <Typography>{item.info}</Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                  <Typography>{item.price}</Typography>
+                </Grid>
+                <Grid item md={3} sm={4} className="comboCount">
+                  <Button className="btnDiminish">-</Button>
+                  <Typography component="span">{item.count}</Typography>
+                  <Button className="btnAdd">+</Button>
+                </Grid>
+              </Grid>
+            );
+          })}
+        </Box>
+      );
+    });
+  }, [dataCombo]);
+
+  useEffect(() => {
+    dispatch(getCinemaCheckout());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (totalSeconds >= 0) {
+      setTimeout(contdown, 1000);
+    } else {
+      clearTimeout(contdown);
+    }
+  }, [totalSeconds]);
 
   return (
     <Box className={classes.checkOut}>
@@ -337,6 +376,7 @@ const CheckOut = (props) => {
 
               <Box
                 className={`${classes.checkOutRightItem} ${classes.checkOutRightCombo}`}
+                onClick={handleCombo}
               >
                 <Typography component="span">
                   <img src={ComboImg} alt="combo" />
@@ -417,6 +457,13 @@ const CheckOut = (props) => {
             </Box>
           </Box>
         </Box>
+      </Box>
+
+      <Box
+        className={`${classes.comboWrapper} ${modalCombo ? "showCombo" : null}`}
+      >
+        {modalCombo ? <ModalCombo /> : null}
+        <Box className={classes.comboContainer}>{renderCombo()}</Box>
       </Box>
     </Box>
   );

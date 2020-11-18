@@ -17,6 +17,7 @@ import {
   SET_MODAL_TRAILER,
   SET_MODAL_COMMENTS,
   SET_COMMENTS,
+  SET_MODAL_COMBO,
 } from "../../redux/actions/actionContants";
 import { Rating } from "@material-ui/lab";
 
@@ -193,6 +194,29 @@ export const ModalComments = (props) => {
           </Box>
         </Box>
       </Box>
+    </Fade>
+  );
+};
+
+export const ModalCombo = (props) => {
+  const classes = Style(props);
+  const dispatch = useDispatch();
+
+  const [checked, setChecked] = useState(false);
+
+  const handleModal = () => {
+    dispatch({
+      type: SET_MODAL_COMBO,
+    });
+  };
+
+  useEffect(() => {
+    setTimeout(setChecked(!checked), 300);
+  }, []);
+
+  return (
+    <Fade in={checked}>
+      <Box className={classes.modalOverplay} onClick={handleModal}></Box>
     </Fade>
   );
 };

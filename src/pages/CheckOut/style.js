@@ -3,6 +3,7 @@ const heightBtn = 60;
 const screenBody = 550;
 const widthHeightSeat = 32;
 const widthHeightSeatNote = 18;
+const widthCombo = 465;
 
 const { makeStyles } = require("@material-ui/core");
 
@@ -19,7 +20,7 @@ const Style = makeStyles((theme) => ({
     width: "75%",
     height: heightHeader,
     boxShadow: "0 0 15px rgba(0, 0, 0, 0.3)",
-    zIndex: 4,
+    zIndex: 101,
   },
   headerWrapper: {
     display: "flex",
@@ -84,7 +85,7 @@ const Style = makeStyles((theme) => ({
     width: "26%",
     height: "100vh",
     background: theme.palette.primary.main,
-    zIndex: 5,
+    zIndex: 101,
     boxShadow: "0 0 15px rgba(0, 0, 0, 0.3)",
   },
   checkOutRightContent: {
@@ -470,45 +471,45 @@ const Style = makeStyles((theme) => ({
     },
   },
 
-  seatBtn: {
-    padding: 0,
-    margin: "0 5px",
-    color: theme.palette.background.seatNormal,
-    cursor: "pointer",
-    position: "relative",
-    marginBottom: 5,
-    display: "flex",
-    "& > svg": {
-      width: widthHeightSeat,
-      height: widthHeightSeat,
-    },
-    "&.seatVip": {
-      color: theme.palette.background.seatVip,
-      "& > div": {
-        background: theme.palette.background.seatVip,
-      },
-    },
-  },
+  // seatBtn: {
+  //   padding: 0,
+  //   margin: "0 5px",
+  //   color: theme.palette.background.seatNormal,
+  //   cursor: "pointer",
+  //   position: "relative",
+  //   marginBottom: 5,
+  //   display: "flex",
+  //   "& > svg": {
+  //     width: widthHeightSeat,
+  //     height: widthHeightSeat,
+  //   },
+  //   "&.seatVip": {
+  //     color: theme.palette.background.seatVip,
+  //     "& > div": {
+  //       background: theme.palette.background.seatVip,
+  //     },
+  //   },
+  // },
 
-  seatNumber: {
-    position: "absolute",
-    background: theme.palette.background.seatNormal,
-    width: 20,
-    top: "-1px",
-    left: "50%",
-    borderRadius: "50%",
-    minHeight: 20,
-    transform: "translateX(-50%)",
-    "& > p": {
-      ...theme.typography.body1,
-      fontSize: 10,
-      color: theme.palette.text.white,
-      position: "absolute",
-      left: "50%",
-      top: "50%",
-      transform: "translate(-50%,-50%)",
-    },
-  },
+  // seatNumber: {
+  //   position: "absolute",
+  //   background: theme.palette.background.seatNormal,
+  //   width: 20,
+  //   top: "-1px",
+  //   left: "50%",
+  //   borderRadius: "50%",
+  //   minHeight: 20,
+  //   transform: "translateX(-50%)",
+  //   "& > p": {
+  //     ...theme.typography.body1,
+  //     fontSize: 10,
+  //     color: theme.palette.text.white,
+  //     position: "absolute",
+  //     left: "50%",
+  //     top: "50%",
+  //     transform: "translate(-50%,-50%)",
+  //   },
+  // },
   checkoutScreenNote: {
     display: "flex",
     width: "80%",
@@ -561,6 +562,159 @@ const Style = makeStyles((theme) => ({
       color: theme.palette.background.seatBooked,
       "& > div": {
         background: theme.palette.background.seatBooked,
+      },
+    },
+  },
+
+  // COMBO
+  comboWrapper: {
+    position: "fixed",
+    width: "100vw",
+    height: "100vh",
+    top: 0,
+    left: 0,
+    zIndex: 100,
+    pointerEvents: "none",
+    "&.showCombo": {
+      pointerEvents: "inherit",
+    },
+    "&.showCombo > div": {
+      transform: "translateX(0)",
+    },
+  },
+  comboContainer: {
+    position: "absolute",
+    top: 0,
+    right: " 27%",
+    width: widthCombo,
+    background: theme.palette.primary.main,
+    zIndex: 3,
+    height: "100%",
+    overflowX: "hidden",
+    paddingTop: `calc(${heightHeader}px + 20px)`,
+    transform: "translateX(100%)",
+    transition: "all 0.8s",
+    "&::-webkit-scrollbar": {
+      width: 4,
+    },
+    "&::-webkit-scrollbar-track": {
+      background: theme.palette.grey[300],
+    },
+    "&::-webkit-scrollbar-thumb": {
+      background: theme.palette.background.whiteGrey,
+      borderRadius: 200,
+    },
+  },
+  comboContent: {
+    padding: "0 20px",
+    paddingBottom: 10,
+  },
+  comboHeaderTitle: {
+    marginBottom: 15,
+    backgroundColor: "#f5f5f5",
+    borderBottom: `1px dashed ${theme.palette.grey[100]}`,
+    padding: "3%",
+    "& > p": {
+      ...theme.typography.h5,
+      color: theme.palette.text.dark,
+    },
+  },
+  comboItem: {
+    display: "flex",
+    marginBottom: theme.spacing(3),
+    "& .comboLogo": {
+      paddingRight: 15,
+      "& >img": {
+        width: "100%",
+      },
+    },
+    "& .comboDetail": {
+      "& > p": {
+        ...theme.typography.h5,
+        fontSize: 15,
+        color: theme.palette.text.greenPrice,
+        paddingLeft: theme.spacing(2.9),
+        letterSpacing: 1,
+      },
+    },
+    "& .comboCount": {
+      display: "flex",
+      justifyContent: "flex-end",
+      "& > span": {
+        ...theme.typography.h6,
+        color: theme.palette.text.dark,
+        border: `1px solid ${theme.palette.grey[300]}`,
+        borderRadius: 4,
+        height: 32,
+        width: 32,
+        lineHeight: "32px",
+        textAlign: "center",
+        display: "block",
+        margin: "0 2px",
+      },
+      "& > button": {
+        ...theme.typography.h6,
+        "&.btnDiminish": {
+          border: "transparent",
+          color: theme.palette.grey[500],
+          height: 32,
+          minWidth: 32,
+          width: 32,
+          "& .MuiButton-label": {
+            transform: "scaleX(3)",
+          },
+        },
+        "&.btnAdd": {
+          border: "transparent",
+          color: theme.palette.secondary.main,
+          height: 32,
+          minWidth: 32,
+          width: 32,
+          "& .MuiButton-label": {
+            transform: "scale(1.5)",
+          },
+        },
+      },
+    },
+  },
+  collapse: {
+    boxShadow: "none",
+    "&.MuiAccordion-root.Mui-expanded": {
+      margin: 0,
+    },
+    "& > div": {
+      padding: 0,
+      alignItems: "flex-start",
+      minHeight: 0,
+      "&.MuiAccordionSummary-root.Mui-expanded": {
+        minHeight: 0,
+      },
+      "& > div": {
+        margin: 0,
+        display: "block",
+        ...theme.typography.h6,
+        color: theme.palette.text.dark,
+        "&.MuiAccordionSummary-content.Mui-expanded": {
+          margin: 0,
+        },
+        "& > img": {
+          width: 18,
+          height: 18,
+          marginRight: 6,
+          position: "relative",
+          top: "4px",
+        },
+      },
+    },
+    "& .collapseDetails": {
+      padding: "4px 29px",
+      "& > p": {
+        ...theme.typography.h6,
+        fontSize: 11,
+        color: theme.palette.grey[500],
+        margin: 0,
+        marginTop: 3,
+        whiteSpace: "pre-line",
       },
     },
   },

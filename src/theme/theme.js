@@ -46,6 +46,7 @@ const theme = createMuiTheme({
       ogrange: "#f79320",
     },
     background: {
+      greenSucces: "#4cb050",
       dark: "#222",
       blue: "#60c5ef",
       blackBlur: "rgba(0, 0, 0, 0.7)",

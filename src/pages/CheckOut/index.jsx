@@ -1,7 +1,4 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Avatar,
   Box,
   Button,
@@ -21,8 +18,7 @@ import AvatarImg from "../../assets/imgs/avatar.png";
 import ComboImg from "../../assets/imgs/popcorn.png";
 import AvaCinema from "../../assets/imgs/cinema1.png";
 import Screen from "../../assets/imgs/screen.png";
-import Combo from "../../assets/imgs/combo.png";
-import Information from "../../assets/imgs/information.png";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import MethodPayAtm from "../../assets/imgs/methodPayAtm.png";
 import MethodPayCC from "../../assets/imgs/methodPaycc.png";
 import MethodPayoo from "../../assets/imgs/methodPayoo.png";
@@ -34,6 +30,7 @@ import { getCinemaCheckout } from "../../redux/actions/cinemaActions";
 import { ModalCombo } from "../../components/ModalPopup";
 import { SET_MODAL_COMBO } from "../../redux/actions/actionContants";
 import SeatItem from "../../components/SeatItem";
+import ComboItem from "../../components/ComboItem";
 
 const arrMethodPay = [
   { value: "atm", label: "Thanh toán qua ZaloPay", img: MethodZalo },
@@ -54,17 +51,22 @@ const CheckOut = (props) => {
   const seatList = useSelector((state) => state.cinema.cinemaCheckoutSeat);
   const modalCombo = useSelector((state) => state.status.modalCombo);
   const dataCombo = useSelector((state) => state.combo.combo);
+  const ticketBooking = useSelector(
+    (state) => state.cinema.cinemaCheckoutBookingTicket
+  );
+  const priceSeat = useSelector((state) => state.cinema.cinemaPriceTicket);
+  const seatBooking = useSelector((state) => state.cinema.cinemaSeatBooking);
 
-  const [ticketTotal, setTicketTotal] = useState({
-    price: 0,
-  });
-  const [priceSeat, setPriceSet] = useState(0);
+  const [ticketTotal, setTicketTotal] = useState(0);
   const [priceCombo, setPriceCombo] = useState(0);
   const [methodPay, setMethodPay] = useState(false);
   const [totalSeconds, setTotalSeconds] = useState(300);
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(5);
   const [value, setValue] = useState("atm");
+  const [btnSuccess, setBtnSuccess] = useState(true);
+  const [btnCoupon, setBtnCoupon] = useState(true);
+  const [coupon, setCoupon] = useState("");
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -76,7 +78,11 @@ const CheckOut = (props) => {
     return seatListVip.map((seat, index) => {
       return (
         <Grid key={index} item md={1} sm={1}>
-          <SeatItem seat={seat} />
+          <SeatItem
+            seat={seat}
+            funcBtn={setBtnSuccess}
+            funcMethodPay={setMethodPay}
+          />
         </Grid>
       );
     });
@@ -84,12 +90,15 @@ const CheckOut = (props) => {
 
   const renderScreenSeatNormalBehind = useCallback(() => {
     const seatListNormal = seatList.filter((seat) => seat.loaiGhe === "Thuong");
-    const seatListVip = seatList.filter((seat) => seat.loaiGhe === "Vip");
 
     return seatListNormal.slice(48).map((seat, index) => {
       return (
         <Grid key={index} item md={1} sm={1}>
-          <SeatItem seat={seat} />
+          <SeatItem
+            seat={seat}
+            funcBtn={setBtnSuccess}
+            funcMethodPay={setMethodPay}
+          />
         </Grid>
       );
     });
@@ -101,7 +110,11 @@ const CheckOut = (props) => {
     return seatListNormal.slice(0, 48).map((seat, index) => {
       return (
         <Grid key={index} item md={1} sm={1}>
-          <SeatItem seat={seat} />
+          <SeatItem
+            seat={seat}
+            funcBtn={setBtnSuccess}
+            funcMethodPay={setMethodPay}
+          />
         </Grid>
       );
     });
@@ -199,37 +212,58 @@ const CheckOut = (props) => {
           </Box>
           {combo.listItem.map((item, index2) => {
             return (
-              <Grid key={index2} container className={classes.comboItem}>
-                <Grid item md={2} sm={3} className="comboLogo">
-                  <img src={Combo} alt="combo" />
-                </Grid>
-                <Grid item md={7} sm={5} className="comboDetail">
-                  <Accordion className={classes.collapse}>
-                    <AccordionSummary
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <img src={Information} alt="info" />
-                      {item.itemTitle}
-                    </AccordionSummary>
-                    <AccordionDetails className="collapseDetails">
-                      <Typography>{item.info}</Typography>
-                    </AccordionDetails>
-                  </Accordion>
-                  <Typography>{item.price}</Typography>
-                </Grid>
-                <Grid item md={3} sm={4} className="comboCount">
-                  <Button className="btnDiminish">-</Button>
-                  <Typography component="span">{item.count}</Typography>
-                  <Button className="btnAdd">+</Button>
-                </Grid>
-              </Grid>
+              <ComboItem
+                key={index2}
+                item={item}
+                count={item.count}
+                priceCombo={priceCombo}
+                funcPriceCombo={setPriceCombo}
+              />
             );
           })}
         </Box>
       );
     });
-  }, [dataCombo]);
+  }, [dataCombo, priceCombo]);
+
+  const renderSeatBooking = useCallback(() => {
+    return seatBooking?.map((seat, index) => {
+      if (index === 0) {
+        return ": " + seat;
+      }
+      return ", " + seat;
+    });
+  }, [seatBooking]);
+
+  const handleCoupon = useCallback(
+    (e) => {
+      const value = e.target.value;
+      setCoupon(value);
+      if (value === "") {
+        setBtnCoupon(true);
+      }
+    },
+    [coupon]
+  );
+
+  const handleBtnCoupon = useCallback(() => {
+    if (coupon === "") {
+      return;
+    }
+    setBtnCoupon(false);
+  }, [coupon]);
+
+  useEffect(() => {
+    if (seatBooking.length === 0) {
+      setBtnSuccess(true);
+      setMethodPay(false);
+    }
+  }, [seatBooking]);
+
+  useEffect(() => {
+    const priceTotal = priceSeat + priceCombo;
+    setTicketTotal(priceTotal);
+  }, [priceSeat, priceCombo]);
 
   useEffect(() => {
     dispatch(getCinemaCheckout());
@@ -351,7 +385,10 @@ const CheckOut = (props) => {
               <Box
                 className={`${classes.checkOutRightItem} ${classes.checkOutRightPrice}`}
               >
-                <Typography>{ticketTotal.price} đ</Typography>
+                <Typography>
+                  {ticketTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                  đ
+                </Typography>
               </Box>
 
               <Box
@@ -370,8 +407,12 @@ const CheckOut = (props) => {
               <Box
                 className={`${classes.checkOutRightItem} ${classes.checkOutRightChair}`}
               >
-                <Typography component="span">Ghế</Typography>
-                <Typography component="span">{priceSeat} đ</Typography>
+                <Typography component="span">
+                  Ghế{renderSeatBooking()}
+                </Typography>
+                <Typography component="span">
+                  {priceSeat.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} đ
+                </Typography>
               </Box>
 
               <Box
@@ -382,7 +423,10 @@ const CheckOut = (props) => {
                   <img src={ComboImg} alt="combo" />
                   Chọn combo
                 </Typography>
-                <Typography component="span">{priceCombo} đ</Typography>
+                <Typography component="span">
+                  {priceCombo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+                  đ
+                </Typography>
               </Box>
 
               <Box
@@ -408,10 +452,16 @@ const CheckOut = (props) => {
                   label="Mã giảm giá"
                   className={classes.input}
                   placeholder="Nhập tại đây..."
+                  type="search"
+                  onChange={handleCoupon}
                 />
-                <Button variant="contained" disabled>
-                  Áp dụng
-                </Button>
+                {btnCoupon ? (
+                  <Button disabled={btnSuccess} onClick={handleBtnCoupon}>
+                    Áp dụng
+                  </Button>
+                ) : (
+                  <CheckCircleOutlineIcon />
+                )}
               </Box>
 
               <Box
@@ -451,7 +501,7 @@ const CheckOut = (props) => {
               </Box>
             </Box>
             <Box className={classes.checkOutRightBtn}>
-              <Button variant="contained" disabled>
+              <Button variant="contained" disabled={btnSuccess}>
                 Đặt Vé
               </Button>
             </Box>

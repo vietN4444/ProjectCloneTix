@@ -4,14 +4,10 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "react-circular-progressbar/dist/styles.css";
-// import SweetAlert from "sweetalert2-react";
-import { withSwalInstance } from "sweetalert2-react";
-import Swal from "sweetalert2";
 
 import backgroundSlider from "../../assets/imgs/movieBackground.jpg";
 import Star from "../../assets/imgs/star.png";
 import ListStar from "../../assets/imgs/listStar.png";
-import Avatar from "../../assets/imgs/avatar.png";
 import PlayVideo from "../../assets/imgs/play-video.png";
 
 import MovieItemCard from "../../components/MovieItemCard";
@@ -22,10 +18,7 @@ import { ModalComments, ModalVideoPopup } from "../../components/ModalPopup";
 import NavbarTabTitle from "../../components/NavbarTabTitle";
 import SchedulesPagesDetail from "../../components/SchedulesPagesDetail";
 import Comments from "../../components/Comments";
-import {
-  SET_MODAL_COMMENTS,
-  SET_MODAL_TRAILER,
-} from "../../redux/actions/actionContants";
+import { SET_MODAL_COMMENTS } from "../../redux/actions/actionContants";
 import MobileSchedulesDetailMovie from "../../components/MobileSchedulesDetailMovie";
 
 const arrNavbar = ["Lịch chiếu", "Thông Tin", "Đánh Giá"];
@@ -39,6 +32,7 @@ const arrInfoMovie = {
 };
 
 const domainImg = "https://ui-avatars.com/api/?name=";
+const domainImgTwo = "https://i.pravatar.cc/150?u=";
 
 const DetailPages = (props) => {
   const classes = Style(props);
@@ -46,21 +40,12 @@ const DetailPages = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const SweetAlert = withSwalInstance(
-    Swal.mixin({
-      icon: "error",
-      onClose: () => {
-        dispatch({ type: SET_MODAL_TRAILER });
-      },
-    })
-  );
-
   const statusTrailer = useSelector((state) => state.status.modalTrailer);
   const statusComments = useSelector((state) => state.status.modalComments);
   const comments = useSelector((state) => state.comments.listComments);
   const user = useSelector((state) => state.auth);
 
-  const [imgAvatar, setImgAvatar] = useState(domainImg);
+  const [imgAvatar, setImgAvatar] = useState(domainImgTwo);
   const [tab, setTab] = useState(0);
   const [checked, setChecked] = useState(false);
   const [detailMovie, setDetailMovie] = useState(null);
@@ -102,7 +87,6 @@ const DetailPages = (props) => {
   };
 
   window.addEventListener("resize", changeRes);
-  console.log(detailMovie);
 
   useEffect(() => {
     dispatch(getDetailMovie(id)).then((res) => {
@@ -170,7 +154,7 @@ const DetailPages = (props) => {
               <img
                 src={`${imgAvatar}${user.userName}`}
                 alt="avatar"
-                onError={() => setImgAvatar(Avatar)}
+                onError={() => setImgAvatar(domainImg)}
               />
               <Typography>Bạn nghĩ gì về phim này?</Typography>
               {displayListstar ? (
@@ -328,18 +312,7 @@ const DetailPages = (props) => {
           <Fade in={checked}>{renderTabContent()}</Fade>
         </Box>
       </Box>
-      {detailMovie?.trailer.includes("https://www.youtube.com/embed") ? (
-        statusTrailer ? (
-          <ModalVideoPopup />
-        ) : null
-      ) : (
-        <SweetAlert
-          show={statusTrailer}
-          title="Opps..."
-          text="Phim chưa có trailer"
-          confirmButtonColor="#fb4226"
-        />
-      )}
+      {statusTrailer ? <ModalVideoPopup /> : null}
       {statusComments ? <ModalComments /> : null}
     </Box>
   );

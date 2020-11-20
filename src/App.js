@@ -28,7 +28,7 @@ function App() {
         <Route path="/profile" component={Profile} />
         <Route path="/signin" component={SignIn} />
         <Route path="/signup" component={SignUp} />
-        <Route path="/checkout" component={CheckOut} />
+        <Route path="/checkout/:id" component={CheckOut} />
         <Route path="/detail/:id" component={DetailPages} />
         <Route path="/" component={Home} />
       </Switch>

@@ -70,11 +70,10 @@ export const getCinemaByMovie = (nameMovie) => {
 export const getCinemaCheckout = (id) => {
   return (dispatch) => {
     connector({
-      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=17017`,
+      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${id}`,
       method: "GET",
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_CINEMA_CHECKOUT,
           payload: res.data,

@@ -60,7 +60,7 @@ const MovieList = ({ res, ...props }) => {
 
   const handleViewMore = useCallback(() => {
     if (!tab) {
-      if (countPageMobileMovieList >= mobilePage - 1)
+      if (countPageMobileMovieList > mobilePage - 1)
         return setToggleBtnViewMore(false);
       let count = countPageMobileMovieList + 1;
       setCountMPML(count);
@@ -89,6 +89,7 @@ const MovieList = ({ res, ...props }) => {
   const renderMovieList = useCallback(() => {
     if (!tab) {
       return movieList.map((ele, index) => {
+        if (ele.count === 0) return;
         return (
           <Fade
             key={index}
@@ -258,7 +259,9 @@ const MovieList = ({ res, ...props }) => {
             <Slider {...settingsTwo}>{renderMovieList()}</Slider>
           </Box>
         ) : (
-          <Box className={classes.movieListWrapper}>{renderMovieListMobile()}</Box>
+          <Box className={classes.movieListWrapper}>
+            {renderMovieListMobile()}
+          </Box>
         )}
       </Container>
     </>

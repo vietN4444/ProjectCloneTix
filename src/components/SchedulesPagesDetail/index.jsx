@@ -17,7 +17,7 @@ import EventIcon from "@material-ui/icons/Event";
 import AvaCGV from "../../assets/imgs/avacgv.jpg";
 
 import Style from "./style";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const arrAvatarCinema = {
   BHDStar:
@@ -65,15 +65,18 @@ function a11yProps(index) {
 // Schedules Item
 const TabsSchdulesItem = ({ id, dataMovie, ...props }) => {
   const classes = Style(props);
+  const history = useHistory();
   let currentID = id;
 
   const renderTabsBtnItem = useCallback(() => {
     return dataMovie.lichChieuPhim?.map((btn, index) => {
-      // if (index >= 10) return null;
       const newStr = btn.ngayChieuGioChieu.replace("T", " - ");
       return (
         <Grid key={index} item md={4} sm={4}>
-          <Link to="" className={classes.txtTabsItemBtn}>
+          <Link
+            to={"/checkout/" + btn.maLichChieu}
+            className={classes.txtTabsItemBtn}
+          >
             <EventIcon />
             <Typography component="span">{newStr.slice(0, 18)}</Typography>
           </Link>

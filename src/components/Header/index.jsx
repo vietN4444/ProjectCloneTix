@@ -34,6 +34,7 @@ const navBar = [
 ];
 
 const domainImg = "https://ui-avatars.com/api/?name=";
+const domainImgTwo = "https://i.pravatar.cc/150?u=";
 
 function HeaderComponent(props) {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ function HeaderComponent(props) {
   const user = useSelector((state) => state.auth);
 
   const [openMenu, setOpenMenu] = useState(false);
-  const [imgAvatar, setImgAvatar] = useState(domainImg);
+  const [imgAvatar, setImgAvatar] = useState(domainImgTwo);
   const [gutterContainer, setGutterContainer] = useState(true);
   const [displayHeaderNav, setDisplayHeaderNav] = useState(true);
   const [displayMobile, setDisplayMobile] = useState(false);

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Box, CardActionArea, CardMedia } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 
 import {
   SET_MODAL_TRAILER,
@@ -18,21 +19,34 @@ const MovieItemCard = ({ data, ...props }) => {
   const classes = Style(props);
   const { hinhAnh, trailer, maPhim } = data;
 
+  const funcText = useCallback(() => {
+    return Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Phim chưa có trailer chính thức",
+      confirmButtonColor: "#fb4226",
+    });
+  }, []);
+
   const setTrailer = (e) => {
     e.stopPropagation();
-    dispatch({
-      type: SET_TRAILER,
-      payload: trailer,
-    });
-    dispatch({
-      type: SET_MODAL_TRAILER,
-    });
+    if (trailer.includes("https://www.youtube.com/embed")) {
+      dispatch({
+        type: SET_TRAILER,
+        payload: trailer,
+      });
+      dispatch({
+        type: SET_MODAL_TRAILER,
+      });
+    } else {
+      funcText();
+    }
   };
 
   return (
     <CardActionArea
       className={classes.movieItemContent}
-      onClick={() => history.push("/detail/" + maPhim)}
+      onClick={() => history.replace("/detail/" + maPhim)}
     >
       <CardMedia
         component="img"

@@ -17,6 +17,7 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   auth: authReducer,
   cinema: cinemaReducer,
+  comments: commentsReducer,
   combo: comboReducer,
 });
 

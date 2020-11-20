@@ -1,8 +1,8 @@
 const heightHeader = 80;
 const heightBtn = 60;
 const screenBody = 550;
-const widthHeightSeat = 32;
 const widthHeightSeatNote = 18;
+const paddingTopCheckoutLeftContainer = 30;
 const widthCombo = 465;
 
 const { makeStyles } = require("@material-ui/core");
@@ -392,7 +392,6 @@ const Style = makeStyles((theme) => ({
     height: "100%",
   },
   checkOutLeftContainer: {
-    // height: "100%",
     height: "max-content",
     width: "75%",
     display: "flex",
@@ -404,12 +403,13 @@ const Style = makeStyles((theme) => ({
   checkOutLeftContent: {
     width: "93%",
     background: theme.palette.primary.main,
-    paddingTop: 30,
+    paddingTop: paddingTopCheckoutLeftContainer,
   },
   checkOutLeftGrid: {
     width: "90%",
     margin: "0 auto",
   },
+
   // &Header
   checkOutLeftHeader: {
     display: "flex",
@@ -534,6 +534,98 @@ const Style = makeStyles((theme) => ({
       color: theme.palette.background.seatBooked,
       "& > div": {
         background: theme.palette.background.seatBooked,
+      },
+    },
+  },
+  // &Result
+  checkOutLeftResultContainer: {
+    height: `calc(100vh - ${heightHeader}px - ${paddingTopCheckoutLeftContainer}px)`,
+    position: "relative",
+  },
+  resultContent: {
+    position: "absolute",
+    top: "45%",
+    left: "50%",
+    transform: "translate(-50%,-50%)",
+    width: "60%",
+    height: "80%",
+    borderRadius: 6,
+    overflow: "hidden",
+    border: `1px solid ${theme.palette.grey[200]}`,
+    display: "flex",
+    flexDirection: "column",
+  },
+  headerResult: {
+    padding: 14,
+    background: theme.palette.secondary.main,
+    "& > p": {
+      ...theme.typography.h6,
+      color: theme.palette.text.white,
+      textAlign: "center",
+      textTransform: "uppercase",
+    },
+  },
+  bodyResult: {
+    flex: 1,
+    background: theme.palette.background.whiteRgba,
+    "& .resultAvatar": {
+      "& > div": {
+        background: theme.palette.secondary.main,
+      },
+    },
+    "& .resultItem": {
+      "& > p": {
+        ...theme.typography.subtitle1,
+        "& > span": {
+          ...theme.typography.subtitle1,
+          paddingLeft: 20,
+        },
+      },
+    },
+    "& .resultCinema ": {
+      "& > span > p": {
+        ...theme.typography.subtitle1,
+        "& > span": {
+          ...theme.typography.subtitle1,
+          paddingLeft: 20,
+        },
+      },
+    },
+    "& .resultSeat": {
+      "& > span > p": {
+        marginBottom: 10,
+        ...theme.typography.subtitle1,
+        "& > span": {
+          ...theme.typography.subtitle1,
+          paddingLeft: 20,
+        },
+      },
+    },
+    "& .resultPrice": {
+      "& > p": {
+        "& > span": {
+          color: theme.palette.text.greenPrice,
+        },
+      },
+    },
+  },
+
+  seatResult: {
+    textAlign: "center",
+    background: theme.palette.secondary.main,
+    color: theme.palette.text.white,
+    padding: "8px 0",
+    borderRadius: 4,
+  },
+  btnGroupResult: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: "8px 5px",
+    "& > button": {
+      padding: "10px 8px",
+      "& .MuiButton-label": {
+        ...theme.typography.subtitle1,
+        textTransform: "none",
       },
     },
   },

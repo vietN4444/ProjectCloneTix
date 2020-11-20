@@ -8,8 +8,6 @@ import {
   getPages,
 } from "../../redux/actions/movieActions";
 import Wrapper from "../../HOCs/functionWrapper";
-import { withSwalInstance } from "sweetalert2-react";
-import Swal from "sweetalert2";
 
 import SliderComponent from "../../components/Slider";
 import BoxBooking from "../../components/BoxBooking";
@@ -25,17 +23,13 @@ import ArrowToTop from "../../assets/imgs/arrowToTop.png";
 import Style from "./style";
 import { getCinemaInformation } from "../../redux/actions/cinemaActions";
 import Gif from "../../assets/imgs/Gif.gif";
-import {
-  DELETE_CINEMA_DATA,
-  SET_MODAL_TRAILER,
-} from "../../redux/actions/actionContants";
+import { DELETE_CINEMA_DATA } from "../../redux/actions/actionContants";
 
 const Home = (props) => {
   const classes = Style(props);
   const dispatch = useDispatch();
 
   const statusTrailer = useSelector((state) => state.status.modalTrailer);
-  const trailer = useSelector((state) => state.movie.trailer);
   const page = useSelector((state) => state.movie.pages);
 
   const [componentSlider, setComponentSlider] = useState(true);
@@ -44,15 +38,6 @@ const Home = (props) => {
   const [movieListMobile, setMovieListMobile] = useState(false);
   const [schedules, setSchedules] = useState(true);
   const [loadingImage, setLoadingImage] = useState(true);
-
-  const SweetAlert = withSwalInstance(
-    Swal.mixin({
-      icon: "error",
-      onClose: () => {
-        dispatch({ type: SET_MODAL_TRAILER });
-      },
-    })
-  );
 
   const changeRes = () => {
     if (window.innerWidth <= 992) {
@@ -141,18 +126,7 @@ const Home = (props) => {
           </IconButton>
         ) : null}
         {/* {status ? <ModalVideoPopup /> : <></>} */}
-        {trailer.includes("https://www.youtube.com/embed") ? (
-          statusTrailer ? (
-            <ModalVideoPopup />
-          ) : null
-        ) : (
-          <SweetAlert
-            show={statusTrailer}
-            title="Opps..."
-            text="Phim chưa có trailer"
-            confirmButtonColor="#fb4226"
-          />
-        )}
+        {statusTrailer ? <ModalVideoPopup /> : null}
       </Box>
     </Box>
   );

@@ -14,7 +14,7 @@
     "axios": "^0.20.0",
     "date-fns": "^2.16.1",
     "prop-types": "^15.7.2",
-    "react": "^16.13.1",
+    "react": "^16.14.0",
     "react-circular-progressbar": "^2.0.3",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
@@ -25,7 +25,8 @@
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
     "sweetalert2": "^10.9.1",
-    "sweetalert2-react": "^0.8.3"
+    "sweetalert2-react": "^0.8.3",
+    "sweetalert2-react-content": "^3.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

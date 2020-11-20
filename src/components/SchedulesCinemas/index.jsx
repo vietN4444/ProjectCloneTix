@@ -228,7 +228,10 @@ const TabsSchdulesItem = ({ dataMovie, ...props }) => {
       const indexStr = btn.ngayChieuGioChieu.search("T");
       return (
         <Grid key={index} item md={3}>
-          <Link to="" className={classes.txtTabsItemBtn}>
+          <Link
+            to={"/checkout/" + btn.maLichChieu}
+            className={classes.txtTabsItemBtn}
+          >
             <EventIcon />
             <Typography component="span">
               {btn.ngayChieuGioChieu.slice(indexStr + 1, indexStr + 6)}

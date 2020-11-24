@@ -265,10 +265,6 @@ const Style = makeStyles((theme) => ({
   "@media (max-width: 600px)": {
     tabStatsItem: {
       width: "100%",
-    },
-  },
-  "@media (max-width: 600px)": {
-    tabStatsItem: {
       "& > ul": {
         "& > li": {
           "& > p": {

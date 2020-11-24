@@ -100,6 +100,25 @@ const Style = makeStyles((theme) => ({
       },
     },
   },
+  "@media (max-width: 600px)": {
+    comboItem: {
+      "& .comboLogo": {
+        flexGrow: 0,
+        maxWidth: "16.666667%",
+        flexBasis: "16.666667%",
+      },
+      "& .comboDetail": {
+        flexGrow: 0,
+        maxWidth: "58.333333%",
+        flexBasis: "58.333333%",
+      },
+      "& .comboCount": {
+        flexGrow: 0,
+        maxWidth: "25%",
+        flexBasis: "25%",
+      },
+    },
+  },
 }));
 
 export default Style;

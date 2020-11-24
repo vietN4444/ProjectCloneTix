@@ -131,16 +131,16 @@ export const ModalComments = (props) => {
       type: SET_MODAL_COMMENTS,
     });
     setErros(false);
-  }, [comments]);
+  }, [comments, dispatch]);
 
   useEffect(() => {
     changeRes();
-    setTimeout(setChecked(!checked), 500);
+    setTimeout(setChecked(true), 500);
   }, []);
 
   useEffect(() => {
     setComments({ ...comments, userName: userName });
-  }, [userName]);
+  }, [userName, comments]);
 
   return (
     <Fade in={checked}>
@@ -211,7 +211,7 @@ export const ModalCombo = (props) => {
   };
 
   useEffect(() => {
-    setTimeout(setChecked(!checked), 300);
+    setTimeout(setChecked(true), 300);
   }, []);
 
   return (

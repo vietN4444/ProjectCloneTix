@@ -25,7 +25,7 @@ const NavbarTabTitle = ({ dataNav, navPage, handleSetTab, tab, ...props }) => {
         </Box>
       );
     });
-  }, [dataNav, tab]);
+  }, [dataNav, tab, navPage, handleSetTab]);
 
   return (
     <Box className={classes.boxTitle} mb={2}>

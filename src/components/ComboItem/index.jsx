@@ -34,10 +34,10 @@ const ComboItem = ({ funcPriceCombo, priceCombo, count, item, ...props }) => {
 
   return (
     <Grid container className={classes.comboItem}>
-      <Grid item md={2} sm={3} className="comboLogo">
+      <Grid item md={2} sm={2} className="comboLogo">
         <img src={Combo} alt="combo" />
       </Grid>
-      <Grid item md={7} sm={5} className="comboDetail">
+      <Grid item md={7} sm={7} className="comboDetail">
         <Accordion className={classes.collapse}>
           <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
             <img src={Information} alt="info" />
@@ -51,7 +51,7 @@ const ComboItem = ({ funcPriceCombo, priceCombo, count, item, ...props }) => {
           {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} đ
         </Typography>
       </Grid>
-      <Grid item md={3} sm={4} className="comboCount">
+      <Grid item md={3} sm={3} className="comboCount">
         <Button
           className="btnDiminish"
           onClick={() => handleBtnCombo(0, item.price)}

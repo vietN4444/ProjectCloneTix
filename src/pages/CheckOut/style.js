@@ -1,5 +1,8 @@
 const heightHeader = 80;
+const heightHeaderMobile = 60;
 const heightBtn = 60;
+const heightBtnBox = 70;
+const heightBtnBoxMobile = 50;
 const screenBody = 550;
 const widthHeightSeatNote = 18;
 const paddingTopCheckoutLeftContainer = 30;
@@ -8,6 +11,9 @@ const widthCombo = 465;
 const { makeStyles } = require("@material-ui/core");
 
 const Style = makeStyles((theme) => ({
+  checkOut: {
+    position: "relative",
+  },
   header: {
     width: "100%",
     height: heightHeader,
@@ -78,6 +84,8 @@ const Style = makeStyles((theme) => ({
   checkOutContainer: {
     height: `calc(100vh - ${heightHeader}px)`,
   },
+
+  // Checkout Right
   checkOutRightContainer: {
     position: "fixed",
     top: 0,
@@ -87,6 +95,10 @@ const Style = makeStyles((theme) => ({
     background: theme.palette.primary.main,
     zIndex: 101,
     boxShadow: "0 0 15px rgba(0, 0, 0, 0.3)",
+    "&.checkOutRightComfirm": {
+      pointerEvents: "none",
+      filter: "grayscale(1)",
+    },
   },
   checkOutRightContent: {
     height: `calc(100% - ${heightBtn}px)`,
@@ -246,11 +258,16 @@ const Style = makeStyles((theme) => ({
         "& input": {
           ...theme.typography.subtitle1,
           color: theme.palette.text.dark,
+          "&:-webkit-autofill": {
+            // backgroundColor: "transparent!important",
+            WebkitBoxShadow: "0 0 0 30px #fff inset",
+          },
         },
       },
       "& > label": {
         ...theme.typography.subtitle1,
         color: theme.palette.grey[500],
+        zIndex: 10,
       },
       "& .MuiFormLabel-root.Mui-focused": {
         color: theme.palette.text.blue,
@@ -291,7 +308,7 @@ const Style = makeStyles((theme) => ({
     position: "absolute",
     bottom: 60,
     left: 0,
-    zIndex: 2,
+    zIndex: 20,
     background: theme.palette.primary.main,
     width: "calc(100% - 4px)",
     marginTop: "auto",
@@ -544,11 +561,11 @@ const Style = makeStyles((theme) => ({
   },
   resultContent: {
     position: "absolute",
-    top: "45%",
+    top: "48%",
     left: "50%",
     transform: "translate(-50%,-50%)",
     width: "60%",
-    height: "80%",
+    height: "100%",
     borderRadius: 6,
     overflow: "hidden",
     border: `1px solid ${theme.palette.grey[200]}`,
@@ -605,6 +622,7 @@ const Style = makeStyles((theme) => ({
       "& > p": {
         "& > span": {
           color: theme.palette.text.greenPrice,
+          fontSize: `${theme.typography.h5.fontSize}px!important`,
         },
       },
     },
@@ -681,6 +699,249 @@ const Style = makeStyles((theme) => ({
     "& > p": {
       ...theme.typography.h5,
       color: theme.palette.text.dark,
+    },
+  },
+  btnBoxFixed: {
+    position: "fixed",
+    width: "100vw",
+    height: "100vh",
+    top: 0,
+    left: 0,
+    pointerEvents: "none",
+    zIndex: 20,
+  },
+  btnBox: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    height: heightBtnBox,
+    width: "100%",
+    background: theme.palette.primary.main,
+    boxShadow: "0 -1px 0 0 #dadada, 0 1px 0 0 #dadada",
+    pointerEvents: "auto",
+  },
+  btnBoxItem: {
+    "& > div": {
+      ...theme.typography.subtitle1,
+      background: theme.palette.grey[600],
+      width: "100%",
+      textAlign: "center",
+      "&.active": {
+        backgroundImage: "linear-gradient(223deg,#b4ec51 0,#429321 100%)",
+      },
+      "&.txtSeat": {
+        background: theme.palette.primary.main,
+        "& > span": {
+          fontSize: 15,
+          color: theme.palette.text.greenPrice,
+        },
+      },
+      "& > span": {
+        lineHeight: "70px",
+        fontSize: 19,
+        color: theme.palette.text.lightGrey,
+      },
+    },
+  },
+
+  "@media (max-width: 1024px)": {
+    checkOutRightContainer: {
+      width: "27%",
+    },
+    containerRight: {
+      marginRight: "6%",
+    },
+  },
+  "@media (max-width: 900px)": {
+    checkOutLeftBody: {
+      overflow: "scroll",
+      margin: "0 -5%",
+    },
+    bodyContainer: {
+      width: 627,
+      padding: "0 5%",
+    },
+  },
+  "@media (max-width: 800px)": {
+    containerLeft: {
+      "& > p": {
+        margin: "0 20px",
+      },
+    },
+  },
+  "@media (max-width: 768px)": {
+    checkOutLeftBody: {
+      overflow: "scroll",
+      margin: 0,
+    },
+    bodyContainer: {
+      width: "100%",
+      padding: 0,
+    },
+    comboContainer: {
+      right: 0,
+      width: "100%",
+      paddingTop: 20,
+    },
+    checkOutLeftContent: {
+      width: "100%",
+    },
+    checkOutLeftContainer: {
+      width: "100%",
+      paddingBottom: 80,
+    },
+    header: {
+      height: heightHeaderMobile,
+    },
+    headerContainer: {
+      width: "100%",
+      height: heightHeaderMobile,
+    },
+    containerRight: {
+      marginRight: "2%",
+    },
+    headerWrapper: {
+      position: "relative",
+      justifyContent: "flex-end",
+    },
+    containerLeft: {
+      textAlign: "center",
+      padding: 0,
+      position: "absolute",
+      top: 0,
+      left: "50%",
+      transform: "translateX(-50%)",
+      "& > p": {
+        fontSize: theme.typography.subtitle1.fontSize,
+        "& > span": {
+          fontSize: "inherit",
+        },
+      },
+    },
+    checkOutRightContainer: {
+      width: "100%",
+      position: "inherit",
+    },
+    checkOutRightNotice: {
+      position: "inherit",
+    },
+    checkOutmethodPay: {
+      margin: "4% 0",
+    },
+    resultContent: {
+      width: "70%",
+      height: "fit-content",
+      margin: "6% 0",
+    },
+    comboWrapper: {
+      zIndex: 102,
+    },
+    btnBox: {
+      "&.combo": {
+        zIndex: 22,
+      },
+    },
+    btnBoxItem: {
+      "&.priceCombo": {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        "& > p": {
+          fontSize: 30,
+          lineHeight: 0.8,
+          marginRight: 4,
+          color: theme.palette.text.greenPrice,
+        },
+        "& > div": {
+          width: "auto",
+          display: "flex",
+          background: "none",
+          flexDirection: "column",
+          "& > span": {
+            lineHeight: 1,
+            fontSize: 12,
+            color: theme.palette.text.greenPrice,
+          },
+        },
+      },
+    },
+  },
+
+  "@media (max-width: 600px)": {
+    btnBoxItem: {
+      flexGrow: 0,
+      maxWidth: "50%",
+      flexBasis: "50%",
+    },
+    checkoutScreenSeatList: {
+      "& > div": {
+        flexGrow: 0,
+        maxWidth: "8.333333%",
+        flexBasis: "8.333333%",
+      },
+    },
+    checkOutLeftBody: {
+      position: "relative",
+      margin: "0 -5%",
+    },
+    bodyContainer: {
+      width: 600,
+    },
+    gridSeatResult: {
+      flexGrow: 0,
+      maxWidth: "16.666667%",
+      flexBasis: "16.666667%",
+    },
+    checkOutLeftResultContainer: {
+      height: "100%",
+    },
+  },
+  "@media (max-width: 460px)": {
+    resultContent: {
+      marginTop: 60,
+      width: "90%",
+    },
+    containerLeft: {
+      "& > p": {
+        margin: 0,
+      },
+    },
+  },
+  "@media (max-width: 425px)": {
+    btnBox: {
+      height: heightBtnBoxMobile,
+    },
+    btnBoxItem: {
+      "& > div": {
+        "&> span": {
+          lineHeight: "50px",
+        },
+      },
+      "& > div.txtSeat > span": {
+        fontSize: 14,
+      },
+    },
+    checkoutScreenNote: {
+      width: "100%",
+    },
+    gridSeatResult: {
+      flexGrow: 0,
+      maxWidth: "33.333333%",
+      flexBasis: "33.333333%",
+    },
+    bodyResult: {
+      "& .resultItem > span > p > span": {
+        paddingLeft: 10,
+      },
+      "& .resultUser > span > p": {
+        textOverflow: "ellipsis",
+        overflow: "hidden",
+      },
+    },
+  },
+  "@media (max-width: 343px)": {
+    resultContent: {
+      width: "94%",
     },
   },
 }));

@@ -48,6 +48,19 @@ const Style = makeStyles((theme) => ({
       transform: "translate(-50%,-50%)",
     },
   },
+
+  "@media (max-width: 600px)": {
+    seatBtn: {
+      "& > svg": {
+        width: 30,
+        height: 30,
+      },
+    },
+    seatNumber: {
+      width: 18,
+      minHeight: 18,
+    },
+  },
 }));
 
 export default Style;

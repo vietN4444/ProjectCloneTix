@@ -12,6 +12,7 @@ const SignUp = (props) => {
     e.preventDefault();
   };
   const handleChange = () => {};
+
   return (
     <Box className={classes.login}>
       <Box className={classes.loginWrapper}>

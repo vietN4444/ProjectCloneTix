@@ -3,17 +3,18 @@ import React, { memo, useCallback, useState } from "react";
 import WeekendIcon from "@material-ui/icons/Weekend";
 
 import Style from "./style";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_TICKET_BOOKING } from "../../redux/actions/actionContants";
 
 const SeatItem = ({ funcMethodPay, funcBtn, seat, ...props }) => {
   const classes = Style(props);
   const dispatch = useDispatch();
 
+  const data = useSelector((state) => state.cinema.cinemaSeatBooking);
+
   const [seatChosing, setSeatChosing] = useState(false);
 
   const handleBooking = useCallback(() => {
-    setSeatChosing(!seatChosing);
     dispatch({
       type: SET_TICKET_BOOKING,
       payload: {
@@ -21,9 +22,14 @@ const SeatItem = ({ funcMethodPay, funcBtn, seat, ...props }) => {
         tenGhe: seat.tenGhe,
       },
     });
+
+    setSeatChosing(!seatChosing);
+    if (data.length === 6) {
+      setTimeout(setSeatChosing(false), 500);
+    }
     funcBtn(false);
     funcMethodPay(true);
-  }, [seatChosing, seat]);
+  }, [seatChosing, seat, data]);
 
   return (
     <Box

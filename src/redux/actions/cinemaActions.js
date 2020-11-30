@@ -84,3 +84,20 @@ export const getCinemaCheckout = (id) => {
       });
   };
 };
+
+export const bookedTicket = (alert, dataTicket) => {
+  return (dispatch) => {
+    connector({
+      url: "https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/DatVe",
+      method: "POST",
+      data: dataTicket,
+    })
+      .then((res) => {
+        console.log(res.data);
+        alert();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};

@@ -27,6 +27,13 @@ const Style = makeStyles((theme) => ({
         background: `${theme.palette.background.seatChoosing}!important`,
       },
     },
+    "&.booked": {
+      color: theme.palette.background.seatBooked,
+      cursor: "unset",
+      "& > div": {
+        background: `${theme.palette.background.seatBooked}!important`,
+      },
+    },
   },
 
   seatNumber: {

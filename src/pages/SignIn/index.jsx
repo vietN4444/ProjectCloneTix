@@ -2,6 +2,7 @@ import { Box, Button, TextField, Typography } from "@material-ui/core";
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 import logoLogin from "../../assets/imgs/logoLogin.png";
 import { signIn } from "../../redux/actions/userActions";
@@ -14,6 +15,15 @@ const SignIn = (props) => {
     matKhau: "",
   });
   const classes = Style(props);
+
+  const alertError = useCallback((text) => {
+    return Swal.fire({
+      icon: "error",
+      confirmButtonText: "OK",
+      confirmButtonColor: "#fb4226",
+      title: text,
+    });
+  }, []);
 
   const handleChange = useCallback(
     (e) => {
@@ -28,7 +38,7 @@ const SignIn = (props) => {
     (e) => {
       e.preventDefault();
       const currentUser = user;
-      dispatch(signIn(currentUser, props.history));
+      dispatch(signIn(currentUser, props.history, alertError));
     },
     [user, dispatch, props.history]
   );

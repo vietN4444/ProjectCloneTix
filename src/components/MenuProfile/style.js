@@ -1,3 +1,6 @@
+const heightSubMenu = 250;
+const heightSubMenuTablet = 150;
+
 const { makeStyles } = require("@material-ui/core");
 
 const Style = makeStyles((theme) => ({
@@ -69,16 +72,41 @@ const Style = makeStyles((theme) => ({
     height: theme.spacing(10),
   },
   subMenuItem: {
-    height: 250,
-    maxHeight: 250,
-    overflow: "auto",
+    height: heightSubMenu,
+    maxHeight: heightSubMenu,
     outline: "none",
     padding: 0,
+    "&.displayNone": {
+      display: "none",
+    },
     "& > li": {
       paddingTop: 10,
       paddingBottom: 10,
+      overflow: "inherit",
+      whiteSpace: "inherit",
       "& .MuiListItemIcon-root": {
         minWidth: 30,
+      },
+    },
+  },
+  "@media (max-width: 960px)": {
+    subMenuItem: {
+      height: heightSubMenuTablet,
+      maxHeight: heightSubMenuTablet,
+      paddingLeft: 5,
+      borderTop: `1px solid ${theme.palette.grey[300]}`,
+      "& > li": {
+        paddingLeft: 0,
+      },
+    },
+  },
+  "@media (max-width: 600px)": {
+    subMenuItem: {
+      width: 180,
+    },
+    menuTitle: {
+      "& > h1": {
+        fontSize: 18,
       },
     },
   },

@@ -51,6 +51,7 @@ const theme = createMuiTheme({
       blue: "#60c5ef",
       blackBlur: "rgba(0, 0, 0, 0.7)",
       whiteRgba: "rgba(238, 238, 238, 0.88)",
+      redRgba: "rgba(255, 49, 49, 0.3)",
       greyRgba: "rgba(246, 246, 246, 0.5)",
       blueDark: "rgb(10, 32, 41)",
       green: "#7ed321",

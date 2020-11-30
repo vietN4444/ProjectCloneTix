@@ -6,20 +6,23 @@ import { getCinemaByMovie } from "../../redux/actions/cinemaActions";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Style from "./style";
+import { useHistory } from "react-router-dom";
 
 const BoxBooking = (props) => {
   const dispatch = useDispatch();
   const bookingRef = useRef();
+  const history = useHistory();
+
   const [label, setLabel] = useState({
     movie: "Phim",
     cinema: "Rạp",
     schedules: "Ngày giờ suất chiếu",
   });
   const [time, setTime] = useState([]);
-
   const [dropMovie, setDropMovie] = useState(false);
   const [dropCinema, setDropCinema] = useState(false);
   const [dropSchedules, setDropSchedules] = useState(false);
+  const [movieBooking, setMovieBooking] = useState("");
 
   const movieList = useSelector((state) => state.movie.movieBoxBooking);
   const cinemaList = useSelector((state) => state.cinema.cinemaBooking);
@@ -82,7 +85,7 @@ const BoxBooking = (props) => {
           key={index}
           className="booking__dropdownItem"
           data-value="schedules"
-          onClick={schedulesItemEvents}
+          onClick={(e) => schedulesItemEvents(e, time.maLichChieu)}
         >
           {str}
         </li>
@@ -101,8 +104,9 @@ const BoxBooking = (props) => {
     setTime(data);
   };
 
-  const schedulesItemEvents = (e) => {
+  const schedulesItemEvents = (e, id) => {
     changeLabel(e);
+    setMovieBooking(id);
   };
 
   const changeLabel = (e) => {
@@ -165,6 +169,10 @@ const BoxBooking = (props) => {
     }
     return false;
   }, [label]);
+
+  const submitBooking = useCallback(() => {
+    history.replace(`/checkout/ + ${movieBooking}`);
+  }, [movieBooking]);
 
   return (
     <>
@@ -248,6 +256,7 @@ const BoxBooking = (props) => {
                 disabled={!authBtn()}
                 className={authBtn() ? classes.btnSubmit : null}
                 fullWidth={true}
+                onClick={submitBooking}
               >
                 Mua Vé Ngay
               </Button>

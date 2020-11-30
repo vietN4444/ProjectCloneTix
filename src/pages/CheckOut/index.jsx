@@ -34,7 +34,10 @@ import MethodZalo from "../../assets/imgs/methodZalo.jpg";
 
 import Style from "./style";
 import { useDispatch, useSelector } from "react-redux";
-import { getCinemaCheckout } from "../../redux/actions/cinemaActions";
+import {
+  bookedTicket,
+  getCinemaCheckout,
+} from "../../redux/actions/cinemaActions";
 import { ModalCombo } from "../../components/ModalPopup";
 import { SET_MODAL_COMBO } from "../../redux/actions/actionContants";
 import SeatItem from "../../components/SeatItem";
@@ -65,9 +68,9 @@ const CheckOut = (props) => {
   const seatList = useSelector((state) => state.cinema.cinemaCheckoutSeat);
   const modalCombo = useSelector((state) => state.status.modalCombo);
   const dataCombo = useSelector((state) => state.combo.combo);
-  // const ticketBooking = useSelector(
-  //   (state) => state.cinema.cinemaCheckoutBookingTicket
-  // );
+  const ticketBooking = useSelector(
+    (state) => state.cinema.cinemaCheckoutBookingTicket
+  );
   const priceSeat = useSelector((state) => state.cinema.cinemaPriceTicket);
   const seatBooking = useSelector((state) => state.cinema.cinemaSeatBooking);
   const authBooking = useSelector((state) => state.cinema.alertFullTicket);
@@ -165,7 +168,7 @@ const CheckOut = (props) => {
     (type = 1) => {
       const dateNow = new Date();
       const dateDay = dateNow.getDate();
-      const dateMonth = dateNow.getMonth();
+      const dateMonth = dateNow.getMonth() + 1;
       const dateYear = dateNow.getUTCFullYear();
       if (type) {
         return (
@@ -313,9 +316,13 @@ const CheckOut = (props) => {
   }, [seatBooking]);
 
   const submitCheckout = useCallback(() => {
-    setStepTwo(false);
-    setTotalSeconds(300);
-  }, []);
+    const userBooking = {
+      maLichChieu: id,
+      danhSachVe: ticketBooking,
+      taiKhoanNguoiDung: user.userName,
+    };
+    dispatch(bookedTicket(alertBookedSuccess, userBooking));
+  }, [id, ticketBooking, user]);
 
   const handleInputText = useCallback(
     (e) => {
@@ -344,6 +351,19 @@ const CheckOut = (props) => {
     });
   }, [dispatch]);
 
+  const alertBookedSuccess = useCallback(() => {
+    return Swal.fire({
+      icon: "success",
+      title: "Đặt vé thành công",
+      timer: 2000,
+      showConfirmButton: false,
+      willClose: () => {
+        setStepTwo(false);
+        setTotalSeconds(300);
+      },
+    });
+  }, []);
+
   const changeRes = () => {
     if (window.innerWidth <= 768) {
       setTabletScreen(true);
@@ -359,15 +379,15 @@ const CheckOut = (props) => {
     }
   };
 
+  const handleSubmitStepOne = useCallback(() => {
+    setStepTwoTablet(true);
+    setTabletScreenRightC(false);
+  }, []);
+
   window.addEventListener("resize", changeRes);
 
   useEffect(() => {
     changeRes();
-  }, []);
-
-  const handleSubmitStepOne = useCallback(() => {
-    setStepTwoTablet(true);
-    setTabletScreenRightC(false);
   }, []);
 
   useEffect(() => {

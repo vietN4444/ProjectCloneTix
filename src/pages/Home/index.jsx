@@ -62,7 +62,7 @@ const Home = (props) => {
 
   useEffect(() => {
     changeRes();
-    setTimeout(() => setLoadingImage(false), 900);
+    setTimeout(() => setLoadingImage(false), 2000);
   }, []);
 
   useEffect(() => {
@@ -71,9 +71,6 @@ const Home = (props) => {
       dispatch(getMovieListByPage(3, 1));
       dispatch(getMovieListByPage(4, 1));
       return;
-    }
-    for (let i = 1; i <= page; i++) {
-      setTimeout(dispatch(getMovieListByPage(i)), i * 200);
     }
   }, [page]);
 
@@ -107,9 +104,9 @@ const Home = (props) => {
         {boxBooking ? <BoxBooking /> : null}
         <SearchMovie />
         {movieListMobile ? (
-          <MovieList res={"mobile"} />
+          <MovieList resScreen={"mobile"} />
         ) : (
-          <MovieList res={"pc"} />
+          <MovieList resScreen={"pc"} />
         )}
         <Break />
         {schedules ? (

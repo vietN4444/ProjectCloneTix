@@ -3,8 +3,8 @@ const { makeStyles } = require("@material-ui/core");
 
 const Style = makeStyles((theme) => ({
   login: {
-    width: "100vw",
-    height: "100vh",
+    // width: "100vw",
+    height: "120vh",
     background: `url(${backgroundImg})`,
     backgroundSize: "contain",
   },
@@ -33,6 +33,8 @@ const Style = makeStyles((theme) => ({
   loginLogo: {
     "& a": {
       display: "block",
+      margin: "0 auto",
+      width: "fit-content",
       marginBottom: 15,
     },
     "& img": {
@@ -46,7 +48,7 @@ const Style = makeStyles((theme) => ({
     },
   },
   input: {
-    width: "90%",
+    width: "100%",
     background: "#fff",
     "& input": {
       color: theme.palette.text.dark,
@@ -66,6 +68,13 @@ const Style = makeStyles((theme) => ({
         border: "none",
       },
     },
+
+    "&.inputError > div": {
+      background: theme.palette.background.redRgba,
+      "& > input:-webkit-autofill": {
+        WebkitBoxShadow: `0 0 0 30px ${theme.palette.background.redRgba} inset`,
+      },
+    },
   },
   txtInfo: {
     fontSize: 12,
@@ -78,6 +87,59 @@ const Style = makeStyles((theme) => ({
       "& > a": {
         color: theme.palette.text.white,
       },
+    },
+  },
+  wrapperInput: {
+    position: "relative",
+  },
+  wrapperAlert: {
+    position: "absolute",
+    padding: 10,
+    top: "-5px",
+    right: "15px",
+    background: theme.palette.primary.main,
+    transform: "translate(50%,-50%)",
+    boxShadow: "0px 0px 10px 1px rgba(0,0,0,0.75)",
+    borderRadius: 200,
+    width: 200,
+    "&:after": {
+      content: "''",
+      borderWidth: 14,
+      borderColor: "#fff transparent transparent transparent",
+      borderStyle: "solid",
+      position: "absolute",
+      bottom: "-22px",
+      left: "15px",
+    },
+    "& > p": {
+      color: theme.palette.text.secondary,
+      fontWeight: 700,
+    },
+  },
+  boxInput: {
+    flexGrow: 0,
+    maxWidth: "100%",
+    flexBasis: "100%",
+  },
+  "@media (max-width: 960px)": {
+    wrapperAlert: {
+      left: "100%",
+      width: 200,
+      transform: "translate(-50%,-50%)",
+    },
+  },
+  "@media (max-width: 520px)": {
+    wrapperAlert: {
+      left: "75%",
+    },
+  },
+  "@media (max-width: 360px)": {
+    loginContainer: {
+      maxWidth: "100%",
+    },
+    wrapperAlert: {
+      width: 170,
+      left: "75%",
     },
   },
 }));

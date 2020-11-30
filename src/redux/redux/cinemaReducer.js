@@ -90,8 +90,6 @@ const reducer = (state = initialState, { type, payload }) => {
       );
       const indexSeat = seatArr.findIndex((ele) => ele === payload.tenGhe);
 
-      console.log("asdasdasd", cloneArr, seatArr);
-
       if (index !== -1) {
         cloneArr.splice(index, 1);
         price -= payload.arr.giaVe;
@@ -104,7 +102,6 @@ const reducer = (state = initialState, { type, payload }) => {
       } else {
         seatArr.push(payload.tenGhe);
       }
-      console.log("before", cloneArr, seatArr);
 
       if (cloneArr.length > 6 && seatArr.length > 6) {
         auth = true;

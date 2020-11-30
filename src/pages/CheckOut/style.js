@@ -259,7 +259,6 @@ const Style = makeStyles((theme) => ({
           ...theme.typography.subtitle1,
           color: theme.palette.text.dark,
           "&:-webkit-autofill": {
-            // backgroundColor: "transparent!important",
             WebkitBoxShadow: "0 0 0 30px #fff inset",
           },
         },
@@ -761,6 +760,9 @@ const Style = makeStyles((theme) => ({
       width: 627,
       padding: "0 5%",
     },
+    resultContent: {
+      width: "80%",
+    },
   },
   "@media (max-width: 800px)": {
     containerLeft: {
@@ -782,6 +784,7 @@ const Style = makeStyles((theme) => ({
       right: 0,
       width: "100%",
       paddingTop: 20,
+      paddingBottom: heightBtnBoxMobile,
     },
     checkOutLeftContent: {
       width: "100%",
@@ -896,9 +899,10 @@ const Style = makeStyles((theme) => ({
       height: "100%",
     },
   },
+
   "@media (max-width: 460px)": {
     resultContent: {
-      marginTop: 60,
+      marginTop: 0,
       width: "90%",
     },
     containerLeft: {
@@ -907,6 +911,7 @@ const Style = makeStyles((theme) => ({
       },
     },
   },
+
   "@media (max-width: 425px)": {
     btnBox: {
       height: heightBtnBoxMobile,

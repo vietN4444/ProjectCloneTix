@@ -14,12 +14,13 @@ import NavbarTabTitle from "../NavbarTabTitle";
 
 const arrNavbar = ["Đang Chiếu", "Sắp Chiếu"];
 
-const MovieList = ({ res, ...props }) => {
+const MovieList = ({ resScreen, ...props }) => {
   const classes = Style(props);
   const dispatch = useDispatch();
   const page = useSelector((state) => state.movie.pages);
-  const movieList = useSelector((state) => state.movie.movieList);
+  // const movieList = useSelector((state) => state.movie.movieList);
   const movieIncoming = useSelector((state) => state.movie.movieListIncoming);
+  const testMovieList = useSelector((state) => state.movie.movieBoxBooking);
 
   const [tab, setTab] = useState(0);
   const [checked, setChecked] = useState(false);
@@ -32,7 +33,7 @@ const MovieList = ({ res, ...props }) => {
   const [mobilePage, setMobilePage] = useState(1);
 
   useEffect(() => {
-    if (res === "mobile") {
+    if (resScreen === "mobile") {
       dispatch(getMovieListCount(6, countPageMobileMovieList)).then((res) => {
         setMobileMovieList(res.items);
         setMobilePage(res.totalPages);
@@ -44,7 +45,7 @@ const MovieList = ({ res, ...props }) => {
       );
     }
     setChecked(true);
-  }, [page, dispatch, res]);
+  }, [page, dispatch, resScreen]);
 
   //CLear tránh call lại api khi chuyển trang
   useEffect(() => {
@@ -88,8 +89,17 @@ const MovieList = ({ res, ...props }) => {
 
   const renderMovieList = useCallback(() => {
     if (!tab) {
-      return movieList.map((ele, index) => {
-        if (ele.count === 0) return;
+      let count = 0;
+      let num = 8;
+      const length = testMovieList.length;
+      if (length % 8) {
+        count = Math.floor(length / 8) + 1;
+      } else {
+        count = Math.floor(length / 8);
+      }
+      const newArr = Array(count).fill("");
+      return newArr.map((ele, index) => {
+        const numCurrent = num * index;
         return (
           <Fade
             key={index}
@@ -98,26 +108,58 @@ const MovieList = ({ res, ...props }) => {
               enter: 0.4,
             }}
           >
-            <Box key={index}>
+            <Box>
               <Grid container spacing={2}>
-                {movieList[index].items.map((movie, index2) => {
-                  return (
-                    <Grid
-                      key={index2}
-                      item
-                      md={3}
-                      sm={3}
-                      className={classes.gridItem}
-                    >
-                      <MovieItem data={movie} />
-                    </Grid>
-                  );
-                })}
+                {testMovieList
+                  .slice(numCurrent, numCurrent + 8)
+                  .map((movie, index2) => {
+                    return (
+                      <Grid
+                        key={index2}
+                        item
+                        md={3}
+                        sm={3}
+                        className={classes.gridItem}
+                      >
+                        <MovieItem data={movie} />
+                      </Grid>
+                    );
+                  })}
               </Grid>
             </Box>
           </Fade>
         );
       });
+      // return movieList.map((ele, index) => {
+      //   if (ele.count === 0) return;
+      //   return (
+      //     <Fade
+      //       key={index}
+      //       in={checked}
+      //       timeout={{
+      //         enter: 0.4,
+      //       }}
+      //     >
+      //       <Box key={index}>
+      //         <Grid container spacing={2}>
+      //           {movieList[index].items.map((movie, index2) => {
+      //             return (
+      //               <Grid
+      //                 key={index2}
+      //                 item
+      //                 md={3}
+      //                 sm={3}
+      //                 className={classes.gridItem}
+      //               >
+      //                 <MovieItem data={movie} />
+      //               </Grid>
+      //             );
+      //           })}
+      //         </Grid>
+      //       </Box>
+      //     </Fade>
+      //   );
+      // });
     } else {
       return movieIncoming.map((ele, index) => {
         return (
@@ -150,7 +192,7 @@ const MovieList = ({ res, ...props }) => {
         );
       });
     }
-  }, [movieList, tab, movieIncoming, checked]);
+  }, [tab, movieIncoming, checked, testMovieList]);
 
   const renderMovieListMobile = useCallback(() => {
     if (!tab) {
@@ -254,7 +296,7 @@ const MovieList = ({ res, ...props }) => {
           dataNav={arrNavbar}
         />
 
-        {res === "pc" ? (
+        {resScreen === "pc" ? (
           <Box className={classes.slider}>
             <Slider {...settingsTwo}>{renderMovieList()}</Slider>
           </Box>

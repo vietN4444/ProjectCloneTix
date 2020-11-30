@@ -10,7 +10,7 @@ import {
 
 let initialState = {
   pages: 0,
-  movieList: [],
+  // movieList: [],
   movieSearch: [],
   trailer: "",
   movieListIncoming: [],
@@ -23,10 +23,10 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, pages: payload };
     }
 
-    case GET_MOVIE_LIST: {
-      const newMovieList = [...state.movieList, payload];
-      return { ...state, movieList: newMovieList };
-    }
+    // case GET_MOVIE_LIST: {
+    //   const newMovieList = [...state.movieList, payload];
+    //   return { ...state, movieList: newMovieList };
+    // }
     case SET_TRAILER: {
       return { ...state, trailer: payload };
     }

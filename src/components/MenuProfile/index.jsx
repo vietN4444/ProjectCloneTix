@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Box,
   Divider,
@@ -21,28 +21,47 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import Style from "./style";
 import { SET_TITLE_DASHBOARD } from "../../redux/actions/actionContants";
 
-export const MainMenuItemsProfile = (props) => {
+const domainImg = "https://ui-avatars.com/api/?name=";
+const domainImgTwo = "https://i.pravatar.cc/150?u=";
+
+export const MainMenuItemsProfile = ({
+  funcSetTabFade,
+  funcSetTitleProfile,
+  funcSetMenuTab,
+  ...props
+}) => {
   const dispatch = useDispatch();
   const classes = Style(props);
   const nameUser = useSelector((state) => state.auth.userName);
-  const userAC = useSelector((state) => state.auth.UAC);
+  const userAC = useSelector((state) => state.auth.userAC);
+
+  const [imgAvatar, setImgAvatar] = useState(domainImgTwo);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const handldeChangeIndex = (event, index) => {
-    const { myValue } = event.currentTarget.dataset;
-    setSelectedIndex(index);
-    dispatch({
-      type: SET_TITLE_DASHBOARD,
-      payload: myValue,
-    });
-  };
+  const handldeChangeIndex = useCallback(
+    (event, index) => {
+      const { myValue } = event.currentTarget.dataset;
+      setSelectedIndex(index);
+      dispatch({
+        type: SET_TITLE_DASHBOARD,
+        payload: myValue,
+      });
+      funcSetTitleProfile(index);
+      if (index === 1) {
+        return funcSetTabFade();
+      }
+      funcSetMenuTab(index);
+    },
+    [funcSetMenuTab, funcSetTitleProfile, funcSetTabFade]
+  );
 
   return (
     <MenuList className={classes.menuList}>
       <Box className={classes.boxAvatar}>
         <Avatar
           alt="Remy Sharp"
-          src={`"https://api.adorable.io/avatars/100/${userAC}"`}
+          src={`${imgAvatar}${nameUser}`}
+          onError={() => setImgAvatar(domainImg)}
           className={classes.avatarLarge}
         />
         <Typography component="p" variant="subtitle2">
@@ -89,23 +108,31 @@ export const MainMenuItemsProfile = (props) => {
   );
 };
 
-export const SubMenuItemsProfile = (props) => {
+export const SubMenuItemsProfile = ({ res, authMenu, func, ...props }) => {
   const classes = Style(props);
+
   return (
-    <MenuList className={classes.subMenuItem}>
-      <MenuItem data-my-value={"Thông tin tài khoản"}>
+    <MenuList
+      className={`${classes.subMenuItem} ${
+        res ? (authMenu ? null : "displayNone") : null
+      }`}
+    >
+      <MenuItem data-my-value={"Thông tin tài khoản"} onClick={() => func(0)}>
         <ListItemIcon className={classes.iconMenuItem}>
           <AccountCircleIcon />
         </ListItemIcon>
         <ListItemText primary="Thông tin tài khoản" />
       </MenuItem>
-      <MenuItem data-my-value={"Thay đổi mật khẩu"}>
+      <MenuItem data-my-value={"Thay đổi mật khẩu"} onClick={() => func(1)}>
         <ListItemIcon className={classes.iconMenuItem}>
           <LockOpenIcon />
         </ListItemIcon>
         <ListItemText primary="Thay đổi mật khẩu" />
       </MenuItem>
-      <MenuItem data-my-value={"Thay đổi thông tin cá nhân"}>
+      <MenuItem
+        data-my-value={"Thay đổi thông tin cá nhân"}
+        onClick={() => func(2)}
+      >
         <ListItemIcon className={classes.iconMenuItem}>
           <SettingsIcon />
         </ListItemIcon>

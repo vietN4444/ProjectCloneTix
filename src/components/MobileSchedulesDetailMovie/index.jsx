@@ -39,7 +39,10 @@ const TabSubSchedules = ({ id, data, ...props }) => {
       const newStr = btn.ngayChieuGioChieu.replace("T", " - ");
       return (
         <Grid key={index} item md={4} className={classes.tabsBtnItemGrid}>
-          <Link to="" className={classes.txtTabsItemBtn}>
+          <Link
+            to={`/checkout/` + btn.maLichChieu}
+            className={classes.txtTabsItemBtn}
+          >
             <EventIcon />
             <Typography component="span">{newStr.slice(0, 18)}</Typography>
           </Link>

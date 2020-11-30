@@ -17,7 +17,7 @@ import EventIcon from "@material-ui/icons/Event";
 import AvaCGV from "../../assets/imgs/avacgv.jpg";
 
 import Style from "./style";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const arrAvatarCinema = {
   BHDStar:
@@ -65,7 +65,6 @@ function a11yProps(index) {
 // Schedules Item
 const TabsSchdulesItem = ({ id, dataMovie, ...props }) => {
   const classes = Style(props);
-  const history = useHistory();
   let currentID = id;
 
   const renderTabsBtnItem = useCallback(() => {

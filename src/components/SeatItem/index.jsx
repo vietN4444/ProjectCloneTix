@@ -35,8 +35,8 @@ const SeatItem = ({ funcMethodPay, funcBtn, seat, ...props }) => {
     <Box
       className={`${classes.seatBtn} ${
         seat.loaiGhe === "Vip" ? "seatVip" : null
-      } ${seat.daDat ? null : "booked"} ${seatChosing ? "seatChosing" : null}`}
-      onClick={handleBooking}
+      } ${seat.daDat ? "booked" : null} ${seatChosing ? "seatChosing" : null}`}
+      onClick={seat.daDat ? null : handleBooking}
     >
       <WeekendIcon />
       <Box className={classes.seatNumber}>

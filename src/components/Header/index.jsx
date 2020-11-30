@@ -183,7 +183,7 @@ function HeaderComponent(props) {
                         <img
                           src={`${imgAvatar}${user.userName}`}
                           alt="avatar"
-                          onError={() => setImgAvatar(Avatar)}
+                          onError={() => setImgAvatar(domainImg)}
                         />
                         <Typography variant="body1" component="p">
                           {user.userName}
@@ -203,7 +203,7 @@ function HeaderComponent(props) {
                               Thông tin tài khoản
                             </MenuItem>
                           </NavLink>
-                          {user.UAC === "QuanTri" ? (
+                          {user.userAC === "QuanTri" ? (
                             <NavLink
                               className={classes.txtMenuItem}
                               to="/dashboard"
@@ -310,7 +310,7 @@ function HeaderComponent(props) {
                           />
                         </ListItem>
                       </NavLink>
-                      {user.UAC === "QuanTri" ? (
+                      {user.userAC === "QuanTri" ? (
                         <NavLink to="/dashboard" underline="none">
                           <ListItem>
                             <ListItemText

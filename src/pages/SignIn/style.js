@@ -77,6 +77,30 @@ const Style = makeStyles((theme) => ({
       },
     },
   },
+  loginLogo: {
+    "& > a": {
+      display: "block",
+      width: "fit-content",
+      margin: "0 auto",
+    },
+    "& img": {
+      width: 180,
+    },
+  },
+
+  "@media (max-width: 360px)": {
+    loginContainer: {
+      maxWidth: "100%",
+    },
+    input: {
+      width: "100%",
+    },
+    buttonWrapper: {
+      "& > button": {
+        width: "100%",
+      },
+    },
+  },
 }));
 
 export default Style;

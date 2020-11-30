@@ -20,7 +20,7 @@ import Style from "./style";
 const MenuDashboard = ({ setTitle, changeMenu, ...props }) => {
   const classes = Style(props);
   const nameUser = useSelector((state) => state.auth.userName);
-  const userAC = useSelector((state) => state.auth.UAC);
+  const userAC = useSelector((state) => state.auth.userAC);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handldeChangeIndex = useCallback(

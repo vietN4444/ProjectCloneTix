@@ -153,6 +153,12 @@ const Style = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
+  txtEmpty: {
+    color: theme.palette.text.white,
+    fontSize: 16,
+    textAlign: "center",
+  },
+
   "@media (max-width: 800px)": {
     tabs: {
       "&.tabsAvatar": {

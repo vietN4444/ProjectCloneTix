@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-const Style = makeStyles((theme, widthTable) => ({
+const Style = makeStyles((theme) => ({
   wrapperMovieManagement: {
     width: "100%",
     overflow: "hidden",
@@ -37,6 +37,10 @@ const Style = makeStyles((theme, widthTable) => ({
     "& >tr": {
       "&>td": {
         ...theme.typography.subtitle1,
+        overflow: "hidden",
+        "&:first-child": {
+          padding: 4,
+        },
         "&:nth-last-child(2)": {
           textAlign: "center",
         },
@@ -62,10 +66,10 @@ const Style = makeStyles((theme, widthTable) => ({
     padding: theme.spacing(1),
     paddingBottom: 0,
     background: theme.palette.secondary.light,
-    width: widthTable,
   },
   input: {
-    width: "60%",
+    width: "100%",
+    paddingRight: 200,
     boxSizing: "border-box",
     "& label": {
       color: theme.palette.text.white,
@@ -85,6 +89,13 @@ const Style = makeStyles((theme, widthTable) => ({
   },
   icon: {
     color: theme.palette.primary.main,
+  },
+
+  "@media (max-width: 425px)": {
+    gridContainer: {
+      margin: 0,
+      width: "100%",
+    },
   },
 }));
 

@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { memo, useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -20,6 +20,7 @@ import EventIcon from "@material-ui/icons/Event";
 
 import Style from "./style";
 import { getCinemaSchedules } from "../../redux/actions/cinemaActions";
+import Swal from "sweetalert2";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -94,7 +95,7 @@ const TabsCinema = ({ dataCinemaList, ...props }) => {
         if (cinema.maHeThongRap === location[0].maHeThongRap) {
           return (
             <TabPanel
-              key={index}
+              key={index2}
               value={value}
               index={index}
               className={classes.tabPanel}
@@ -221,6 +222,25 @@ const TabsSchedulesCinema = ({ data, ...props }) => {
 // Three Column
 const TabsSchdulesItem = ({ dataMovie, ...props }) => {
   const classes = Style(props);
+  const history = useHistory();
+
+  const user = useSelector((state) => state.auth.userName);
+
+  const alertSignIn = useCallback(() => {
+    return Swal.fire({
+      icon: "error",
+      confirmButtonText: "Đăng nhập",
+      cancelButtonText: "Để sau",
+      title: "Opps...",
+      text: "Bạn chưa đăng nhập để thực hiện tác vụ này",
+      confirmButtonColor: "#fb4226",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        history.replace("/signin");
+      }
+    });
+  }, []);
 
   const renderTabsBtnItem = useCallback(() => {
     return dataMovie.lstLichChieuTheoPhim?.map((btn, index) => {
@@ -229,8 +249,10 @@ const TabsSchdulesItem = ({ dataMovie, ...props }) => {
       return (
         <Grid key={index} item md={3}>
           <Link
-            to={"/checkout/" + btn.maLichChieu}
+            target={user === "" ? "_self" : "_blank"}
+            to={user === "" ? "/" : "/checkout/" + btn.maLichChieu}
             className={classes.txtTabsItemBtn}
+            onClick={user === "" ? alertSignIn : null}
           >
             <EventIcon />
             <Typography component="span">
@@ -240,7 +262,7 @@ const TabsSchdulesItem = ({ dataMovie, ...props }) => {
         </Grid>
       );
     });
-  }, [dataMovie]);
+  }, [dataMovie, user]);
 
   return (
     <>

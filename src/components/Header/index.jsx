@@ -39,7 +39,7 @@ const domainImgTwo = "https://i.pravatar.cc/150?u=";
 function HeaderComponent(props) {
   const dispatch = useDispatch();
   const history = useHistory();
-  const ref = useRef(0);
+  const ref = useRef();
   const menuRef = useRef();
   const signInRef = useRef();
 
@@ -60,7 +60,6 @@ function HeaderComponent(props) {
         setOpenMenu(false);
       }
     };
-    changeRes();
 
     document.addEventListener("mousedown", handler);
 
@@ -68,6 +67,10 @@ function HeaderComponent(props) {
       document.removeEventListener("mousedown", handler);
     };
   });
+
+  useEffect(() => {
+    changeRes();
+  }, []);
 
   const scrollTo = useCallback((id) => {
     if (!document.getElementById(id)) return;
@@ -80,30 +83,34 @@ function HeaderComponent(props) {
     window.scrollTo({ top: ele, behavior: "smooth" });
   }, []);
 
-  const scrollToMobile = useCallback((id) => {
-    if (!document.getElementById(id)) {
-      setAuthDrawer(false);
-      history.push("/");
-      setTimeout(() => {
-        if (id === "schedules" || id === "appintro") {
-          const ele = document.getElementById(id)?.offsetTop - 60;
+  const scrollToMobile = useCallback(
+    (id) => {
+      if (!document.getElementById(id)) {
+        setAuthDrawer(false);
+        history.push("/");
+        setTimeout(() => {
+          if (id === "schedules" || id === "appintro") {
+            const ele = document.getElementById(id)?.offsetTop - 60;
+            window.scrollTo({ top: ele, behavior: "smooth" });
+            return;
+          }
+          const ele = document.getElementById(id)?.offsetTop - 80;
           window.scrollTo({ top: ele, behavior: "smooth" });
-          return;
-        }
-        const ele = document.getElementById(id)?.offsetTop - 80;
+        }, 2000);
+        return;
+      }
+      if (id === "schedules" || id === "appintro") {
+        const ele = document.getElementById(id)?.offsetTop - 60;
         window.scrollTo({ top: ele, behavior: "smooth" });
-      }, 2000);
-      return;
-    }
-    if (id === "schedules" || id === "appintro") {
-      const ele = document.getElementById(id)?.offsetTop - 60;
+        setAuthDrawer(false);
+        return;
+      }
+      const ele = document.getElementById(id)?.offsetTop - 80;
       window.scrollTo({ top: ele, behavior: "smooth" });
-      return;
-    }
-    const ele = document.getElementById(id)?.offsetTop - 80;
-    window.scrollTo({ top: ele, behavior: "smooth" });
-    setAuthDrawer(false);
-  }, []);
+      setAuthDrawer(false);
+    },
+    [history]
+  );
 
   const changeRes = () => {
     if (window.innerWidth <= 1280) {

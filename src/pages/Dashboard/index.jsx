@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   AppBar,
   Divider,
@@ -13,6 +13,7 @@ import {
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import IconButton from "@material-ui/core/IconButton";
 import HomeIcon from "../../assets/imgs/web-logo.png";
+import UnarchiveIcon from "@material-ui/icons/Unarchive";
 
 import Style from "./style";
 import MenuDashboard from "../../components/MenuDashboard";
@@ -22,15 +23,21 @@ import { REMOVE_TOKEN } from "../../redux/actions/actionContants";
 import UserManagement from "../../components/UserManagement";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import { FormAddMovie, FormAddUser } from "../../components/FormAdd";
+import { getCinemaInformation } from "../../redux/actions/cinemaActions";
 
 const Dashboard = (props) => {
   const dispatch = useDispatch();
   const classes = Style(props);
   const history = useHistory();
+  const headerRef = useRef();
+  const menuRef = useRef();
 
   const [title, setTitle] = useState("Quản lý Movie");
   const [menuSelected, setMenuSelected] = useState(0);
   const [render, setRender] = useState(false);
+  const [tabletScreen, setTabletScreen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
 
   const authUser = useSelector((state) => state.auth.userAC);
 
@@ -42,6 +49,22 @@ const Dashboard = (props) => {
     props.history.push("/");
   };
 
+  const alertLogOut = useCallback(() => {
+    return Swal.fire({
+      icon: "question",
+      title: "Xác nhận?",
+      text: "Bạn có chắc chắn muốn thoát tài khoản.",
+      confirmButtonColor: "#44c020",
+      confirmButtonText: "Xác nhận",
+      cancelButtonText: "Ở lại",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut();
+      }
+    });
+  }, []);
+
   const alertAuthUser = useCallback(() => {
     return Swal.fire({
       icon: "error",
@@ -52,6 +75,59 @@ const Dashboard = (props) => {
         history.replace("/");
       },
     });
+  }, []);
+
+  const renderContent = useCallback(() => {
+    switch (menuSelected) {
+      case 0: {
+        return <MovieManagement />;
+      }
+      case 1: {
+        return <UserManagement />;
+      }
+      case 2: {
+        return <FormAddMovie />;
+      }
+      case 3: {
+        return <FormAddUser />;
+      }
+    }
+  }, [menuSelected]);
+
+  const handleMenu = useCallback(() => {
+    setOpenMenu(!openMenu);
+  }, [openMenu]);
+
+  const changeRes = useCallback(() => {
+    if (window.innerWidth <= 768) {
+      setTabletScreen(true);
+    } else {
+      setTabletScreen(false);
+    }
+  }, []);
+
+  window.addEventListener("resize", changeRes);
+
+  useEffect(() => {
+    let handler = (event) => {
+      if (
+        !headerRef.current.contains(event.target) &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setOpenMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
+
+  useEffect(() => {
+    changeRes();
+    dispatch(getCinemaInformation());
   }, []);
 
   useEffect(() => {
@@ -71,7 +147,7 @@ const Dashboard = (props) => {
     <div className={classes.root}>
       {render ? (
         <>
-          <AppBar>
+          <AppBar ref={headerRef} style={{ zIndex: 1000 }}>
             <Toolbar className={classes.toolbar}>
               <IconButton
                 edge="start"
@@ -91,23 +167,33 @@ const Dashboard = (props) => {
                 {title}
               </Typography>
               <Tooltip title="Logout" placement="bottom">
-                <IconButton color="inherit" onClick={logOut}>
+                <IconButton color="inherit" onClick={alertLogOut}>
                   <ExitToAppIcon />
                 </IconButton>
               </Tooltip>
             </Toolbar>
           </AppBar>
-          <Box className={classes.drawerPaper}>
+          <Box
+            className={`${classes.drawerPaper} ${
+              tabletScreen ? (openMenu ? "openMenu" : null) : null
+            }`}
+            ref={menuRef}
+          >
             <div className={classes.appBarSpacer}></div>
             <Divider />
             <List>
               <MenuDashboard changeMenu={setMenuSelected} setTitle={setTitle} />
+              {tabletScreen ? (
+                <Box className={classes.btnOpenMenu} onClick={handleMenu}>
+                  <UnarchiveIcon />
+                </Box>
+              ) : null}
             </List>
           </Box>
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
-              {!menuSelected ? <MovieManagement /> : <UserManagement />}
+              {renderContent()}
             </Container>
           </main>
         </>

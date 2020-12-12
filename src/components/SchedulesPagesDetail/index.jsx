@@ -17,7 +17,8 @@ import EventIcon from "@material-ui/icons/Event";
 import AvaCGV from "../../assets/imgs/avacgv.jpg";
 
 import Style from "./style";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const arrAvatarCinema = {
   BHDStar:
@@ -63,9 +64,26 @@ function a11yProps(index) {
 }
 
 // Schedules Item
-const TabsSchdulesItem = ({ id, dataMovie, ...props }) => {
+const TabsSchdulesItem = ({ param, user, id, dataMovie, ...props }) => {
   const classes = Style(props);
+  const history = useHistory();
   let currentID = id;
+
+  const alertSignIn = useCallback(() => {
+    return Swal.fire({
+      icon: "error",
+      confirmButtonText: "Đăng nhập",
+      cancelButtonText: "Để sau",
+      title: "Opps...",
+      text: "Bạn chưa đăng nhập để thực hiện tác vụ này",
+      confirmButtonColor: "#fb4226",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        history.replace("/signin");
+      }
+    });
+  }, []);
 
   const renderTabsBtnItem = useCallback(() => {
     return dataMovie.lichChieuPhim?.map((btn, index) => {
@@ -73,8 +91,14 @@ const TabsSchdulesItem = ({ id, dataMovie, ...props }) => {
       return (
         <Grid key={index} item md={4} sm={4}>
           <Link
-            to={"/checkout/" + btn.maLichChieu}
+            target={user.userName === "" ? "_self" : "_blank"}
+            to={
+              user.userName === ""
+                ? "/detail/" + param
+                : "/checkout/" + btn.maLichChieu
+            }
             className={classes.txtTabsItemBtn}
+            onClick={user.userName === "" ? alertSignIn : null}
           >
             <EventIcon />
             <Typography component="span">{newStr.slice(0, 18)}</Typography>
@@ -82,7 +106,7 @@ const TabsSchdulesItem = ({ id, dataMovie, ...props }) => {
         </Grid>
       );
     });
-  }, [dataMovie]);
+  }, [dataMovie, user, param]);
 
   return (
     <>
@@ -122,9 +146,10 @@ const TabsSchdulesItem = ({ id, dataMovie, ...props }) => {
   );
 };
 
-const SchedulesPagesDetail = ({ dataCinemaList, ...props }) => {
+const SchedulesPagesDetail = ({ id, user, dataCinemaList, ...props }) => {
   const classes = Style(props);
   const [value, setValue] = useState(0);
+  const [empty, setEmpty] = useState(false);
   const [avatarTitle, setAvatarTitle] = useState(true);
 
   const handleChange = (event, newValue) => {
@@ -144,6 +169,14 @@ const SchedulesPagesDetail = ({ dataCinemaList, ...props }) => {
   useEffect(() => {
     changeRes();
   }, []);
+
+  useEffect(() => {
+    if (dataCinemaList?.heThongRapChieu.length === 0) {
+      setEmpty(false);
+    } else {
+      setEmpty(true);
+    }
+  }, [dataCinemaList]);
 
   const renderTabAvatar = useCallback(() => {
     return dataCinemaList?.heThongRapChieu.map((cinema, index) => {
@@ -183,9 +216,11 @@ const SchedulesPagesDetail = ({ dataCinemaList, ...props }) => {
           {cinema.cumRapChieu.map((data, index2) => {
             return (
               <TabsSchdulesItem
+                user={user}
                 key={index2}
                 dataMovie={data}
                 id={cinema.maHeThongRap}
+                param={id}
               />
             );
           })}
@@ -195,19 +230,27 @@ const SchedulesPagesDetail = ({ dataCinemaList, ...props }) => {
   }, [dataCinemaList, value]);
 
   return (
-    <Box className={classes.schedulesCinemas}>
-      <Tabs
-        orientation="vertical"
-        variant="fullWidth"
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical tabs example"
-        className={`${classes.tabs} tabsAvatar`}
-      >
-        {renderTabAvatar()}
-      </Tabs>
-      {renderTabPanel()}
-    </Box>
+    <>
+      {empty ? (
+        <Box className={classes.schedulesCinemas}>
+          <Tabs
+            orientation="vertical"
+            variant="fullWidth"
+            value={value}
+            onChange={handleChange}
+            aria-label="Vertical tabs example"
+            className={`${classes.tabs} tabsAvatar`}
+          >
+            {renderTabAvatar()}
+          </Tabs>
+          {renderTabPanel()}
+        </Box>
+      ) : (
+        <Typography className={classes.txtEmpty}>
+          Phim chưa có lịch chiếu
+        </Typography>
+      )}
+    </>
   );
 };
 

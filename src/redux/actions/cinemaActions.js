@@ -93,11 +93,26 @@ export const bookedTicket = (alert, dataTicket) => {
       data: dataTicket,
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         alert();
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+};
+
+export const getCinemaInformationItem = (id) => {
+  return (dispatch) => {
+    return connector({
+      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${id}`,
+      method: "GET",
+    })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err.response.data);
       });
   };
 };

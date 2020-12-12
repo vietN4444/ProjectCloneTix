@@ -27,6 +27,7 @@ import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
 import LocalMoviesIcon from "@material-ui/icons/LocalMovies";
 import LocalAtmIcon from "@material-ui/icons/LocalAtm";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import MethodPayAtm from "../../assets/imgs/methodPayAtm.png";
 import MethodPayCC from "../../assets/imgs/methodPaycc.png";
 import MethodPayoo from "../../assets/imgs/methodPayoo.png";
@@ -187,7 +188,7 @@ const CheckOut = (props) => {
     [data]
   );
 
-  const contdown = useCallback(() => {
+  const countdown = useCallback(() => {
     const minutes = Math.floor(totalSeconds / 60) % 60;
     const seconds = Math.floor(totalSeconds) % 60;
 
@@ -324,6 +325,15 @@ const CheckOut = (props) => {
     dispatch(bookedTicket(alertBookedSuccess, userBooking));
   }, [id, ticketBooking, user]);
 
+  const submitCheckoutMobile = useCallback(() => {
+    const userBooking = {
+      maLichChieu: id,
+      danhSachVe: ticketBooking,
+      taiKhoanNguoiDung: user.userName,
+    };
+    dispatch(bookedTicket(alertBookedSuccessMobile, userBooking));
+  }, [id, ticketBooking, user]);
+
   const handleInputText = useCallback(
     (e) => {
       const key = e.target.name;
@@ -364,6 +374,20 @@ const CheckOut = (props) => {
     });
   }, []);
 
+  const alertBookedSuccessMobile = useCallback(() => {
+    return Swal.fire({
+      icon: "success",
+      title: "Đặt vé thành công",
+      timer: 2000,
+      showConfirmButton: false,
+      willClose: () => {
+        setStepThirdTablet(true);
+        setStepTwo(false);
+        setTotalSeconds(300);
+      },
+    });
+  }, []);
+
   const changeRes = () => {
     if (window.innerWidth <= 768) {
       setTabletScreen(true);
@@ -384,11 +408,58 @@ const CheckOut = (props) => {
     setTabletScreenRightC(false);
   }, []);
 
+  const backStepOne = useCallback(() => {
+    setStepTwoTablet(false);
+    setTabletScreenRightC(true);
+  }, []);
+
+  const alertSubmitCheckout = useCallback(() => {
+    return Swal.fire({
+      icon: "question",
+      title: "Xác nhận?",
+      text: "Bạn xác nhận muốn đặt vé, bạn có muốn đặt thêm gì hay không?",
+      confirmButtonColor: "#44c020",
+      cancelButtonColor: "#fb4226",
+      confirmButtonText: "Xác nhận",
+      cancelButtonText: "Ở lại",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        submitCheckout();
+      }
+    });
+  }, []);
+
+  const alertSubmitCheckoutMobile = useCallback(() => {
+    return Swal.fire({
+      icon: "question",
+      title: "Xác nhận?",
+      text: "Bạn xác nhận muốn đặt vé, bạn có muốn đặt thêm gì hay không?",
+      confirmButtonColor: "#44c020",
+      cancelButtonColor: "#fb4226",
+      confirmButtonText: "Xác nhận",
+      cancelButtonText: "Ở lại",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        submitCheckoutMobile();
+      }
+    });
+  }, []);
+
   window.addEventListener("resize", changeRes);
 
   useEffect(() => {
     changeRes();
   }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      const getData = await dispatch(getCinemaCheckout(id));
+    }
+
+    fetchData();
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (authBooking) {
@@ -409,24 +480,23 @@ const CheckOut = (props) => {
   }, [priceSeat, priceCombo]);
 
   useEffect(() => {
-    dispatch(getCinemaCheckout(id));
-  }, [dispatch, id]);
-
-  useEffect(() => {
-    if (totalSeconds >= 0) {
-      setTimeout(contdown, 1000);
-    } else {
-      clearTimeout(contdown);
+    const count = setTimeout(countdown, 1000);
+    if (totalSeconds <= 0) {
+      clearTimeout(count);
       timeOut();
     }
-  }, [totalSeconds, contdown, timeOut]);
+
+    return () => clearTimeout(count);
+  }, [totalSeconds, countdown, timeOut]);
 
   return (
     <Box className={classes.checkOut}>
       <Box className={classes.header}>
         <Box className={classes.headerContainer}>
           <Box className={classes.headerWrapper}>
+            {/* Chuyển screen header pc và mobile */}
             {tabletScreen ? (
+              // Chuyển title header qua các step trên mobile
               <Box className={classes.containerLeft}>
                 {!stepTwoTablet ? (
                   <Typography>
@@ -446,6 +516,7 @@ const CheckOut = (props) => {
                 )}
               </Box>
             ) : (
+              // Chuyển title header qua các step trên pc
               <Box className={classes.containerLeft}>
                 <Typography className={stepTwo ? "active" : null}>
                   <Typography component="span">01</Typography>
@@ -457,6 +528,15 @@ const CheckOut = (props) => {
                 </Typography>
               </Box>
             )}
+            {/* Ẩn hiện nút back trên mobile */}
+            {tabletScreen ? (
+              stepTwoTablet ? (
+                <Box className="iconback" onClick={backStepOne}>
+                  <ArrowBackIosIcon />
+                </Box>
+              ) : null
+            ) : null}
+
             <Box className={classes.containerRight}>
               <Avatar
                 alt="ava"
@@ -472,236 +552,233 @@ const CheckOut = (props) => {
       </Box>
 
       <Box className={classes.checkOutContainer}>
-        {stepTwoTablet ? null : (
-          <Box className={classes.checkOutLeft}>
-            <Box className={classes.checkOutLeftContainer}>
-              {tabletScreen ? null : (
-                <Box className={classes.checkOutLeftModal}></Box>
-              )}
-              <Box className={classes.checkOutLeftContent}>
-                {stepTwo ? (
-                  <Box className={classes.checkOutLeftGrid}>
-                    <Box>
-                      <Box className={classes.checkOutLeftHeader}>
-                        <Box className={classes.headerLeft}>
-                          <img src={AvaCinema} alt="cinema" />
-                          <Box className={classes.headerLeftDetailCinema}>
-                            <Typography>
-                              <Typography component="span">CGV</Typography> -
-                              Crescent Mall
-                            </Typography>
-                            <Typography>
-                              <Typography component="span">
-                                - {data.gioChieu} - {data.tenRap}
-                              </Typography>
-                            </Typography>
-                          </Box>
-                        </Box>
-                        <Box className={classes.headerRight}>
-                          <Typography component="span">
-                            thời gian giữ ghế
+        <Box
+          className={`${classes.checkOutLeft} ${
+            stepTwoTablet ? "dnone" : null
+          }`}
+        >
+          <Box className={classes.checkOutLeftContainer}>
+            {tabletScreen ? null : (
+              <Box className={classes.checkOutLeftModal}></Box>
+            )}
+            <Box className={classes.checkOutLeftContent}>
+              {stepTwo ? (
+                <Box className={classes.checkOutLeftGrid}>
+                  <Box>
+                    <Box className={classes.checkOutLeftHeader}>
+                      <Box className={classes.headerLeft}>
+                        <img src={AvaCinema} alt="cinema" />
+                        <Box className={classes.headerLeftDetailCinema}>
+                          <Typography>
+                            <Typography component="span">CGV</Typography> -
+                            Crescent Mall
                           </Typography>
-                          {renderTimeContdown()}
+                          <Typography>
+                            <Typography component="span">
+                              - {data.gioChieu} - {data.tenRap}
+                            </Typography>
+                          </Typography>
                         </Box>
                       </Box>
-                      <Box className={classes.checkOutLeftBody}>
-                        <Box className={classes.bodyContainer}>
-                          <img src={Screen} alt="screen" />
-                          <Box className={classes.checkoutScreen}>
-                            <Grid
-                              container
-                              className={classes.checkoutScreenSeatList}
-                            >
-                              {renderScreenSeatNormalFront()}
-                              {renderScreenSeatVip()}
-                              {renderScreenSeatNormalBehind()}
-                            </Grid>
-                          </Box>
-                        </Box>
+                      <Box className={classes.headerRight}>
+                        <Typography component="span">
+                          thời gian giữ ghế
+                        </Typography>
+                        {renderTimeContdown()}
                       </Box>
-                      <Box className={classes.checkoutScreenNote}>
-                        <Box className={classes.checkoutScreenNoteItem}>
-                          <Box className={`${classes.seatNote} seatN`}>
-                            <WeekendIcon />
-                            <div></div>
-                          </Box>
-                          <Typography>Thường</Typography>
-                        </Box>
-                        <Box className={classes.checkoutScreenNoteItem}>
-                          <Box className={`${classes.seatNote} seatVip`}>
-                            <WeekendIcon />
-                            <div></div>
-                          </Box>
-                          <Typography>VIP</Typography>
-                        </Box>
-                        <Box className={classes.checkoutScreenNoteItem}>
-                          <Box className={`${classes.seatNote} seatChoosing`}>
-                            <WeekendIcon />
-                            <div></div>
-                          </Box>
-                          <Typography>Ghế đang chọn</Typography>
-                        </Box>
-                        <Box className={classes.checkoutScreenNoteItem}>
-                          <Box className={`${classes.seatNote} seatBooked`}>
-                            <WeekendIcon />
-                            <div></div>
-                          </Box>
-                          <Typography>Ghế đã có người chọn</Typography>
+                    </Box>
+                    <Box className={classes.checkOutLeftBody}>
+                      <Box className={classes.bodyContainer}>
+                        <img src={Screen} alt="screen" />
+                        <Box className={classes.checkoutScreen}>
+                          <Grid
+                            container
+                            className={classes.checkoutScreenSeatList}
+                          >
+                            {renderScreenSeatNormalFront()}
+                            {renderScreenSeatVip()}
+                            {renderScreenSeatNormalBehind()}
+                          </Grid>
                         </Box>
                       </Box>
                     </Box>
-                  </Box>
-                ) : (
-                  <Box className={classes.checkOutLeftResultContainer}>
-                    <Box className={classes.resultContent}>
-                      <Box className={classes.headerResult}>
-                        <Typography>Đặt vé thành công</Typography>
+                    <Box className={classes.checkoutScreenNote}>
+                      <Box className={classes.checkoutScreenNoteItem}>
+                        <Box className={`${classes.seatNote} seatN`}>
+                          <WeekendIcon />
+                          <div></div>
+                        </Box>
+                        <Typography>Thường</Typography>
                       </Box>
-                      <Box className={classes.bodyResult}>
-                        <List>
-                          <ListItem>
-                            <ListItemAvatar className="resultAvatar">
-                              <Avatar>
-                                <AccountBoxIcon />
-                              </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                              className="resultCinema resultItem"
-                              primary={
-                                <>
-                                  <Typography>
-                                    Tài khoản:
-                                    <Typography component="span">
-                                      {user.userName}
-                                    </Typography>
-                                  </Typography>
-                                  <Typography>
-                                    Email:
-                                    <Typography component="span">
-                                      {userTicket.email}
-                                    </Typography>
-                                  </Typography>
-                                  <Typography>
-                                    SDT:
-                                    <Typography component="span">
-                                      {userTicket.sdt}
-                                    </Typography>
-                                  </Typography>
-                                </>
-                              }
-                            />
-                          </ListItem>
-                          <ListItem>
-                            <ListItemAvatar className="resultAvatar">
-                              <Avatar>
-                                <LocalMoviesIcon />
-                              </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                              className="resultDetailsMovie resultItem"
-                              primary={
-                                <Typography>
-                                  Tên phim:
-                                  <Typography component="span">
-                                    {data.tenPhim}
-                                  </Typography>
-                                </Typography>
-                              }
-                            />
-                          </ListItem>
-                          <ListItem>
-                            <ListItemAvatar className="resultAvatar">
-                              <Avatar>
-                                <LocationCityIcon />
-                              </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                              className="resultCinema resultItem"
-                              primary={
-                                <>
-                                  <Typography>
-                                    Rạp:
-                                    <Typography component="span">
-                                      {`${data.tenCumRap} - ${data.tenRap}`}
-                                    </Typography>
-                                  </Typography>
-                                  <Typography>
-                                    Thời gian chiếu:
-                                    {renderTimeCinema(0)}
-                                  </Typography>
-                                </>
-                              }
-                            />
-                          </ListItem>
-                          <ListItem>
-                            <ListItemAvatar className="resultAvatar">
-                              <Avatar>
-                                <WeekendIcon />
-                              </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                              className="resultSeat resultItem"
-                              primary={
-                                <>
-                                  <Typography>
-                                    Danh sách ghế được đặt:
-                                  </Typography>
-                                  <Grid container spacing={1}>
-                                    {renderSeatResult()}
-                                  </Grid>
-                                </>
-                              }
-                            />
-                          </ListItem>
-                          <ListItem>
-                            <ListItemAvatar className="resultAvatar">
-                              <Avatar>
-                                <LocalAtmIcon />
-                              </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                              className="resultPrice resultItem"
-                              primary={
-                                <Typography>
-                                  Tổng tiền:
-                                  <Typography component="span">
-                                    {ticketTotal
-                                      .toString()
-                                      .replace(
-                                        /\B(?=(\d{3})+(?!\d))/g,
-                                        "."
-                                      )}{" "}
-                                    đ
-                                  </Typography>
-                                </Typography>
-                              }
-                            />
-                          </ListItem>
-                        </List>
+                      <Box className={classes.checkoutScreenNoteItem}>
+                        <Box className={`${classes.seatNote} seatVip`}>
+                          <WeekendIcon />
+                          <div></div>
+                        </Box>
+                        <Typography>VIP</Typography>
                       </Box>
-                      <Box className={classes.btnGroupResult}>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={() => history.replace("/")}
-                        >
-                          Về trang chủ
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={() => history.go(0)}
-                        >
-                          Đặt vé mới
-                        </Button>
+                      <Box className={classes.checkoutScreenNoteItem}>
+                        <Box className={`${classes.seatNote} seatChoosing`}>
+                          <WeekendIcon />
+                          <div></div>
+                        </Box>
+                        <Typography>Ghế đang chọn</Typography>
+                      </Box>
+                      <Box className={classes.checkoutScreenNoteItem}>
+                        <Box className={`${classes.seatNote} seatBooked`}>
+                          <WeekendIcon />
+                          <div></div>
+                        </Box>
+                        <Typography>Ghế đã có người chọn</Typography>
                       </Box>
                     </Box>
                   </Box>
-                )}
-              </Box>
+                </Box>
+              ) : (
+                <Box className={classes.checkOutLeftResultContainer}>
+                  <Box className={classes.resultContent}>
+                    <Box className={classes.headerResult}>
+                      <Typography>Đặt vé thành công</Typography>
+                    </Box>
+                    <Box className={classes.bodyResult}>
+                      <List>
+                        <ListItem>
+                          <ListItemAvatar className="resultAvatar">
+                            <Avatar>
+                              <AccountBoxIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText
+                            className="resultCinema resultItem"
+                            primary={
+                              <>
+                                <Typography>
+                                  Tài khoản:
+                                  <Typography component="span">
+                                    {user.userName}
+                                  </Typography>
+                                </Typography>
+                                <Typography>
+                                  Email:
+                                  <Typography component="span">
+                                    {userTicket.email}
+                                  </Typography>
+                                </Typography>
+                                <Typography>
+                                  SDT:
+                                  <Typography component="span">
+                                    {userTicket.sdt}
+                                  </Typography>
+                                </Typography>
+                              </>
+                            }
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemAvatar className="resultAvatar">
+                            <Avatar>
+                              <LocalMoviesIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText
+                            className="resultDetailsMovie resultItem"
+                            primary={
+                              <Typography>
+                                Tên phim:
+                                <Typography component="span">
+                                  {data.tenPhim}
+                                </Typography>
+                              </Typography>
+                            }
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemAvatar className="resultAvatar">
+                            <Avatar>
+                              <LocationCityIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText
+                            className="resultCinema resultItem"
+                            primary={
+                              <>
+                                <Typography>
+                                  Rạp:
+                                  <Typography component="span">
+                                    {`${data.tenCumRap} - ${data.tenRap}`}
+                                  </Typography>
+                                </Typography>
+                                <Typography>
+                                  Thời gian chiếu:
+                                  {renderTimeCinema(0)}
+                                </Typography>
+                              </>
+                            }
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemAvatar className="resultAvatar">
+                            <Avatar>
+                              <WeekendIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText
+                            className="resultSeat resultItem"
+                            primary={
+                              <>
+                                <Typography>Danh sách ghế được đặt:</Typography>
+                                <Grid container spacing={1}>
+                                  {renderSeatResult()}
+                                </Grid>
+                              </>
+                            }
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemAvatar className="resultAvatar">
+                            <Avatar>
+                              <LocalAtmIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText
+                            className="resultPrice resultItem"
+                            primary={
+                              <Typography>
+                                Tổng tiền:
+                                <Typography component="span">
+                                  {ticketTotal
+                                    .toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+                                  đ
+                                </Typography>
+                              </Typography>
+                            }
+                          />
+                        </ListItem>
+                      </List>
+                    </Box>
+                    <Box className={classes.btnGroupResult}>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => history.replace("/")}
+                      >
+                        Về trang chủ
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => history.go(0)}
+                      >
+                        Đặt vé mới
+                      </Button>
+                    </Box>
+                  </Box>
+                </Box>
+              )}
             </Box>
           </Box>
-        )}
+        </Box>
 
         {tabletScreenRightC ? null : stepThirdTablet ? null : (
           <Box className={classes.checkOutRight}>
@@ -848,7 +925,7 @@ const CheckOut = (props) => {
                   <Button
                     variant="contained"
                     disabled={btnSuccess}
-                    onClick={submitCheckout}
+                    onClick={alertSubmitCheckout}
                   >
                     Đặt Vé
                   </Button>
@@ -1040,7 +1117,11 @@ const CheckOut = (props) => {
                 <Grid item md={6} sm={6} className={classes.btnBoxItem}>
                   <Box className="txtSeat">
                     {seatBooking.map((seat, index) => {
-                      return <Typography component="span">{seat} </Typography>;
+                      return (
+                        <Typography key={index} component="span">
+                          {seat}{" "}
+                        </Typography>
+                      );
                     })}
                   </Box>
                 </Grid>
@@ -1054,11 +1135,8 @@ const CheckOut = (props) => {
                     </Box>
                   )}
                   {stepTwoTablet ? (
-                    <Box
-                      className="active"
-                      onClick={() => setStepThirdTablet(true)}
-                    >
-                      <Typography component="span">TIẾP TỤC</Typography>
+                    <Box className="active" onClick={alertSubmitCheckoutMobile}>
+                      <Typography component="span">ĐẶT VÉ</Typography>
                     </Box>
                   ) : null}
                 </Grid>

@@ -33,6 +33,15 @@ const Style = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "space-between",
     height: "100%",
+    "& .iconback": {
+      marginRight: "auto",
+      marginLeft: 20,
+      width: 30,
+      height: 30,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
   },
   containerLeft: {
     display: "flex",
@@ -406,6 +415,9 @@ const Style = makeStyles((theme) => ({
   // CheckOutLeft
   checkOutLeft: {
     height: "100%",
+    "&.dnone": {
+      display: "none",
+    },
   },
   checkOutLeftContainer: {
     height: "max-content",
@@ -909,6 +921,9 @@ const Style = makeStyles((theme) => ({
       "& > p": {
         margin: 0,
       },
+    },
+    checkOutContainer: {
+      height: "100vh",
     },
   },
 

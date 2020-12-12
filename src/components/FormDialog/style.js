@@ -14,11 +14,31 @@ const Style = makeStyles((theme) => ({
     },
     "& input": {
       ...theme.typography.subtitle1,
-      color: theme.palette.text.dark,
+      // color: theme.palette.text.dark,
     },
     "& textarea": {
       ...theme.typography.subtitle1,
       color: theme.palette.text.dark,
+    },
+  },
+  formControl: {
+    top: 5,
+    width: 120,
+    "& > label": {
+      ...theme.typography.body1,
+      color: theme.palette.text.dark,
+      "&.Mui-focused": {
+        color: theme.palette.text.dark,
+      },
+    },
+    "& > div": {
+      "& > select": {
+        ...theme.typography.subtitle1,
+        height: 20,
+      },
+      "& > select:focus": {
+        backgroundColor: "transparent",
+      },
     },
   },
   dialogContent: {
@@ -36,6 +56,16 @@ const Style = makeStyles((theme) => ({
     },
     "&::-webkit-scrollbar-thumb:hover": {
       background: theme.palette.secondary.light,
+    },
+    "& .selectCinema": {
+      display: "flex",
+      margin: "0 -4px",
+    },
+    "& .datepicker": {
+      marginTop: 10,
+      "& > div": {
+        width: "100%",
+      },
     },
   },
   dialogTitle: {
@@ -70,6 +100,44 @@ const Style = makeStyles((theme) => ({
     "& input": {
       paddingBottom: 10,
       cursor: "pointer",
+    },
+  },
+
+  selectPrice: {
+    width: "100%",
+  },
+
+  priceItem: {
+    fontSize: theme.typography.subtitle1.fontSize,
+  },
+
+  selectCinemaItem: {
+    flexGrow: 0,
+    maxWidth: "33.333333%",
+    flexBasis: "33.333333%",
+    padding: "0 4px",
+  },
+
+  "@media (max-width: 600px)": {
+    gridContainer: {
+      "& > div": {
+        width: "100%",
+      },
+    },
+    dialog: {
+      "&.dialogMaxheight": {
+        "& .MuiDialog-paper": {
+          maxHeight: "100%",
+        },
+      },
+    },
+  },
+  "@media (max-width: 425px)": {
+    dialog: {
+      "& .MuiDialog-paper": {
+        margin: 0,
+        width: "100%",
+      },
     },
   },
 }));

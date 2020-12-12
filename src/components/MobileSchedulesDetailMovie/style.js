@@ -131,6 +131,12 @@ const Style = makeStyles((theme) => ({
     flexBasis: "33.333333%",
   },
 
+  txtEmpty: {
+    color: theme.palette.text.white,
+    fontSize: 16,
+    textAlign: "center",
+  },
+
   "@media (max-width: 800px)": {
     tabs: {
       "&.tabsAvatar": {

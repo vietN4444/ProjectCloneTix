@@ -15,7 +15,10 @@ const defaultMaterialTheme = createMuiTheme({
   },
 });
 
-const Datepicker = ({ type, setTimeMovie, data, ...props }) => {
+let oneYearFromNow = new Date();
+oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+
+export const Datepicker = memo(({ type, setTimeMovie, data, ...props }) => {
   const [clearedDate, handleClearedDateChange] = useState(data);
   const [time, setTime] = useState(data);
   const dateValue = new Date(data);
@@ -28,7 +31,7 @@ const Datepicker = ({ type, setTimeMovie, data, ...props }) => {
         .slice(0, -5);
       setTimeMovie(timeData);
     }
-  }, [time, setTime]);
+  }, [time]);
 
   return (
     <ThemeProvider theme={defaultMaterialTheme}>
@@ -46,6 +49,35 @@ const Datepicker = ({ type, setTimeMovie, data, ...props }) => {
       </MuiPickersUtilsProvider>
     </ThemeProvider>
   );
-};
+});
 
-export default memo(Datepicker);
+export const DatepickerAddMovie = memo(
+  ({ type, setTimeMovie, data, ...props }) => {
+    const [clearedDate, handleClearedDateChange] = useState(data);
+    const [time, setTime] = useState(data);
+
+    useEffect(() => {
+      let tzoffset = new Date(time).getTimezoneOffset() * 60000;
+      let timeData = new Date(Date.parse(time) - tzoffset)
+        .toISOString()
+        .slice(0, -5);
+      setTimeMovie(timeData);
+    }, [time]);
+
+    return (
+      <ThemeProvider theme={defaultMaterialTheme}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDateTimePicker
+            variant="dialog"
+            value={time}
+            format="yyyy/MM/dd HH:mm"
+            onChange={type ? setTime : handleClearedDateChange}
+            cancelLabel="Cancel"
+            okLabel={type ? "OK" : null}
+            maxDate={new Date(oneYearFromNow)}
+          />
+        </MuiPickersUtilsProvider>
+      </ThemeProvider>
+    );
+  }
+);

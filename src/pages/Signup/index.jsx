@@ -128,9 +128,7 @@ const SignUp = (props) => {
       setAlertEmpty(obj);
 
       if (auth) {
-        dispatch(signUp(userSignUp, alertSubmit, alertError));
-      } else {
-        console.log("Fail");
+        return dispatch(signUp(userSignUp, alertSubmit, alertError));
       }
     },
     [userSignUp, alertEmpty, alertNumberPhone, alertEmail, alertName]

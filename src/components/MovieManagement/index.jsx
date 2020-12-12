@@ -12,6 +12,7 @@ import {
   TableRow,
   TextField,
   Tooltip,
+  Typography,
 } from "@material-ui/core";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,26 +20,31 @@ import { useDispatch, useSelector } from "react-redux";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CreateIcon from "@material-ui/icons/Create";
 import SearchIcon from "@material-ui/icons/Search";
+import QueueIcon from "@material-ui/icons/Queue";
+import DefaultFilms from "../../assets/imgs/defaultFilms.png";
 
 import {
   getMovieByNameDashBoard,
   getMoviePageDashBoard,
 } from "../../redux/actions/managementActions";
 import Style from "./style";
-import Datepicker from "../Datepicker";
-import FormDialog from "../FormDialog";
+import { Datepicker } from "../Datepicker";
+import { FormDialog, FormDialogAddSchedules } from "../FormDialog";
 import {
   deleteMovie,
   updateMovie,
   updateMovieNochangeImg,
 } from "../../redux/actions/movieActions";
+import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom";
 
 const columns = [
-  { label: "Tác vụ", minWidth: 88, align: "center" },
-  { label: "Mã phim", minWidth: 70 },
+  { label: "Tác vụ", minWidth: 110, align: "center" },
+  { label: "Mã phim", minWidth: 90 },
   {
     label: "Tên phim",
-    minWidth: 130,
+    minWidth: 120,
+    align: "center",
   },
   {
     label: "Hình Ảnh",
@@ -52,12 +58,12 @@ const columns = [
   },
   {
     label: "Ngày khởi chiếu",
-    minWidth: 200,
+    minWidth: 215,
     align: "center",
   },
   {
     label: "Đánh giá",
-    minWidth: 70,
+    minWidth: 100,
     align: "center",
   },
 ];
@@ -65,8 +71,8 @@ const columns = [
 const MovieManagement = (props) => {
   const dispatch = useDispatch();
   const classes = Style(props);
-
-  const ref = useRef(null);
+  const history = useHistory();
+  const ref = useRef();
 
   const movieList = useSelector((state) => state.dashboard.movieList);
   const movieListSearched = useSelector(
@@ -74,11 +80,12 @@ const MovieManagement = (props) => {
   );
   const totalCount = useSelector((state) => state.dashboard.totalCount);
 
-  const [page, setPage] = useState(0);
   const [widthTable, setWidthTable] = useState(0);
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [movieSearched, setMovieSearch] = useState("");
   const [open, setOpen] = useState(false);
+  const [openSchedules, setOpenSchedules] = useState(false);
   const [movieSelected, setMovieSelected] = useState({
     maPhim: 0,
     tenPhim: "",
@@ -90,11 +97,6 @@ const MovieManagement = (props) => {
     ngayKhoiChieu: "",
     danhGia: 0,
   });
-
-  useEffect(() => {
-    dispatch(getMoviePageDashBoard(1, 5));
-    setWidthTable(ref.current.offsetWidth - 20);
-  }, [dispatch]);
 
   const handleChangePage = useCallback(
     (event, newPage) => {
@@ -117,15 +119,20 @@ const MovieManagement = (props) => {
     (event, id, num) => {
       let nameMovie = event.target.value.trim();
       setMovieSearch(nameMovie);
-      console.log(movieSearched);
-      dispatch(getMovieByNameDashBoard(id, num, movieSearched));
+      if (nameMovie === "") {
+        setPage(0);
+        dispatch(getMoviePageDashBoard(1, 5));
+        return;
+      }
+      setPage(0);
+      dispatch(getMovieByNameDashBoard(id, num, nameMovie));
     },
     [movieSearched, dispatch]
   );
 
   const handleDelete = useCallback(
     (maPhim) => {
-      dispatch(deleteMovie(maPhim));
+      dispatch(deleteMovie(maPhim, alertSuccess, alertError));
     },
     [dispatch]
   );
@@ -133,47 +140,84 @@ const MovieManagement = (props) => {
   const handleFormDialog = useCallback(
     (movie) => {
       setOpen(!open);
-      setMovieSelected(movie);
+      if (movie) {
+        return setMovieSelected(movie);
+      }
     },
     [open, setMovieSelected]
   );
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setOpen(!open);
-    let form_data = new FormData();
-    if (typeof movieSelected.hinhAnh === "string") {
-      for (let key in movieSelected) {
-        if (key === "hinhAnh") {
-          continue;
-        }
-        form_data.append(key, movieSelected[key]);
-        console.log(key, form_data.get(key));
+  const handleFormDialogSchedules = useCallback(
+    (movie) => {
+      setOpenSchedules(!openSchedules);
+      if (movie) {
+        return setMovieSelected(movie);
       }
-      dispatch(updateMovieNochangeImg(form_data, page + 1, 5));
-      return;
-    }
-    for (let key in movieSelected) {
-      form_data.append(key, movieSelected[key]);
-      console.log(key, form_data.get(key));
-    }
-    dispatch(updateMovie(form_data, page + 1, 5));
-  };
+    },
+    [openSchedules, setMovieSelected]
+  );
+
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      let form_data = new FormData();
+
+      if (typeof movieSelected.hinhAnh === "string") {
+        // for (let key in movieSelected) {
+        //   if (key === "hinhAnh") {
+        //     continue;
+        //   }
+        //   form_data.append(key, movieSelected[key]);
+        // }
+        return alertChangeInfoNoImg(movieSelected, movieSearched);
+      }
+      setOpen(!open);
+      for (let key in movieSelected) {
+        form_data.append(key, movieSelected[key]);
+        // console.log(key, form_data.get(key));
+      }
+      dispatch(
+        updateMovie(
+          form_data,
+          page + 1,
+          5,
+          movieSearched,
+          alertSuccess,
+          alertError
+        )
+      );
+    },
+    [movieSelected, movieSearched]
+  );
 
   const renderMovieList = useCallback(() => {
     if (!!movieSearched) {
+      if (movieListSearched.length === 0) {
+        return (
+          <TableRow>
+            <TableCell colSpan="7" style={{ border: "none" }}>
+              Không tìm thấy phim giống tên trong danh sách
+            </TableCell>
+          </TableRow>
+        );
+      }
       return movieListSearched.map((movie, index) => {
         const { biDanh, maNhom, trailer, ...currentMovie } = movie;
         return (
           <TableRow key={index}>
-            <TableCell>
+            <TableCell className={classes.tableCellAction}>
               <Tooltip title="Delete" placement="top">
-                <IconButton onClick={() => handleDelete(movie.maPhim)}>
+                <IconButton onClick={() => alertHandleDelete(movie.maPhim)}>
                   <DeleteIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Edit" placement="top">
                 <IconButton onClick={() => handleFormDialog(movie)}>
+                  <CreateIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="AddSchedules" placement="top">
+                <IconButton onClick={() => handleFormDialogSchedules(movie)}>
                   <CreateIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
@@ -187,15 +231,20 @@ const MovieManagement = (props) => {
       const { biDanh, maNhom, trailer, ...currentMovie } = movie;
       return (
         <TableRow key={index}>
-          <TableCell>
+          <TableCell className={classes.tableCellAction}>
             <Tooltip title="Delete" placement="top">
-              <IconButton onClick={() => handleDelete(movie.maPhim)}>
+              <IconButton onClick={() => alertHandleDelete(movie.maPhim)}>
                 <DeleteIcon fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Edit" placement="top">
               <IconButton onClick={() => handleFormDialog(movie)}>
                 <CreateIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="AddSchedules" placement="top">
+              <IconButton onClick={() => handleFormDialogSchedules(movie)}>
+                <QueueIcon fontSize="small" />
               </IconButton>
             </Tooltip>
           </TableCell>
@@ -206,18 +255,25 @@ const MovieManagement = (props) => {
   }, [
     movieList,
     movieListSearched,
-    handleDelete,
     handleFormDialog,
     movieSearched,
+    handleFormDialogSchedules,
   ]);
 
-  const renderMovieItem = (currentMovie) => {
+  const renderMovieItem = useCallback((currentMovie) => {
     return Object.keys(currentMovie).map((data, index) => {
       switch (data) {
         case "hinhAnh": {
           return (
             <TableCell key={index} className={classes.tableImg}>
-              <img src={currentMovie[data]} alt="movie" />
+              <img
+                src={currentMovie[data]}
+                alt="movie"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = DefaultFilms;
+                }}
+              />
             </TableCell>
           );
         }
@@ -233,10 +289,93 @@ const MovieManagement = (props) => {
         }
       }
     });
-  };
+  }, []);
+
+  const alertChangeInfoNoImg = useCallback((movie, movieSearched) => {
+    return Swal.fire({
+      icon: "warning",
+      title: "Cảnh báo!",
+      text:
+        "Bạn update thông tin nên đính kèm hình ảnh phim, nếu không phim update sẽ không có hình ảnh phim",
+      confirmButtonColor: "#44c020",
+      confirmButtonText: "Tiếp tục update",
+      cancelButtonText: "Cancel",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(
+          updateMovieNochangeImg(
+            movie,
+            page + 1,
+            5,
+            movieSearched,
+            alertSuccess,
+            alertError
+          )
+        );
+        setOpen(false);
+      }
+    });
+  }, []);
+
+  const alertHandleDelete = useCallback((maPhim) => {
+    return Swal.fire({
+      icon: "warning",
+      confirmButtonText: "Xoá",
+      cancelButtonText: "Cancel",
+      title: "Cảnh báo",
+      text: "Bạn có chắc chắn xoá bộ phim này",
+      confirmButtonColor: "#fb4226",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDelete(maPhim);
+      }
+    });
+  }, []);
+
+  const alertSuccess = useCallback((text, type = 0) => {
+    if (type) {
+      return Swal.fire({
+        icon: "success",
+        text: text,
+        timer: 1500,
+        confirmButtonColor: "#108f3e",
+        confirmButtonText: "OK",
+      });
+    }
+    return Swal.fire({
+      icon: "success",
+      text: text,
+      confirmButtonColor: "#108f3e",
+      confirmButtonText: "OK",
+      willClose: () => {
+        history.go(0);
+      },
+    });
+  }, []);
+
+  const alertError = useCallback((text) => {
+    return Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: text,
+      confirmButtonColor: "#fb4226",
+      confirmButtonText: "OK",
+    });
+  }, []);
+
+  useEffect(() => {
+    dispatch(getMoviePageDashBoard(1, 5));
+  }, [dispatch]);
+
+  useEffect(() => {
+    setWidthTable(ref.current?.offsetWidth);
+  }, [ref.current?.offsetWidth, setWidthTable, ref]);
+
   return (
     <>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className={classes.gridContainer}>
         <Paper className={classes.wrapperMovieManagement} elevation={3}>
           <TableContainer className={classes.container}>
             <Box className={classes.margin} style={{ width: widthTable }}>
@@ -298,6 +437,12 @@ const MovieManagement = (props) => {
         setMovie={setMovieSelected}
         data={open}
         movieData={movieSelected}
+      />
+      <FormDialogAddSchedules
+        func={handleFormDialogSchedules}
+        data={openSchedules}
+        schedules={movieSelected}
+        closeDialog={setOpenSchedules}
       />
     </>
   );

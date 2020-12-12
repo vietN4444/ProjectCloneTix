@@ -62,7 +62,7 @@ const BoxBooking = (props) => {
   }, [movieList]);
 
   const renderCinemaList = useCallback(() => {
-    console.log(cinemaList);
+    // console.log(cinemaList);
     return cinemaList?.map((cinema, index) => {
       return (
         <li

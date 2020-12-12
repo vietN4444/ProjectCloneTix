@@ -6,7 +6,22 @@ import {
   GET_PAGES,
   SET_MOVIE_SEARCH,
 } from "./actionContants";
-import { getMoviePageDashBoard } from "./managementActions";
+
+import {
+  getMovieByNameDashBoard,
+  getMoviePageDashBoard,
+} from "./managementActions";
+
+const textAlert = {
+  delete: [
+    "Phim đã xoá khỏi hệ thống",
+    "Phim không thể xoá vì đã lên lịch chiếu",
+  ],
+  changeInfo: [
+    "Phim đã update thông tin mới",
+    "Phim không thể update thông tin, vui lòng thêm hình ảnh",
+  ],
+};
 
 export const getMovieList = () => {
   return (dispatch) => {
@@ -102,12 +117,19 @@ export const getMovieByName = (name) => {
         });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 };
 
-export const updateMovie = (movieUpdate, id, num) => {
+export const updateMovie = (
+  movieUpdate,
+  id,
+  num,
+  movieSearched,
+  alertSuccess,
+  alertError
+) => {
   return (dispatch) => {
     connector({
       url:
@@ -116,18 +138,25 @@ export const updateMovie = (movieUpdate, id, num) => {
       data: movieUpdate,
     })
       .then((res) => {
-        console.log(res.data);
-        console.log("Thanh cong");
         dispatch(getMoviePageDashBoard(id, num));
+        dispatch(getMovieByNameDashBoard(id, num, movieSearched));
+        alertSuccess(textAlert.changeInfo[0], 1);
       })
       .catch((err) => {
-        console.log(err);
-        console.log("That bai");
+        alertError(err.response.data);
+        // console.log(err.response);
       });
   };
 };
 
-export const updateMovieNochangeImg = (movieUpdate) => {
+export const updateMovieNochangeImg = (
+  movieUpdate,
+  id,
+  num,
+  movieSearched,
+  alertSuccess,
+  alertError
+) => {
   return (dispatch) => {
     connector({
       url: "https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/CapNhatPhim",
@@ -135,27 +164,34 @@ export const updateMovieNochangeImg = (movieUpdate) => {
       data: movieUpdate,
     })
       .then((res) => {
-        console.log(res.data);
-        console.log("Thanh cong");
+        // console.log(res.data);
+        // console.log("Thanh cong");
+        dispatch(getMoviePageDashBoard(id, num));
+        dispatch(getMovieByNameDashBoard(id, num, movieSearched));
+        alertSuccess(textAlert.changeInfo[0], 1);
       })
       .catch((err) => {
-        console.log(err);
-        console.log("That bai");
+        alertError(err.response.data);
+        // console.log(err.response.data);
       });
   };
 };
 
-export const deleteMovie = (maPhim) => {
+export const deleteMovie = (
+  maPhim,
+  alertMovieDeleteSuccess,
+  alertMovieDeleteError
+) => {
   return (dispatch) => {
     connector({
       url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/XoaPhim?MaPhim=${maPhim}`,
       method: "DELETE",
     })
       .then((res) => {
-        console.log(res.data);
+        alertMovieDeleteSuccess(textAlert.delete[0]);
       })
       .catch((err) => {
-        console.log(err, "Phim đã xếp lịch chiếu không thể xóa");
+        alertMovieDeleteError(textAlert.delete[1]);
       });
   };
 };
@@ -171,6 +207,44 @@ export const getDetailMovie = (maPhim) => {
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+};
+
+export const addMovie = (fromData, alertSuccess, alertError, resetForm) => {
+  return (dispatch) => {
+    connector({
+      url:
+        "https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/ThemPhimUploadHinh",
+      method: "POST",
+      data: fromData,
+    })
+      .then((res) => {
+        alertSuccess();
+        resetForm();
+      })
+      .catch((err) => {
+        alertError(err.response.data);
+        // console.log(err);
+        // console.log(err.response.data);
+        // console.log(err.response.config.data);
+      });
+  };
+};
+
+export const addSchedules = (schedules, alertSuccess) => {
+  return (dispatch) => {
+    connector({
+      url: "https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/TaoLichChieu",
+      method: "POST",
+      data: schedules,
+    })
+      .then((res) => {
+        // console.log(res);
+        alertSuccess(res.data);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
       });
   };
 };

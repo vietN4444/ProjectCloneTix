@@ -7,14 +7,15 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
-import React, { memo, useCallback } from "react";
-import { Link } from "react-router-dom";
+import React, { memo, useCallback, useEffect, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 
 import EventIcon from "@material-ui/icons/Event";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import AvaCGV from "../../assets/imgs/avacgv.jpg";
 import Style from "./style";
+import Swal from "sweetalert2";
 
 const arrAvatarCinema = {
   BHDStar:
@@ -29,10 +30,27 @@ const arrAvatarCinema = {
     "https://s3img.vcdn.vn/123phim/2018/09/ddc-dong-da-15379624326697.jpg",
   CGV: AvaCGV,
 };
-const TabSubSchedules = ({ id, data, ...props }) => {
+const TabSubSchedules = ({ params, user, id, data, ...props }) => {
   const classes = Style(props);
-  // console.log(data);
+  const history = useHistory();
+
   let currentID = id;
+
+  const alertSignIn = useCallback(() => {
+    return Swal.fire({
+      icon: "error",
+      confirmButtonText: "Đăng nhập",
+      cancelButtonText: "Để sau",
+      title: "Opps...",
+      text: "Bạn chưa đăng nhập để thực hiện tác vụ này",
+      confirmButtonColor: "#fb4226",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        history.replace("/signin");
+      }
+    });
+  }, []);
 
   const renderTabsBtnItem = useCallback(() => {
     return data.lichChieuPhim?.map((btn, index) => {
@@ -40,8 +58,14 @@ const TabSubSchedules = ({ id, data, ...props }) => {
       return (
         <Grid key={index} item md={4} className={classes.tabsBtnItemGrid}>
           <Link
-            to={`/checkout/` + btn.maLichChieu}
+            target={user.userName === "" ? "_self" : "_blank"}
+            to={
+              user.userName === ""
+                ? "/detail/" + params
+                : "/checkout/" + btn.maLichChieu
+            }
             className={classes.txtTabsItemBtn}
+            onClick={user.userName === "" ? alertSignIn : null}
           >
             <EventIcon />
             <Typography component="span">{newStr.slice(0, 18)}</Typography>
@@ -49,7 +73,7 @@ const TabSubSchedules = ({ id, data, ...props }) => {
         </Grid>
       );
     });
-  }, [data]);
+  }, [data, params, user]);
 
   return (
     <Accordion
@@ -87,8 +111,23 @@ const TabSubSchedules = ({ id, data, ...props }) => {
   );
 };
 
-const MobileSchedulesDetailMovie = ({ dataCinemaList, ...props }) => {
+const MobileSchedulesDetailMovie = ({
+  params,
+  user,
+  dataCinemaList,
+  ...props
+}) => {
   // console.log(dataCinemaList);
+
+  const [empty, setEmpty] = useState(false);
+
+  useEffect(() => {
+    if (dataCinemaList?.heThongRapChieu.length === 0) {
+      setEmpty(false);
+    } else {
+      setEmpty(true);
+    }
+  }, [dataCinemaList]);
 
   const classes = Style(props);
 
@@ -120,7 +159,15 @@ const MobileSchedulesDetailMovie = ({ dataCinemaList, ...props }) => {
           </AccordionSummary>
           <AccordionDetails className={classes.tabsItemSub}>
             {cinema.cumRapChieu.map((ele, index) => {
-              return <TabSubSchedules key={index} data={ele} id={id} />;
+              return (
+                <TabSubSchedules
+                  key={index}
+                  data={ele}
+                  id={id}
+                  user={user}
+                  params={params}
+                />
+              );
             })}
           </AccordionDetails>
         </Accordion>
@@ -128,7 +175,17 @@ const MobileSchedulesDetailMovie = ({ dataCinemaList, ...props }) => {
     });
   }, [dataCinemaList]);
 
-  return <Box className={classes.schedulesCinemas}>{renderTabMain()}</Box>;
+  return (
+    <>
+      {empty ? (
+        <Box className={classes.schedulesCinemas}>{renderTabMain()}</Box>
+      ) : (
+        <Typography className={classes.txtEmpty}>
+          Phim chưa có lịch chiếu
+        </Typography>
+      )}
+    </>
+  );
 };
 
 export default memo(MobileSchedulesDetailMovie);

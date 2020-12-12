@@ -169,7 +169,7 @@ const Style = makeStyles((theme) => ({
     container: {
       width: 600,
       "&.containerTicket": {
-        width: 800,
+        width: "800px!important",
       },
     },
     drawerPaper: {
@@ -183,6 +183,13 @@ const Style = makeStyles((theme) => ({
       transition: "all 0.4s",
       "&.openMenu": {
         transform: "translateX(0)",
+      },
+    },
+  },
+  "@media (max-width: 425px)": {
+    container: {
+      "&.subMenu": {
+        width: "100vw",
       },
     },
   },

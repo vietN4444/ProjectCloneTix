@@ -1,8 +1,9 @@
-const widthBtn = 100;
-
 const { makeStyles } = require("@material-ui/core");
 
 const Style = makeStyles((theme) => ({
+  boxContainer: {
+    padding: "8px 0",
+  },
   headTitle: {
     "&.headTitleBox": {
       padding: "8px 16px",
@@ -14,67 +15,6 @@ const Style = makeStyles((theme) => ({
     "& > span": {
       ...theme.typography.h4,
     },
-  },
-  listItem: {
-    paddingTop: 20,
-    paddingBottom: 20,
-    "& .MuiListItemAvatar-root": {
-      minWidth: 80,
-    },
-    "& .MuiAvatar-root": {
-      width: 60,
-      height: 60,
-      background: theme.palette.secondary.light,
-    },
-    "& svg": {
-      fontSize: 36,
-    },
-    "& span": {
-      ...theme.typography.h6,
-    },
-    "& p": {
-      ...theme.typography.body2,
-      color: theme.palette.text.grey,
-      width: "70%",
-    },
-    "& > button": {
-      minWidth: widthBtn,
-      borderRadius: 200,
-      border: `1px solid ${theme.palette.secondary.light}`,
-      marginRight: 25,
-      "&:hover": {
-        backgroundColor: theme.palette.secondary.light,
-        "& .MuiButton-label": {
-          color: theme.palette.text.white,
-        },
-      },
-      "& .MuiButton-label": {
-        textTransform: "none",
-        fontFamily: "inhertit",
-        color: theme.palette.secondary.light,
-      },
-    },
-  },
-  listItemText: {
-    marginTop: 6,
-    marginBottom: 6,
-    flex: "1 1 auto",
-    "& h1": {
-      ...theme.typography.h6,
-      "& > span": {
-        marginLeft: 10,
-        fontSize: 18,
-        color: theme.palette.secondary.light,
-      },
-    },
-    "& p": {
-      ...theme.typography.body2,
-      color: theme.palette.text.grey,
-      width: "70%",
-    },
-  },
-  boxContainer: {
-    padding: "8px 0",
   },
   boxContent: {
     padding: "20px 16px",
@@ -125,26 +65,18 @@ const Style = makeStyles((theme) => ({
               borderColor: "rgba(0,0,0,0.4)",
             },
           },
+          "&.inputFile": {
+            margin: 0,
+            "& > div > input": {
+              height: 20,
+            },
+          },
         },
       },
       "& > button": {
         background: theme.palette.secondary.light,
         marginTop: 10,
       },
-    },
-  },
-  boxTxtError: {
-    margin: 0,
-    height: 50,
-    display: "flex",
-    justifyContent: "center",
-    flexDirection: "column",
-    "&.errorTxtChangeInfo": {
-      height: 30,
-    },
-    "& > p": {
-      ...theme.typography.subtitle1,
-      color: theme.palette.text.red,
     },
   },
   informationPassword: {
@@ -166,27 +98,54 @@ const Style = makeStyles((theme) => ({
       },
     },
   },
-  "@media (max-width: 960px)": {
-    subMenuItems: {
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      "& > div": {
-        boxShadow: "none",
+  formControl: {
+    top: 5,
+    width: 120,
+    "& > label": {
+      ...theme.typography.body1,
+      color: theme.palette.text.dark,
+      "&.Mui-focused": {
+        color: theme.palette.text.dark,
+      },
+    },
+    "& > div": {
+      marginTop: 8,
+      "& > select": {
+        ...theme.typography.subtitle1,
+        height: 20,
+        "&.MuiNativeSelect-outlined.MuiNativeSelect-outlined": {
+          paddingLeft: 10,
+        },
+      },
+      "& > select:focus": {
+        backgroundColor: "transparent",
       },
     },
   },
-  "@media (max-width: 600px)": {
-    subMenuItems: {
-      zIndex: 100,
+  boxTxtError: {
+    margin: 0,
+    height: 50,
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    "&.errorTxtChangeInfo": {
+      height: 30,
+    },
+    "& > p": {
+      ...theme.typography.subtitle1,
+      color: theme.palette.text.red,
     },
   },
-  "@media (max-width: 425px)": {
+
+  "@media (max-width: 650px)": {
     boxContent: {
       flexDirection: "column-reverse",
     },
     informationPassword: {
-      marginBottom: 20,
+      marginBottom: 10,
+      "& > div": {
+        width: "100%",
+      },
     },
   },
 }));

@@ -37,7 +37,7 @@ export const getMovieByNameDashBoard = (id, num, name) => {
         });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 };
@@ -50,6 +50,7 @@ export const getUserList = (id, num) => {
       method: "GET",
     })
       .then((res) => {
+        // console.log(res.data);
         dispatch({
           type: GET_USER_LIST_DASHBOARD,
           payload: res.data,
@@ -68,14 +69,14 @@ export const getUserListByName = (id, num, name) => {
       method: "GET",
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         dispatch({
           type: GET_USER_SEARCH_DASHBOARD,
           payload: res.data,
         });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 };

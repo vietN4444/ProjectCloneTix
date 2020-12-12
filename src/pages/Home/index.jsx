@@ -61,27 +61,52 @@ const Home = (props) => {
   window.addEventListener("resize", changeRes);
 
   useEffect(() => {
+    const timer = setTimeout(() => setLoadingImage(false), 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     changeRes();
-    setTimeout(() => setLoadingImage(false), 2000);
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   useEffect(() => {
     if (!page) {
-      dispatch(getPages(1));
-      dispatch(getMovieListByPage(3, 1));
-      dispatch(getMovieListByPage(4, 1));
-      return;
+      async function fetchData() {
+        try {
+          const getPagesCount = await dispatch(getPages(1));
+          const getPagesListMovie1st = await dispatch(getMovieListByPage(3, 1));
+          const getPagesListMovie2nd = await dispatch(getMovieListByPage(4, 1));
+        } catch {
+          console.log("failed");
+        }
+      }
+
+      fetchData();
     }
   }, [page]);
 
   useEffect(() => {
-    dispatch(getMovieList());
-    dispatch(getCinemaInformation());
+    async function fetchData() {
+      try {
+        const getMovieListAsync = await dispatch(getMovieList());
+        const getCinemaInformationAsync = await dispatch(
+          getCinemaInformation()
+        );
+      } catch {
+        console.log("failed");
+      }
+    }
+
+    fetchData();
   }, [dispatch]);
 
   useEffect(() => {
     return () => {
-      setTimeout(() => setLoadingImage(true));
       dispatch({
         type: DELETE_CINEMA_DATA,
       });

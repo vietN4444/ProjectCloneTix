@@ -8,16 +8,30 @@ const Style = makeStyles((theme, widthTable) => ({
   container: {
     maxHeight: 440,
     minHeight: 440,
+    "& > table": {
+      background: theme.palette.primary.main,
+      position: "relative",
+      "&::after": {
+        content: '""',
+        position: "absolute",
+        width: "10%",
+        height: "6%",
+        top: "1px",
+        right: 0,
+        background: theme.palette.secondary.light,
+        transform: "translateY(-100%)",
+      },
+    },
     "&::-webkit-scrollbar": {
       width: 8,
       height: 9,
     },
     "&::-webkit-scrollbar-track": {
-      backgroundColor: "transparent",
+      backgroundColor: theme.palette.primary.main,
       transition: "all 0.5s",
     },
     "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "transparent",
+      backgroundColor: theme.palette.primary.main,
       transition: "all 0.5s",
       borderRadius: 200,
     },
@@ -40,6 +54,14 @@ const Style = makeStyles((theme, widthTable) => ({
         "&:last-child": {
           textAlign: "center",
         },
+        "&:nth-child(2)": {
+          padding: 4,
+          textAlign: "center",
+        },
+        "&:nth-child(3)": {
+          padding: 4,
+          textAlign: "center",
+        },
       },
     },
   },
@@ -54,6 +76,11 @@ const Style = makeStyles((theme, widthTable) => ({
       background: theme.palette.secondary.light,
       color: theme.palette.text.white,
     },
+  },
+
+  tableCellAction: {
+    padding: 4,
+    textAlign: "center",
   },
   margin: {
     padding: theme.spacing(1),
@@ -83,6 +110,13 @@ const Style = makeStyles((theme, widthTable) => ({
   },
   icon: {
     color: theme.palette.primary.main,
+  },
+
+  "@media (max-width: 425px)": {
+    gridContainer: {
+      margin: 0,
+      width: "100%",
+    },
   },
 }));
 

@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
@@ -30,7 +30,155 @@ import { changeUserInformation } from "../../redux/actions/userActions";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 
-const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
+const FormChangePassword = ({
+  setErrorCheckNewPass,
+  setErrorCheckPass,
+  authSubmit,
+  errCheckNewPass,
+  checkNewPassword,
+  checkChangePassword,
+  handleShowPassword,
+  showPassword,
+  errCheckPass,
+  checkPassword,
+  handleInput,
+  submitChangePass,
+  typeUser,
+  data,
+  ...props
+}) => {
+  const classes = Style(props);
+
+  useEffect(() => {
+    return () => {
+      setErrorCheckPass(false);
+      setErrorCheckNewPass({
+        confirm: false,
+        equalOldPass: false,
+      });
+    };
+  }, [setErrorCheckPass, setErrorCheckNewPass]);
+
+  return (
+    <Box className={classes.boxContainer}>
+      <Box className={`${classes.headTitle} headTitleBox`}>
+        <Typography component="span">Thay đổi mật khẩu</Typography>
+      </Box>
+      <Divider variant="middle" />
+      <Box className={classes.boxContent}>
+        <form onSubmit={submitChangePass}>
+          <div>
+            <TextField
+              id="outlined-basic"
+              label="Mật khẩu hiện tại"
+              variant="outlined"
+              name="passCurrent"
+              onChange={handleInput}
+              onBlur={checkPassword}
+              className={errCheckPass ? "inputError" : null}
+              type={showPassword.current ? "text" : "password"}
+            />
+            {showPassword.current ? (
+              <VisibilityIcon
+                data-name="current"
+                onClick={handleShowPassword}
+              />
+            ) : (
+              <VisibilityOffIcon
+                data-name="current"
+                onClick={handleShowPassword}
+              />
+            )}
+          </div>
+          <div>
+            <TextField
+              id="outlined-basic"
+              label="Mật khẩu mới"
+              variant="outlined"
+              name="newPass"
+              type={showPassword.new ? "text" : "password"}
+              onChange={handleInput}
+              onBlur={checkChangePassword}
+              className={errCheckPass ? "inputError" : null}
+            />
+            {showPassword.new ? (
+              <VisibilityIcon data-name="new" onClick={handleShowPassword} />
+            ) : (
+              <VisibilityOffIcon data-name="new" onClick={handleShowPassword} />
+            )}
+          </div>
+          <div>
+            <TextField
+              id="input-renewpass"
+              label="Xác nhận Mật khẩu mới"
+              variant="outlined"
+              name="comfirmNewPass"
+              onChange={handleInput}
+              type={showPassword.confirmNew ? "text" : "password"}
+              onBlur={checkNewPassword}
+              className={errCheckPass ? "inputError" : null}
+            />
+            {showPassword.confirmNew ? (
+              <VisibilityIcon
+                data-name="confirmNew"
+                onClick={handleShowPassword}
+              />
+            ) : (
+              <VisibilityOffIcon
+                data-name="confirmNew"
+                onClick={handleShowPassword}
+              />
+            )}
+          </div>
+          <Box className={classes.boxTxtError}>
+            <Typography>
+              {errCheckPass ? "- Mặt khẩu hiện tại không chính xác" : null}
+            </Typography>
+            <Typography>
+              {errCheckNewPass.equalOldPass
+                ? "- Mật khẩu mới trùng với mật khẩu cũ"
+                : errCheckNewPass.confirm
+                ? "- Mật khẩu xác nhận không trùng khớp với mật khẩu vừa tạo"
+                : null}
+            </Typography>
+          </Box>
+          <Button
+            type="submit"
+            color="secondary"
+            variant="contained"
+            disabled={!authSubmit()}
+          >
+            Thay đổi
+          </Button>
+        </form>
+        <Box className={classes.informationPassword}>
+          <div>
+            <Typography>
+              <Typography component="span">Gợi ý: </Typography>Dùng ít nhất 8 kí
+              tự.
+            </Typography>
+            <Typography>
+              Kết hợp các ký tự a-z, số 0-9 và một số kí tự đặc biệt.
+            </Typography>
+            <Typography>
+              Không nên sử dụng những chuỗi dễ đoán như ngày sinh trong mật khẩu
+            </Typography>
+          </div>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+const UserInformation = ({
+  forwardRef,
+  subMenu,
+  res,
+  authMenu,
+  typeUser,
+  data,
+  ...props
+}) => {
   const classes = Style(props);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -172,8 +320,7 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
         hoTen: data.hoTen,
       };
       if (authSubmit) {
-        dispatch(changeUserInformation(user));
-        return alertChangeInfo();
+        return dispatch(changeUserInformation(user, alertChangeInfo));
       }
     },
     [data, typeUser]
@@ -258,6 +405,8 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
           }
           break;
         }
+        default:
+          return;
       }
     },
     [errorRegex]
@@ -269,7 +418,6 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
       userChangeInfo.email !== "" ||
       userChangeInfo.hoten !== ""
     ) {
-      console.log();
       if (
         errorRegex.name === false &&
         errorRegex.email === false &&
@@ -304,8 +452,7 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
         user = { ...user, hoTen: userChangeInfo.hoten };
       }
       if (authSubmit) {
-        dispatch(changeUserInformation(user));
-        return alertChangeInfo();
+        return dispatch(changeUserInformation(user, alertChangeInfo));
       }
     },
     [data, typeUser, userChangeInfo]
@@ -419,125 +566,22 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
       }
       case 1: {
         return (
-          <Box className={classes.boxContainer}>
-            <Box className={`${classes.headTitle} headTitleBox`}>
-              <Typography component="span">Thay đổi mật khẩu</Typography>
-            </Box>
-            <Divider variant="middle" />
-            <Box className={classes.boxContent}>
-              <form onSubmit={submitChangePass}>
-                <div>
-                  <TextField
-                    id="outlined-basic"
-                    label="Mật khẩu hiện tại"
-                    variant="outlined"
-                    name="passCurrent"
-                    onChange={handleInput}
-                    value=""
-                    onBlur={checkPassword}
-                    className={errCheckPass ? "inputError" : null}
-                    type={showPassword.current ? "text" : "password"}
-                  />
-                  {showPassword.current ? (
-                    <VisibilityIcon
-                      data-name="current"
-                      onClick={handleShowPassword}
-                    />
-                  ) : (
-                    <VisibilityOffIcon
-                      data-name="current"
-                      onClick={handleShowPassword}
-                    />
-                  )}
-                </div>
-                <div>
-                  <TextField
-                    id="outlined-basic"
-                    label="Mật khẩu mới"
-                    variant="outlined"
-                    name="newPass"
-                    value=""
-                    type={showPassword.new ? "text" : "password"}
-                    onChange={handleInput}
-                    onBlur={checkChangePassword}
-                    className={errCheckPass ? "inputError" : null}
-                  />
-                  {showPassword.new ? (
-                    <VisibilityIcon
-                      data-name="new"
-                      onClick={handleShowPassword}
-                    />
-                  ) : (
-                    <VisibilityOffIcon
-                      data-name="new"
-                      onClick={handleShowPassword}
-                    />
-                  )}
-                </div>
-                <div>
-                  <TextField
-                    id="input-renewpass"
-                    label="Xác nhận Mật khẩu mới"
-                    variant="outlined"
-                    value=""
-                    name="comfirmNewPass"
-                    onChange={handleInput}
-                    type={showPassword.confirmNew ? "text" : "password"}
-                    onBlur={checkNewPassword}
-                    className={errCheckPass ? "inputError" : null}
-                  />
-                  {showPassword.confirmNew ? (
-                    <VisibilityIcon
-                      data-name="confirmNew"
-                      onClick={handleShowPassword}
-                    />
-                  ) : (
-                    <VisibilityOffIcon
-                      data-name="confirmNew"
-                      onClick={handleShowPassword}
-                    />
-                  )}
-                </div>
-                <Box className={classes.boxTxtError}>
-                  <Typography>
-                    {errCheckPass
-                      ? "- Mặt khẩu hiện tại không chính xác"
-                      : null}
-                  </Typography>
-                  <Typography>
-                    {errCheckNewPass.equalOldPass
-                      ? "- Mật khẩu mới trùng với mật khẩu cũ"
-                      : errCheckNewPass.confirm
-                      ? "- Mật khẩu xác nhận không trùng khớp với mật khẩu vừa tạo"
-                      : null}
-                  </Typography>
-                </Box>
-                <Button
-                  type="submit"
-                  color="secondary"
-                  variant="contained"
-                  disabled={!authSubmit()}
-                >
-                  Thay đổi
-                </Button>
-              </form>
-              <Box className={classes.informationPassword}>
-                <div>
-                  <Typography>
-                    <Typography component="span">Gợi ý: </Typography>Dùng ít
-                    nhất 8 kí tự.
-                  </Typography>
-                  <Typography>
-                    Kết hợp các ký tự a-z, số 0-9 và một số kí tự đặc biệt.
-                  </Typography>
-                  <Typography>
-                    Không nên sử dụng những chuỗi dễ đoán như ngày sinh trong
-                    mật khẩu
-                  </Typography>
-                </div>
-              </Box>
-            </Box>
-          </Box>
+          <FormChangePassword
+            setErrorCheckNewPass={setErrorCheckNewPass}
+            setErrorCheckPass={setErrorCheckPass}
+            authSubmit={authSubmit}
+            errCheckNewPass={errCheckNewPass}
+            checkNewPassword={checkNewPassword}
+            checkChangePassword={checkChangePassword}
+            handleShowPassword={handleShowPassword}
+            showPassword={showPassword}
+            errCheckPass={errCheckPass}
+            checkPassword={checkPassword}
+            handleInput={handleInput}
+            submitChangePass={submitChangePass}
+            typeUser={typeUser}
+            data={data}
+          />
         );
       }
       case 2: {
@@ -557,7 +601,7 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
                     label="Tài khoản"
                     variant="outlined"
                     disabled
-                    value={data.taiKhoan}
+                    defaultValue={data.taiKhoan}
                   />
                 </div>
                 <div>
@@ -567,7 +611,7 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
                     variant="outlined"
                     type="password"
                     disabled
-                    value={data.matKhau}
+                    defaultValue={data.matKhau}
                   />
                 </div>
                 <div>
@@ -576,7 +620,7 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
                     label="Số điện thoại"
                     variant="outlined"
                     name="SDT"
-                    value={data.soDT}
+                    defaultValue={data.soDT}
                     onChange={handleInputTabInfo}
                     onBlur={checkInputTabInfo}
                   />
@@ -587,7 +631,7 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
                     label="Email"
                     variant="outlined"
                     name="email"
-                    value={data.email}
+                    defaultValue={data.email}
                     onChange={handleInputTabInfo}
                     onBlur={checkInputTabInfo}
                   />
@@ -598,7 +642,7 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
                     label="Tên khách hàng"
                     variant="outlined"
                     name="hoten"
-                    value={data.hoTen}
+                    defaultValue={data.hoTen}
                     onChange={handleInputTabInfo}
                     onBlur={checkInputTabInfo}
                   />
@@ -660,10 +704,14 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
     setTimeout(setCheckedPage(true), 2000);
   }, []);
 
+  useEffect(() => {
+    subMenu(menuTab);
+  }, [menuTab, subMenu]);
+
   return (
     <Fade in={checkedPage}>
       <Grid container spacing={2}>
-        <Grid item md={3} className={classes.subMenuItems}>
+        <Grid item md={3} className={classes.subMenuItems} ref={forwardRef}>
           <Paper elevation={3}>
             <SubMenuItemsProfile
               func={setMenuTab}
@@ -680,4 +728,4 @@ const UserInformation = ({ res, authMenu, typeUser, data, ...props }) => {
   );
 };
 
-export default UserInformation;
+export default memo(UserInformation);

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Box, Button, Card, Fade, Grid, Typography } from "@material-ui/core";
 import { CircularProgressbar } from "react-circular-progressbar";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "react-circular-progressbar/dist/styles.css";
 
@@ -36,7 +36,6 @@ const domainImgTwo = "https://i.pravatar.cc/150?u=";
 
 const DetailPages = (props) => {
   const classes = Style(props);
-  const history = useHistory();
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -63,7 +62,7 @@ const DetailPages = (props) => {
   const renderStats = useCallback(() => {
     return Object.keys(arrInfoMovie).map((obj, index) => {
       return (
-        <li>
+        <li key={index}>
           <Typography>{obj}</Typography>
           <Typography>{arrInfoMovie[obj]}</Typography>
         </li>
@@ -89,15 +88,27 @@ const DetailPages = (props) => {
   window.addEventListener("resize", changeRes);
 
   useEffect(() => {
-    dispatch(getDetailMovie(id)).then((res) => {
-      setDetailMovie(res);
-    });
+    async function flechData() {
+      try {
+        const data = await dispatch(getDetailMovie(id)).then((res) => {
+          setDetailMovie(res);
+        });
+      } catch (error) {
+        // console.log(error);
+      }
+    }
+
+    flechData();
     setChecked(true);
   }, []);
 
   useEffect(() => {
     changeRes();
-  });
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const handleSetTab = useCallback(
     (num) => {
@@ -127,8 +138,20 @@ const DetailPages = (props) => {
       // Tab lich chieu
       case 0: {
         if (scheduleMobile)
-          return <MobileSchedulesDetailMovie dataCinemaList={detailMovie} />;
-        return <SchedulesPagesDetail dataCinemaList={detailMovie} />;
+          return (
+            <MobileSchedulesDetailMovie
+              dataCinemaList={detailMovie}
+              user={user}
+              params={id}
+            />
+          );
+        return (
+          <SchedulesPagesDetail
+            dataCinemaList={detailMovie}
+            user={user}
+            id={id}
+          />
+        );
       }
       // Tab thong tin
       case 1: {
@@ -144,6 +167,7 @@ const DetailPages = (props) => {
           </Grid>
         );
       }
+      // Tab comments
       case 2: {
         return (
           <Box className={classes.tabComments}>
@@ -208,6 +232,12 @@ const DetailPages = (props) => {
     );
   }, [detailMovie]);
 
+  const scrollToSchdedules = useCallback(() => {
+    const position = document.getElementById("tabContent")?.offsetTop - 65;
+    window.scrollTo({ top: position, behavior: "smooth" });
+    // console.log(position);
+  }, []);
+
   return (
     <Box className={classes.body}>
       {sliderMobile ? (
@@ -270,6 +300,7 @@ const DetailPages = (props) => {
                       variant="contained"
                       color="secondary"
                       className={classes.filmDetailBtn}
+                      onClick={scrollToSchdedules}
                     >
                       Mua vé
                     </Button>
@@ -307,7 +338,7 @@ const DetailPages = (props) => {
         navPage={"detailPage"}
         dataNav={arrNavbar}
       />
-      <Box className={classes.contentTab}>
+      <Box className={classes.contentTab} id="tabContent">
         <Box className={classes.gridContainer}>
           <Fade in={checked}>{renderTabContent()}</Fade>
         </Box>

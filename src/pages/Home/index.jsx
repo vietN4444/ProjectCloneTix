@@ -21,7 +21,10 @@ import News from "../../components/News";
 import ArrowToTop from "../../assets/imgs/arrowToTop.png";
 
 import Style from "./style";
-import { getCinemaInformation } from "../../redux/actions/cinemaActions";
+import {
+  getCinemaInformation,
+  getCinemaSchedules,
+} from "../../redux/actions/cinemaActions";
 import Gif from "../../assets/imgs/Gif.gif";
 import { DELETE_CINEMA_DATA } from "../../redux/actions/actionContants";
 
@@ -31,6 +34,7 @@ const Home = (props) => {
 
   const statusTrailer = useSelector((state) => state.status.modalTrailer);
   const page = useSelector((state) => state.movie.pages);
+  const cinemaList = useSelector((state) => state.cinema.cinemaList);
 
   const [componentSlider, setComponentSlider] = useState(true);
   const [btnToTop, setBtnToTop] = useState(false);
@@ -91,12 +95,24 @@ const Home = (props) => {
   }, [page]);
 
   useEffect(() => {
+    if (cinemaList.length === 0) return;
+    async function fetchData() {
+      for (let key of cinemaList) {
+        const cinemaSchedulesAsync = await dispatch(
+          getCinemaSchedules(key.maHeThongRap)
+        );
+      }
+    }
+    fetchData();
+  }, [cinemaList]);
+
+  useEffect(() => {
     async function fetchData() {
       try {
-        const getMovieListAsync = await dispatch(getMovieList());
         const getCinemaInformationAsync = await dispatch(
           getCinemaInformation()
         );
+        const getMovieListAsync = await dispatch(getMovieList());
       } catch {
         console.log("failed");
       }

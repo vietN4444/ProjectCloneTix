@@ -171,7 +171,9 @@ const BoxBooking = (props) => {
   }, [label]);
 
   const submitBooking = useCallback(() => {
-    history.replace(`/checkout/ + ${movieBooking}`);
+    const win = window.open(`/checkout/${movieBooking}`, "_blank");
+    win.focus();
+    // history.replace(`/checkout/${movieBooking}`);
   }, [movieBooking]);
 
   return (

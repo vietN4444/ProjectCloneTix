@@ -179,6 +179,11 @@ const Style = makeStyles((theme) => ({
       marginRight: 8,
       borderRadius: "50%",
     },
+    "&.signIn": {
+      "& > p": {
+        fontSize: 15,
+      },
+    },
   },
   navItem: {
     padding: "12px 20px",

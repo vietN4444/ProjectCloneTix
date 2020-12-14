@@ -102,6 +102,7 @@ const Style = makeStyles((theme) => ({
   },
   tabsItemSubTxt: {
     width: "100%",
+    marginBottom: 8,
     "& > p": {
       ...theme.typography.h6,
       color: theme.palette.text.primary,

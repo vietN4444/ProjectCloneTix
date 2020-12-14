@@ -19,7 +19,10 @@ import Style from "./style";
 import MenuDashboard from "../../components/MenuDashboard";
 import { useDispatch, useSelector } from "react-redux";
 import MovieManagement from "../../components/MovieManagement";
-import { REMOVE_TOKEN } from "../../redux/actions/actionContants";
+import {
+  DELETE_CINEMA_DATA,
+  REMOVE_TOKEN,
+} from "../../redux/actions/actionContants";
 import UserManagement from "../../components/UserManagement";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -74,6 +77,25 @@ const Dashboard = (props) => {
       willOpen: () => {
         history.replace("/");
       },
+    });
+  }, []);
+
+  const alertSignIn = useCallback(() => {
+    return Swal.fire({
+      icon: "error",
+      confirmButtonText: "Đăng nhập",
+      cancelButtonText: "Để sau",
+      title: "Opps...",
+      text: "Bạn chưa đăng nhập để có thể truy cập trang này!",
+      confirmButtonColor: "#fb4226",
+      showCancelButton: true,
+      willOpen: () => {
+        history.replace("/");
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        history.replace("/signin");
+      }
     });
   }, []);
 
@@ -133,15 +155,39 @@ const Dashboard = (props) => {
   useEffect(() => {
     async function fetchData() {
       // You can await here
-      if (authUser === "KhachHang") {
-        const response = await alertAuthUser();
-      } else {
-        setTimeout(() => setRender(true), 500);
+      if (!JSON.parse(localStorage.getItem("accessToken"))) {
+        return alertSignIn();
       }
       // ...
     }
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    let timeout;
+    async function fetchData() {
+      // You can await here
+      if (authUser === "KhachHang") {
+        const response = await alertAuthUser();
+      } else {
+        timeout = setTimeout(() => setRender(true), 500);
+      }
+      // ...
+    }
+    fetchData();
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [authUser]);
+
+  useEffect(() => {
+    return () => {
+      dispatch({
+        type: DELETE_CINEMA_DATA,
+      });
+    };
+  }, []);
 
   return (
     <div className={classes.root}>

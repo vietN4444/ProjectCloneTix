@@ -195,19 +195,6 @@ const SignUp = (props) => {
     [userSignUp, alertEmpty]
   );
 
-  const alertEmptyInput = useCallback(
-    (e) => {
-      const name = e.target.name;
-      const value = e.target.value;
-      if (value === "") {
-        setAlertEmpty({ ...alertEmpty, [name]: true });
-      } else {
-        setAlertEmpty({ ...alertEmpty, [name]: false });
-      }
-    },
-    [alertEmpty, userSignUp]
-  );
-
   return (
     <Box className={classes.login}>
       <Box className={classes.loginWrapper}>
@@ -222,7 +209,7 @@ const SignUp = (props) => {
               <Grid item md={12} sm={12} className={classes.boxInput}>
                 <Box py={0.2} className={classes.wrapperInput}>
                   <TextField
-                    onChange={handleChange}
+                    onBlur={handleChange}
                     className={`${classes.input} ${
                       alertEmpty.taiKhoan ? "inputError" : null
                     }`}
@@ -230,7 +217,6 @@ const SignUp = (props) => {
                     name="taiKhoan"
                     label="Username"
                     variant="filled"
-                    onBlur={alertEmptyInput}
                   />
                   {alertEmpty.taiKhoan ? (
                     <Box className={classes.wrapperAlert}>
@@ -242,11 +228,10 @@ const SignUp = (props) => {
               <Grid item md={12} sm={12} className={classes.boxInput}>
                 <Box py={0.2} className={classes.wrapperInput}>
                   <TextField
-                    onChange={handleChange}
+                    onBlur={handleChange}
                     className={`${classes.input} ${
                       alertEmpty.matKhau ? "inputError" : null
                     }`}
-                    onBlur={alertEmptyInput}
                     id="filled-basic"
                     type="password"
                     name="matKhau"
@@ -263,7 +248,7 @@ const SignUp = (props) => {
               <Grid item md={12} sm={12} className={classes.boxInput}>
                 <Box py={0.2} className={classes.wrapperInput}>
                   <TextField
-                    onChange={handleChange}
+                    onBlur={handleChange}
                     name="hoTen"
                     className={`${classes.input} ${
                       alertEmpty.hoTen
@@ -272,7 +257,6 @@ const SignUp = (props) => {
                         ? "inputError"
                         : null
                     }`}
-                    onBlur={alertEmptyInput}
                     id="filled-basic"
                     label="Full Name"
                     variant="filled"
@@ -292,7 +276,7 @@ const SignUp = (props) => {
               <Grid item md={12} sm={12} className={classes.boxInput}>
                 <Box py={0.2} className={classes.wrapperInput}>
                   <TextField
-                    onChange={handleChange}
+                    onBlur={handleChange}
                     className={`${classes.input} ${
                       alertEmpty.email
                         ? "inputError"
@@ -300,7 +284,6 @@ const SignUp = (props) => {
                         ? "inputError"
                         : null
                     }`}
-                    onBlur={alertEmptyInput}
                     id="filled-basic"
                     type="email"
                     name="email"
@@ -324,7 +307,7 @@ const SignUp = (props) => {
               <Grid item md={12} sm={12} className={classes.boxInput}>
                 <Box py={0.2} className={classes.wrapperInput}>
                   <TextField
-                    onChange={handleChange}
+                    onBlur={handleChange}
                     className={`${classes.input} ${
                       alertEmpty.soDt
                         ? "inputError"
@@ -332,7 +315,6 @@ const SignUp = (props) => {
                         ? "inputError"
                         : null
                     }`}
-                    onBlur={alertEmptyInput}
                     id="filled-basic"
                     name="soDt"
                     label="Phone Number"

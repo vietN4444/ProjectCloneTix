@@ -42,7 +42,7 @@ const SearchMovie = (props) => {
   const classes = Style(props);
 
   const handleSearchItem = useCallback((id) => {
-    history.replace(`/detail/ + ${id}`);
+    history.replace(`/detail/${id}`);
   }, []);
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Link, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import Style from "../Footer/style";
 import appleLogo from "../../assets/imgs/apple-logo.png";
 import apkLogo from "../../assets/imgs/android-logo.png";
@@ -334,4 +334,4 @@ function FooterComponent(props) {
   );
 }
 
-export default FooterComponent;
+export default memo(FooterComponent);

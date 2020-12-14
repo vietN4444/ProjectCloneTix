@@ -10,7 +10,7 @@ import {
   Tabs,
   Typography,
 } from "@material-ui/core";
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
@@ -19,7 +19,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import EventIcon from "@material-ui/icons/Event";
 
 import Style from "./style";
-import { getCinemaSchedules } from "../../redux/actions/cinemaActions";
 import Swal from "sweetalert2";
 
 const TabPanel = (props) => {
@@ -59,12 +58,6 @@ const TabsCinema = ({ dataCinemaList, ...props }) => {
   );
 
   const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    dataCinemaList.forEach((e, i) => {
-      dispatch(getCinemaSchedules(e.maHeThongRap));
-    });
-  }, [dataCinemaList, dispatch]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -107,7 +100,7 @@ const TabsCinema = ({ dataCinemaList, ...props }) => {
         return null;
       });
     });
-  }, [dataCinemaList, dataLocationCinema, value]);
+  }, [dataLocationCinema, value]);
 
   const classes = Style(props);
 
@@ -305,6 +298,7 @@ const TabsSchdulesItem = ({ dataMovie, ...props }) => {
 
 const SchedulesCinemas = (props) => {
   const classes = Style(props);
+  const dispatch = useDispatch();
   const cinemaList = useSelector((state) => state.cinema.cinemaList);
 
   return (

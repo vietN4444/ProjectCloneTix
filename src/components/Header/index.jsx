@@ -13,7 +13,7 @@ import {
   Divider,
   Collapse,
 } from "@material-ui/core";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -277,64 +277,80 @@ function HeaderComponent(props) {
                 >
                   <List>
                     <Box className={classes.mobileMenuHeader}>
-                      <Box className={classes.nameUser}>
-                        <img
-                          src={`${imgAvatar}${user.userName}`}
-                          alt="avatar"
-                          onError={() => setImgAvatar(domainImg)}
-                        />
-                        <Typography variant="body1" component="p">
-                          {user.userName}
-                        </Typography>
-                      </Box>
+                      {!!user.token ? (
+                        <Box className={classes.nameUser}>
+                          <img
+                            src={`${imgAvatar}${user.userName}`}
+                            alt="avatar"
+                            onError={() => setImgAvatar(domainImg)}
+                          />
+                          <Typography variant="body1" component="p">
+                            {user.userName}
+                          </Typography>
+                        </Box>
+                      ) : (
+                        <Box
+                          className={`${classes.nameUser} signIn`}
+                          onClick={() => history.replace("/signin")}
+                        >
+                          <img src={Avatar} alt="avatar" />
+                          <Typography variant="body1" component="p">
+                            Đăng Nhập
+                          </Typography>
+                        </Box>
+                      )}
                       <Button onClick={() => setAuthDrawer(false)}>
                         <Close />
                       </Button>
                     </Box>
                     <Divider />
-                    <ListItem
-                      button
-                      className={classes.navItem}
-                      onClick={handleClickCollapse}
-                    >
-                      <ListItemText
-                        primary="Thông tin tài khoản"
-                        className={classes.txtNavItem}
-                      />
-                      {openCollapse ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <Collapse
-                      in={openCollapse}
-                      timeout="auto"
-                      unmountOnExit
-                      className={classes.userCollapseInfo}
-                    >
-                      <NavLink to="/profile" underline="none">
-                        <ListItem>
+                    {!!user.token ? (
+                      <>
+                        <ListItem
+                          button
+                          className={classes.navItem}
+                          onClick={handleClickCollapse}
+                        >
                           <ListItemText
-                            className={classes.collapseTxt}
-                            primary="Thông tin chi tiết"
+                            primary="Thông tin tài khoản"
+                            className={classes.txtNavItem}
                           />
+                          {openCollapse ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
-                      </NavLink>
-                      {user.userAC === "QuanTri" ? (
-                        <NavLink to="/dashboard" underline="none">
-                          <ListItem>
+                        <Collapse
+                          in={openCollapse}
+                          timeout="auto"
+                          unmountOnExit
+                          className={classes.userCollapseInfo}
+                        >
+                          <NavLink to="/profile" underline="none">
+                            <ListItem>
+                              <ListItemText
+                                className={classes.collapseTxt}
+                                primary="Thông tin chi tiết"
+                              />
+                            </ListItem>
+                          </NavLink>
+                          {user.userAC === "QuanTri" ? (
+                            <NavLink to="/dashboard" underline="none">
+                              <ListItem>
+                                <ListItemText
+                                  className={classes.collapseTxt}
+                                  primary="Quản lý / Admin"
+                                />
+                              </ListItem>
+                            </NavLink>
+                          ) : null}
+                          <ListItem button onClick={signOut}>
                             <ListItemText
                               className={classes.collapseTxt}
-                              primary="Quản lý / Admin"
+                              primary="Đăng xuất"
                             />
+                            <ExitToAppIcon />
                           </ListItem>
-                        </NavLink>
-                      ) : null}
-                      <ListItem button onClick={signOut}>
-                        <ListItemText
-                          className={classes.collapseTxt}
-                          primary="Đăng xuất"
-                        />
-                        <ExitToAppIcon />
-                      </ListItem>
-                    </Collapse>
+                        </Collapse>{" "}
+                      </>
+                    ) : null}
                     {navBar.map((navItem, index) => {
                       return (
                         <ListItem
@@ -361,4 +377,4 @@ function HeaderComponent(props) {
   );
 }
 
-export default HeaderComponent;
+export default memo(HeaderComponent);

@@ -26,6 +26,8 @@ const reducer = (state = initialState, { type, payload }) => {
     }
     case GET_SCHEDULES_CINEMA: {
       const cloneArr = [...state.cinemaSchedules];
+      if (cloneArr.length === state.cinemaList.length)
+        return { ...state, cinemaSchedules: cloneArr };
       cloneArr.push(payload);
       return { ...state, cinemaSchedules: cloneArr };
     }
@@ -33,8 +35,9 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, cinemaBooking: payload };
     }
     case DELETE_CINEMA_DATA: {
-      return { ...state, cinemaList: [], cinemaSchedules: [] };
+      return { ...state, cinemaSchedules: [], cinemaList: [] };
     }
+
     case GET_CINEMA_CHECKOUT: {
       return {
         ...state,

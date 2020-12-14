@@ -340,7 +340,7 @@ export const FormAddUser = () => {
     <Paper elevation={3}>
       <Box className={classes.boxContainer}>
         <Box className={`${classes.headTitle} headTitleBox`}>
-          <Typography component="span">Thêm phim</Typography>
+          <Typography component="span">Thêm người dùng mới</Typography>
         </Box>
         <Divider variant="middle" />
         <Box className={classes.boxContent}>

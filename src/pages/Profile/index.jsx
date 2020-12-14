@@ -170,7 +170,7 @@ const Profile = (props) => {
       confirmButtonText: "Đăng nhập",
       cancelButtonText: "Để sau",
       title: "Opps...",
-      text: "Bạn chưa đăng nhập để thực hiện tác vụ này",
+      text: "Bạn chưa đăng nhập để có thể truy cập trang này!",
       confirmButtonColor: "#fb4226",
       showCancelButton: true,
       willOpen: () => {

@@ -130,36 +130,6 @@ const MovieList = ({ resScreen, ...props }) => {
           </Fade>
         );
       });
-      // return movieList.map((ele, index) => {
-      //   if (ele.count === 0) return;
-      //   return (
-      //     <Fade
-      //       key={index}
-      //       in={checked}
-      //       timeout={{
-      //         enter: 0.4,
-      //       }}
-      //     >
-      //       <Box key={index}>
-      //         <Grid container spacing={2}>
-      //           {movieList[index].items.map((movie, index2) => {
-      //             return (
-      //               <Grid
-      //                 key={index2}
-      //                 item
-      //                 md={3}
-      //                 sm={3}
-      //                 className={classes.gridItem}
-      //               >
-      //                 <MovieItem data={movie} />
-      //               </Grid>
-      //             );
-      //           })}
-      //         </Grid>
-      //       </Box>
-      //     </Fade>
-      //   );
-      // });
     } else {
       return movieIncoming.map((ele, index) => {
         return (

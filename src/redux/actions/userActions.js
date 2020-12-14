@@ -91,6 +91,7 @@ export const changeUserInformation = (user, alertChangeInfo) => {
       })
       .catch((err) => {
         console.log(err);
+        // console.log(err.response.data);
       });
   };
 };
@@ -106,7 +107,7 @@ export const deleteUser = (idUser, alertSuccess, alertError) => {
         alertSuccess(textAlert.delete[0]);
       })
       .catch((err) => {
-        // console.log(err);
+        console.log(err.response.data);
         alertError(textAlert.delete[1]);
       });
   };

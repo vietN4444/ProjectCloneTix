@@ -18,7 +18,6 @@ export const signIn = (user, history, funcAlertError) => {
       data: user,
     })
       .then((res) => {
-        // console.log(res.data);
         dispatch({
           type: SET_TOKEN,
           payload: res.data,
@@ -31,7 +30,7 @@ export const signIn = (user, history, funcAlertError) => {
             maLoaiNguoiDung: res.data.maLoaiNguoiDung,
           })
         );
-        history.replace("/");
+        history.push("/");
       })
       .catch((err) => {
         funcAlertError(err.response.data);
@@ -78,7 +77,8 @@ export const userDetail = (userName) => {
   };
 };
 
-export const changeUserInformation = (user, alertChangeInfo) => {
+export const changeUserInformation = (user, alertChangeInfo, alertError) => {
+  console.log(user);
   return (dispatch) => {
     connector({
       url: `https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung`,
@@ -90,7 +90,8 @@ export const changeUserInformation = (user, alertChangeInfo) => {
         // console.log(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        alertError(err.response.data);
+        // console.log(err);
         // console.log(err.response.data);
       });
   };

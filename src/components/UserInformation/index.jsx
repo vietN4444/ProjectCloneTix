@@ -220,7 +220,7 @@ const UserInformation = ({
       title: "Thay đổi thông tin tài khoản thành công",
       confirmButtonText: "OK",
       confirmButtonColor: "#f55960",
-      onClose: () => {
+      willClose: () => {
         history.go(0);
       },
     });
@@ -452,7 +452,9 @@ const UserInformation = ({
         user = { ...user, hoTen: userChangeInfo.hoten };
       }
       if (authSubmit) {
-        return dispatch(changeUserInformation(user, alertChangeInfo));
+        return dispatch(
+          changeUserInformation(user, alertChangeInfo, alertError)
+        );
       }
     },
     [data, typeUser, userChangeInfo]
@@ -699,6 +701,15 @@ const UserInformation = ({
     handleInput,
     errorRegex,
   ]);
+
+  const alertError = useCallback((Text) => {
+    return Swal.fire({
+      icon: "error",
+      title: Text,
+      confirmButtonText: "OK",
+      confirmButtonColor: "#f55960",
+    });
+  }, []);
 
   useEffect(() => {
     setTimeout(setCheckedPage(true), 2000);

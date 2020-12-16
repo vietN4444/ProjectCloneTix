@@ -227,7 +227,7 @@ const SchedulesPagesDetail = ({ id, user, dataCinemaList, ...props }) => {
         </TabPanel>
       );
     });
-  }, [dataCinemaList, value]);
+  }, [dataCinemaList, value, user]);
 
   return (
     <>

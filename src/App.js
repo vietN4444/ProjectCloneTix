@@ -22,7 +22,7 @@ function App() {
     }
   }, [dispatch]);
   return (
-    <BrowserRouter forceRefresh={true}>
+    <BrowserRouter>
       <Switch>
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/profile" component={Profile} />

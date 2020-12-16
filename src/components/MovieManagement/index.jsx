@@ -218,7 +218,7 @@ const MovieManagement = (props) => {
               </Tooltip>
               <Tooltip title="AddSchedules" placement="top">
                 <IconButton onClick={() => handleFormDialogSchedules(movie)}>
-                  <CreateIcon fontSize="small" />
+                  <QueueIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
             </TableCell>

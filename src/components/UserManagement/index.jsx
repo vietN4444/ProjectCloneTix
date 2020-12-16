@@ -84,6 +84,9 @@ const UserManagement = (props) => {
 
   useEffect(() => {
     dispatch(getUserList(1, 15));
+  }, [dispatch]);
+
+  useEffect(() => {
     setWidthTable(refTable.current?.offsetWidth);
   }, [refTable.current?.offsetWidth, setWidthTable]);
 
@@ -245,7 +248,7 @@ const UserManagement = (props) => {
         updateUser(user, page + 1, 15, userSearched, alertSuccess, alertError)
       );
     },
-    [userSelected, userSearched, page]
+    [userSelected, userSearched]
   );
 
   return (

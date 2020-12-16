@@ -173,7 +173,7 @@ const MobileSchedulesDetailMovie = ({
         </Accordion>
       );
     });
-  }, [dataCinemaList]);
+  }, [dataCinemaList, user]);
 
   return (
     <>

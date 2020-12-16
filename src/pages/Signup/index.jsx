@@ -44,7 +44,7 @@ const SignUp = (props) => {
       timer: 2000,
       showConfirmButton: false,
       onClose: () => {
-        dispatch(signIn(user, history));
+        dispatch(signIn(user, history, 0, 0));
       },
     });
   }, [history, userSignUp]);

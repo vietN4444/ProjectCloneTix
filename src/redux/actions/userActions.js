@@ -6,11 +6,11 @@ const textAlert = {
   delete: ["Tài khoản đã xoá khỏi hệ thống", "Tài khoản không thể xoá."],
   changeInfo: [
     "Tài khoản đã update thông tin mới",
-    "Tài khoản không thể update thông tin, vui lòng thêm hình ảnh",
+    "Tài khoản không thể update thông tin",
   ],
 };
 
-export const signIn = (user, history, funcAlertError) => {
+export const signIn = (user, history, funcAlertError, location) => {
   return (dispatch) => {
     connector({
       url: "https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/DangNhap",
@@ -30,11 +30,22 @@ export const signIn = (user, history, funcAlertError) => {
             maLoaiNguoiDung: res.data.maLoaiNguoiDung,
           })
         );
-        history.push("/");
+        const fletchData = async () => {
+          if (location) {
+            const asyncTimeout = await history.goBack();
+            const async = await setTimeout(() => history.go(0), 10);
+          } else {
+            const asyncTimeout = await history.replace("/");
+            const async = await setTimeout(() => history.go(0), 10);
+          }
+        };
+
+        fletchData();
       })
       .catch((err) => {
+        if (!funcAlertError) return null;
         funcAlertError(err.response.data);
-        console.log(err);
+        // console.log(err);
       });
   };
 };
@@ -129,12 +140,24 @@ export const updateUser = (
       data: user,
     })
       .then((res) => {
-        dispatch(getUserListByName(id, num, userName));
-        dispatch(getUserList(id, num));
-        alertSuccess(textAlert.changeInfo[0], 1);
+        const fletchData = async () => {
+          const getUserListAsync = await dispatch(getUserList(id, num));
+          if (userName !== "") {
+            const getUserListByNameAsync = await dispatch(
+              getUserListByName(id, num, userName)
+            );
+          }
+          alertSuccess(textAlert.changeInfo[0], 1);
+        };
+        // dispatch(getUserList(id, num));
+        // if (userName !== "") {
+        //   dispatch(getUserListByName(id, num, userName));
+        // }
+
+        fletchData();
       })
       .catch((err) => {
-        alertError(textAlert.changeInfo[1]);
+        alertError(err.response.data);
       });
   };
 };

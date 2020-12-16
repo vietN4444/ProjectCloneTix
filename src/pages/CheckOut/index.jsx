@@ -530,7 +530,7 @@ const CheckOut = (props) => {
             )}
             {/* Ẩn hiện nút back trên mobile */}
             {tabletScreen ? (
-              stepTwoTablet ? (
+              stepThirdTablet ? null : stepTwoTablet ? (
                 <Box className="iconback" onClick={backStepOne}>
                   <ArrowBackIosIcon />
                 </Box>

@@ -388,6 +388,25 @@ const CheckOut = (props) => {
     });
   }, []);
 
+  const alertSignIn = useCallback(() => {
+    return Swal.fire({
+      icon: "error",
+      confirmButtonText: "Đăng nhập",
+      cancelButtonText: "Để sau",
+      title: "Opps...",
+      text: "Bạn chưa đăng nhập để có thể truy cập trang này!",
+      confirmButtonColor: "#fb4226",
+      showCancelButton: true,
+      willOpen: () => {
+        history.replace("/");
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        history.replace("/signin");
+      }
+    });
+  }, []);
+
   const changeRes = () => {
     if (window.innerWidth <= 768) {
       setTabletScreen(true);
@@ -448,6 +467,17 @@ const CheckOut = (props) => {
   }, []);
 
   window.addEventListener("resize", changeRes);
+
+  useEffect(() => {
+    async function fetchData() {
+      // You can await here
+      if (!JSON.parse(localStorage.getItem("accessToken"))) {
+        return alertSignIn();
+      }
+      // ...
+    }
+    fetchData();
+  }, []);
 
   useEffect(() => {
     changeRes();

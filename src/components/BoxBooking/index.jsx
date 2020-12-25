@@ -7,6 +7,7 @@ import { getCinemaByMovie } from "../../redux/actions/cinemaActions";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Style from "./style";
 import { useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const BoxBooking = (props) => {
   const dispatch = useDispatch();
@@ -26,6 +27,23 @@ const BoxBooking = (props) => {
 
   const movieList = useSelector((state) => state.movie.movieBoxBooking);
   const cinemaList = useSelector((state) => state.cinema.cinemaBooking);
+  const user = useSelector((state) => state.auth.userName);
+
+  const alertSignIn = useCallback(() => {
+    return Swal.fire({
+      icon: "error",
+      confirmButtonText: "Đăng nhập",
+      cancelButtonText: "Để sau",
+      title: "Opps...",
+      text: "Bạn chưa đăng nhập để thực hiện tác vụ này",
+      confirmButtonColor: "#fb4226",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        history.replace("/signin");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     let handler = (event) => {
@@ -171,10 +189,13 @@ const BoxBooking = (props) => {
   }, [label]);
 
   const submitBooking = useCallback(() => {
+    if (user === "") {
+      return alertSignIn();
+    }
     const win = window.open(`/checkout/${movieBooking}`, "_blank");
     win.focus();
     // history.replace(`/checkout/${movieBooking}`);
-  }, [movieBooking]);
+  }, [movieBooking, user]);
 
   return (
     <>

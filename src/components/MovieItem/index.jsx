@@ -1,12 +1,15 @@
+import React from "react";
+import { useHistory } from "react-router";
 import { Box, Button, Card, CardActions, Typography } from "@material-ui/core";
 
-import React from "react";
 import Style from "./style";
 import MovieItemCard from "../MovieItemCard";
 
 const MovieItem = ({ data, ...props }) => {
+  const history = useHistory();
+
   const classes = Style(props);
-  const { tenPhim } = data;
+  const { tenPhim, maPhim } = data;
 
   return (
     <>
@@ -28,6 +31,7 @@ const MovieItem = ({ data, ...props }) => {
                 size="large"
                 color="secondary"
                 variant="contained"
+                onClick={() => history.replace("/detail/" + maPhim)}
               >
                 MUA VÉ
               </Button>
